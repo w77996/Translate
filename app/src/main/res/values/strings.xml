@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Translate</string>
+    <string name="str_recoder_normal">按住说话</string>
+    <string name="str_recorder_recording">松开结束</string>
+    <string name="str_recorder_want_cancel">松开手指，取消发送</string>
+
+    <string name="str_dialog_want_cancel">手指上滑，取消发送</string>
+    <string name="str_dialog_want_send">手指上滑，取消发送</string>
+    <string name="str_dialog_time_short">录音时间过短</string>
+
+    <!--权限-->
+    <string name="permissions_settings">设置</string>
+    <string name="permissions_help">帮助</string>
+    <string name="permissions_help_text">当前应用缺少必要权限。\n\n请点击\"设置\"-\"权限\"-打开所需权限。\n\n最后点击两次后退按钮，即可返回。</string>
+    <string name="permissions_quit">退出</string>
+</resources>
