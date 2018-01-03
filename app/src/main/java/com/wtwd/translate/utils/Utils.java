@@ -9,11 +9,12 @@ import android.view.WindowManager;
 /**
  * time:2017/12/28
  * Created by w77996
- * Github:https://github.com/w77996
- * CSDN:http://blog.csdn.net/w77996?viewmode=contents
  */
 public class Utils {
 
+
+    public final static String TEXT_TRANSLATE_API_URL = "";
+    public final static String SPEECH_TRANSLATE_API_URL = "";
 
     public static void setWindowStatusBarColor(Activity activity, int colorResId) {
         try {

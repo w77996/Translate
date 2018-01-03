@@ -1,5 +1,6 @@
 package com.wtwd.translate;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -10,6 +11,7 @@ import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.wtwd.translate.fragment.EducationFragment;
 import com.wtwd.translate.fragment.StrategyFragment;
@@ -50,6 +52,12 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     ImageView mNavEduImage;
     ImageView mNavUserImage;
 
+    TextView mNavTranslateText;
+    TextView mNavStrategyText;
+    TextView mNavTravelText;
+    TextView mNavEduText;
+    TextView mNavUserText;
+
     private int currentId = R.id.nav_tran;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,12 +96,18 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         mNavEduImage = (ImageView)findViewById(R.id.nav_edu_img);
         mNavUserImage = (ImageView)findViewById(R.id.nav_user_img);
 
+        mNavTranslateText = (TextView)findViewById(R.id.nav_tran_text);
+        mNavStrategyText = (TextView)findViewById(R.id.nav_strategy_text);
+        mNavTravelText = (TextView)findViewById(R.id.nav_travel_text);
+        mNavEduText = (TextView)findViewById(R.id.nav_edu_text);
+        mNavUserText = (TextView)findViewById(R.id.nav_user_text);
         mNavTranslateImage.setSelected(true);
+        //mNavTranslateText.setTextColor(Color.alpha(R.color.main_title_color));
 
        /* SystemBarTintManager tintManager = new SystemBarTintManager(this);
         tintManager.setStatusBarTintResource(R.color.colorPrimaryDark);
         tintManager.setStatusBarTintEnabled(true);*/
-        Utils.setWindowStatusBarColor(this,R.color.colorPrimary);//设置状态栏颜色
+        Utils.setWindowStatusBarColor(this,R.color.main_title_color);//设置状态栏颜色
 
 
 
@@ -230,6 +244,8 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         mNavTravelImage.setBackgroundResource(R.drawable.travel_btn_normal);
         mNavEduImage.setBackgroundResource(R.drawable.edu_btn_normal);
         mNavUserImage.setBackgroundResource(R.drawable.user_btn_normal);
+
+
     }
 
 }

@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.wtwd.translate.R;
 import com.wtwd.translate.activity.TranslateActivity;
@@ -29,7 +30,8 @@ public class TranslateFragment extends Fragment implements View.OnClickListener{
     Button mPhotoTranButton;
     Button mChatTranButton;
     Button mVoiceTranButton;
-    EditText mSearchEditText;
+    ImageView mSearchImageView;
+    ImageView mStartImageView;
     public static  TranslateFragment mInstance;
     private Context mContext;
     public static TranslateFragment getInstance() {
@@ -65,8 +67,10 @@ public class TranslateFragment extends Fragment implements View.OnClickListener{
         mPhotoTranButton.setOnClickListener(this);
         mChatTranButton.setOnClickListener(this);
         mVoiceTranButton.setOnClickListener(this);
-        mSearchEditText.setOnClickListener(this);
-        mSearchEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+        mSearchImageView.setOnClickListener(this);
+        mStartImageView.setOnClickListener(this);
+
+      /*  mSearchEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 Log.d(TAG,"has fcus"+hasFocus);
@@ -76,7 +80,7 @@ public class TranslateFragment extends Fragment implements View.OnClickListener{
                 }
 
             }
-        });
+        });*/
     }
 
     private void initView(View view) {
@@ -85,7 +89,8 @@ public class TranslateFragment extends Fragment implements View.OnClickListener{
         mPhotoTranButton = (Button) view.findViewById(R.id.btn_photo_tran);
         mChatTranButton= (Button) view.findViewById(R.id.btn_chat_tran);
         mVoiceTranButton= (Button) view.findViewById(R.id.btn_voice_tran);
-        mSearchEditText= (EditText) view.findViewById(R.id.ed_search);
+        mStartImageView = (ImageView)view.findViewById(R.id.img_start);
+        mSearchImageView= (ImageView) view.findViewById(R.id.img_search);
 
     }
 
@@ -104,8 +109,14 @@ public class TranslateFragment extends Fragment implements View.OnClickListener{
                 break;
             case R.id.btn_voice_tran:
                 Log.d(TAG,"btn_voice_tran");
-                Intent intent = new Intent(mContext, VoiceActivity.class);
-                startActivity(intent);
+                Intent VoiceIntent = new Intent(mContext, VoiceActivity.class);
+                startActivity(VoiceIntent);
+                break;
+            case R.id.img_search:
+                Intent TranslateIntent = new Intent(getActivity(), TranslateActivity.class);
+                startActivity(TranslateIntent);
+                break;
+            case R.id.img_start:
                 break;
 
         }

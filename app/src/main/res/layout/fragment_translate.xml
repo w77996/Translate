@@ -11,17 +11,31 @@
         android:id="@+id/main_title"
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:background="@color/colorPrimaryDark">
-        <TextView
-            android:id="@+id/main_title_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="head"/>
+        android:layout_height="45dp"
+        android:background="@color/main_title_color">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/main_title_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:textSize="20sp"
+                android:textColor="@color/color_white"
+                android:text="翻译机"/>
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/setting"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="5dp"
+                android:layout_centerHorizontal="true"/>
+        </RelativeLayout>
+
     </LinearLayout>
     <LinearLayout
-        android:layout_marginTop="0dp"
-        android:paddingTop="0dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         >
@@ -34,11 +48,25 @@
                 android:adjustViewBounds="true"
                 android:scaleType="fitXY"
                 android:background="@drawable/tran_search_bg"/>
-            <EditText
-                android:id="@+id/ed_search"
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_centerInParent="true"
-                android:layout_height="30dp" />
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="7dp"
+                android:layout_marginRight="7dp">
+                <ImageView
+                    android:id="@+id/img_search"
+                    android:layout_width="wrap_content"
+                    android:src="@drawable/img_search_box"
+                    android:layout_height="wrap_content" />
+                <ImageView
+                    android:id="@+id/img_start"
+                    android:layout_width="wrap_content"
+                    android:layout_toRightOf="@+id/img_search"
+                    android:src="@drawable/img_start"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
         </RelativeLayout>
     </LinearLayout>
 
@@ -47,19 +75,20 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="12dp"
         android:layout_marginRight="12dp"
+        android:layout_marginTop="10dp"
         android:orientation="horizontal">
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="3"
             android:orientation="vertical">
-                <Button
-                    android:id="@+id/btn_photo_tran"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginBottom="10dp"
-                    android:background="@drawable/photo_tran_btn"
-                    />
+            <Button
+                android:id="@+id/btn_photo_tran"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/photo_tran_btn"
+                />
             <Button
                 android:id="@+id/btn_chat_tran"
                 android:layout_width="wrap_content"

@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#FF4081</color>
+    <color name="colorAccent">#000</color>
 
 
     <color name="color_white">@android:color/white</color>
@@ -262,6 +262,7 @@
     <color name="md_orange_a400_color_code">#ff9100</color>
     <color name="md_orange_a700_color_code">#ff6d00</color>
 
+    <color name="main_title_color">#F9B42E</color>
 
     <!-- deep_orange -->
     <color name="md_deep_orange_50_color_code">#fbe9e7</color>
