@@ -28,18 +28,23 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     private static final String TAG = "MainActivity";
 
 
-
+    /**首页activity中的fragment**/
     FrameLayout mMainFramgLayout;
     FragmentManager mFragmentManager;
     FragmentTransaction mFragmentTransaction;
 
-
+    /**翻译fragment**/
     TranslateFragment mTranslateFragment;
+    /**攻略fragment**/
     StrategyFragment mStrategyFragment;
+    /**出行fragment**/
     TravelFragment mTravelFragment;
+    /**教育fragment**/
     EducationFragment mEducationFragment;
+    /**用户fragment**/
     UserFragment mUserFragment;
 
+    /**底部四个按钮**/
     LinearLayout mNavTranslate;
     LinearLayout mNavStrategy;
     LinearLayout mNavTravel;
@@ -63,9 +68,9 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        initFragment();
+
         initView();
-        initClick();
+        initFragment();
     }
 
     /**
@@ -75,15 +80,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         mFragmentManager = getSupportFragmentManager();
         mFragmentTransaction = mFragmentManager.beginTransaction();
         mMainFramgLayout = (FrameLayout) findViewById(R.id.main_fragment);
-        /*if(mTranslateFragment == null){
-            mTranslateFragment = TranslateFragment.getInstance();
-            mMainFramgLayout.addView(mTranslateFragment);
 
-        }*/
-
-       /* if(!mTranslateFragment.isAdded()){
-            getSupportFragmentManager().beginTransaction().add(R.id.main_fragment, mTranslateFragment,"MainFragment").commit();
-        }*/
         mNavTranslate = (LinearLayout)findViewById(R.id.nav_tran);
         mNavStrategy = (LinearLayout)findViewById(R.id.nav_strategy);
         mNavTravel = (LinearLayout)findViewById(R.id.nav_travel);
@@ -102,45 +99,41 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         mNavEduText = (TextView)findViewById(R.id.nav_edu_text);
         mNavUserText = (TextView)findViewById(R.id.nav_user_text);
         mNavTranslateImage.setSelected(true);
-        //mNavTranslateText.setTextColor(Color.alpha(R.color.main_title_color));
-
-       /* SystemBarTintManager tintManager = new SystemBarTintManager(this);
-        tintManager.setStatusBarTintResource(R.color.colorPrimaryDark);
-        tintManager.setStatusBarTintEnabled(true);*/
-        Utils.setWindowStatusBarColor(this,R.color.main_title_color);//设置状态栏颜色
 
 
-
-    }
-    private void initFragment(){
-        mTranslateFragment = TranslateFragment.getInstance();
-        if(!mTranslateFragment.isAdded()){
-            getSupportFragmentManager().beginTransaction().add(R.id.main_fragment, mTranslateFragment,"MainFragment").commit();
-        }
-
-    }
-
-    private void initClick(){
-
+        //初始化点击事件
         mNavTranslate.setOnClickListener(this);
         mNavStrategy.setOnClickListener(this);
         mNavTravel.setOnClickListener(this);
         mNavEdu.setOnClickListener(this);
         mNavUser.setOnClickListener(this);
 
-       /* mNavTranslateImage.setOnClickListener(this);
-        mNavStrategyBtn.setOnClickListener(this);
-        mNavTravelBtn.setOnClickListener(this);
-        mNavEduBtn.setOnClickListener(this);
-        mNavUserBtn.setOnClickListener(this);*/
+        Utils.setWindowStatusBarColor(this,R.color.main_title_color);//设置状态栏颜色
 
     }
 
+    /**
+     * 初次加载显示主fragment
+     */
+    private void initFragment(){
+        mTranslateFragment = TranslateFragment.getInstance();
+        if(!mTranslateFragment.isAdded()){
+            getSupportFragmentManager().beginTransaction().add(R.id.main_fragment, mTranslateFragment,"MainFragment").commit();
+            mNavTranslateImage.setBackgroundResource(R.drawable.translate_btn_select);
+            mNavTranslateText.setTextColor(getResources().getColor(R.color.main_title_color));
+        }
+
+    }
+
+
+    /**
+     * 点击事件
+     * @param v
+     */
     @Override
     public void onClick(View v) {
         int id = v.getId();
         changeFragment(id);
-
     }
 
 
@@ -153,7 +146,6 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         switch (id){
 
             case R.id.nav_tran:
-                Log.d(TAG,"table1");
                 hideFragment(transaction);
                 changeSelect();
                 if(mTranslateFragment == null){
@@ -163,10 +155,9 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 transaction.show(mTranslateFragment);
                 transaction.commit();
                 mNavTranslateImage.setBackgroundResource(R.drawable.translate_btn_select);
-
+                mNavTranslateText.setTextColor(getResources().getColor(R.color.main_title_color));
                 break;
             case R.id.nav_strategy:
-                Log.d(TAG,"table2");
                 hideFragment(transaction);
                 changeSelect();
                 if(mStrategyFragment == null){
@@ -177,9 +168,9 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 transaction.show(mStrategyFragment);
                 transaction.commit();
                 mNavStrategyImage.setBackgroundResource(R.drawable.strategy_btn_select);
+                mNavStrategyText.setTextColor(getResources().getColor(R.color.main_title_color));
                 break;
             case R.id.nav_travel:
-                Log.d(TAG,"table3");
                 hideFragment(transaction);
                 changeSelect();
                 if(mTravelFragment == null){
@@ -189,9 +180,9 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 transaction.show(mTravelFragment);
                 transaction.commit();
                 mNavTravelImage.setBackgroundResource(R.drawable.travel_btn_select);
+                mNavTravelText.setTextColor(getResources().getColor(R.color.main_title_color));
                 break;
             case R.id.nav_edu:
-                Log.d(TAG,"table4");
                 hideFragment(transaction);
                 changeSelect();
                 if(mEducationFragment == null){
@@ -201,11 +192,11 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 transaction.show(mEducationFragment);
                 transaction.commit();
                 mNavEduImage.setBackgroundResource(R.drawable.edu_btn_select);
+                mNavEduText.setTextColor(getResources().getColor(R.color.main_title_color));
                 break;
             case R.id.nav_user:
                 hideFragment(transaction);
                 changeSelect();
-                Log.d(TAG,"table5");
                 if(mUserFragment == null){
                     mUserFragment = UserFragment.getInstance();
                     transaction.add(R.id.main_fragment, mUserFragment);
@@ -213,12 +204,15 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 transaction.show(mUserFragment);
                 transaction.commit();
                 mNavUserImage.setBackgroundResource(R.drawable.user_btn_select);
-
+                mNavUserText.setTextColor(getResources().getColor(R.color.main_title_color));
                 break;
         }
     }
 
-
+    /**
+     * 隐藏所有fragment
+     * @param transaction
+     */
     private void hideFragment(FragmentTransaction transaction){
         if(mTranslateFragment !=null){
             transaction.hide(mTranslateFragment);
@@ -238,6 +232,9 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
     }
 
+    /**
+     * 改变底部按钮和文字的颜色
+     */
     private void changeSelect() {
         mNavTranslateImage.setBackgroundResource(R.drawable.translate_btn_normal);
         mNavStrategyImage.setBackgroundResource(R.drawable.strategy_btn_normal);
@@ -245,7 +242,11 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
         mNavEduImage.setBackgroundResource(R.drawable.edu_btn_normal);
         mNavUserImage.setBackgroundResource(R.drawable.user_btn_normal);
 
-
+        mNavTranslateText.setTextColor(Color.parseColor("#616161"));
+        mNavStrategyText.setTextColor(Color.parseColor("#616161"));
+        mNavTravelText.setTextColor(Color.parseColor("#616161"));
+        mNavEduText.setTextColor(Color.parseColor("#616161"));
+        mNavUserText.setTextColor(Color.parseColor("#616161"));
     }
 
 }

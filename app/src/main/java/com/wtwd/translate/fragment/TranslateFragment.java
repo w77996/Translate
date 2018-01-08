@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.wtwd.translate.R;
+import com.wtwd.translate.activity.ChatActivity;
 import com.wtwd.translate.activity.TranslateActivity;
 import com.wtwd.translate.activity.VoiceActivity;
 
@@ -25,10 +26,13 @@ public class TranslateFragment extends Fragment implements View.OnClickListener{
 
 
     private static final String TAG = "TranslateFragment";
-
+    /**设备翻译**/
     Button mDevTranButton;
+    /**相机翻译**/
     Button mPhotoTranButton;
+    /**双人翻译**/
     Button mChatTranButton;
+    /**相机翻译**/
     Button mVoiceTranButton;
     ImageView mSearchImageView;
     ImageView mStartImageView;
@@ -106,6 +110,8 @@ public class TranslateFragment extends Fragment implements View.OnClickListener{
                 break;
             case R.id.btn_chat_tran:
                 Log.d(TAG,"btn_chat_tran");
+                Intent ChatIntent = new Intent(mContext, ChatActivity.class);
+                startActivity(ChatIntent);
                 break;
             case R.id.btn_voice_tran:
                 Log.d(TAG,"btn_voice_tran");

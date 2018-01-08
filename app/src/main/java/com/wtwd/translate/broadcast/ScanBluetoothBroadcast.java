@@ -7,10 +7,9 @@ import android.content.Intent;
 import android.util.Log;
 
 /**
+ * 蓝牙搜索广播
  * time:2018/1/3
  * Created by w77996
- * Github:https://github.com/w77996
- * CSDN:http://blog.csdn.net/w77996?viewmode=contents
  */
 public class ScanBluetoothBroadcast extends BroadcastReceiver{
     private final static String TAG = "ScanBluetoothBroadcast";

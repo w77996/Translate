@@ -15,12 +15,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.VoiceActivity"
-           />
+        <activity android:name=".activity.VoiceActivity" />
         <activity android:name=".activity.TranslateActivity"
             android:windowSoftInputMode="adjustPan"
             android:configChanges="orientation"
             />
+        <activity android:name=".activity.ChatActivity"/>
         <activity android:name=".utils.permissions.PermissionsActivity"
             android:theme="@style/AppTheme.NoActionBar.Permissions"/>
     </application>
