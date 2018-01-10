@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/x45"
+        android:background="@color/main_title_color">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/color_white"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/x5"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:textSize="16sp"
+                android:text="@string/ignore"/>
+            <TextView
+                android:id="@+id/main_title_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:textSize="20sp"
+                android:textColor="@color/color_white"
+                android:text="添加标签"/>
+
+        </RelativeLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/splash_label_bg">
+
+    </LinearLayout>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/x15"
+        android:gravity="center"
+        android:textSize="18sp"
+        android:text="请选择相应的标签让我们更了解您"/>
+    <LinearLayout
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <!--<android.support.v7.widget.RecyclerView
+            android:id="@+id/rl_label"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+        </android.support.v7.widget.RecyclerView>-->
+        <GridView
+            android:id="@+id/mygridview"
+            android:numColumns="4"
+            android:gravity="center_horizontal|center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:verticalSpacing="@dimen/x30"
+            android:layout_marginLeft="@dimen/x20"
+            android:layout_marginRight="@dimen/x20"
+            />
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/x50"
+        android:gravity="center">
+        <ImageView
+            android:layout_width="@dimen/x160"
+            android:layout_height="match_parent"
+            android:background="@drawable/rl_item_select"/>
+    </LinearLayout>
+</LinearLayout>

@@ -8,13 +8,15 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".MainActivity">
+        <activity android:name=".activity.LoginActivity"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".MainActivity"/>
         <activity android:name=".activity.VoiceActivity" />
         <activity android:name=".activity.TranslateActivity"
             android:windowSoftInputMode="adjustPan"
@@ -23,6 +25,8 @@
         <activity android:name=".activity.ChatActivity"/>
         <activity android:name=".utils.permissions.PermissionsActivity"
             android:theme="@style/AppTheme.NoActionBar.Permissions"/>
+       <!-- <activity android:name=".activity.SplashLableActivity"/>-->
+        <!--<activity android:name=".activity.SplashLanguageActivity"/>-->
     </application>
     <!--录音权限-->
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>

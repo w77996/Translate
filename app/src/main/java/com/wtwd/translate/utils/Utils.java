@@ -2,7 +2,9 @@ package com.wtwd.translate.utils;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.os.Build;
+import android.util.DisplayMetrics;
 import android.view.Window;
 import android.view.WindowManager;
 
@@ -16,6 +18,11 @@ public class Utils {
     public final static String TEXT_TRANSLATE_API_URL = "";
     public final static String SPEECH_TRANSLATE_API_URL = "";
 
+    /**
+     * 设置状态栏的颜色
+     * @param activity
+     * @param colorResId
+     */
     public static void setWindowStatusBarColor(Activity activity, int colorResId) {
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -44,5 +51,19 @@ public class Utils {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+    /**
+     * 获取手机屏幕宽度
+     *
+     * @param context
+     * @return
+     */
+    public static int getDisplayWidth(Context context) {
+        WindowManager wm = (WindowManager) context
+                .getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics dm = new DisplayMetrics();
+        // 获取屏幕信息
+        wm.getDefaultDisplay().getMetrics(dm);
+        return dm.widthPixels;
     }
 }

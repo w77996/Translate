@@ -8,7 +8,7 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="@dimen/x45"
         android:background="@color/main_title_color">
         <RelativeLayout
             android:layout_width="match_parent"
@@ -18,7 +18,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="@color/color_white"
                 android:layout_alignParentLeft="true"
-                android:layout_marginLeft="5dp"
+                android:layout_marginLeft="@dimen/x5"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:textSize="16sp"
@@ -36,10 +36,10 @@
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_height="@dimen/x40"
+        android:layout_marginTop="@dimen/x10"
+        android:layout_marginLeft="@dimen/x10"
+        android:layout_marginRight="@dimen/x10"
 
         android:background="@drawable/search_box_linearlayout"
         android:orientation="vertical">
@@ -51,26 +51,26 @@
                 android:id="@+id/search_box_ed"
                 android:layout_weight="1"
                 android:layout_width="0dp"
-                android:layout_marginLeft="5dp"
+                android:layout_marginLeft="@dimen/x5"
                 android:focusable="true"
                 android:background="@null"
                 android:singleLine="true"
                 android:layout_gravity="center_vertical|center_horizontal"
                 android:focusableInTouchMode="true"
                 android:textSize="24sp"
-                android:layout_height="40dp" />
+                android:layout_height="@dimen/x40" />
 
             <View
-                android:layout_width="2dp"
+                android:layout_width="@dimen/x1"
                 android:layout_height="match_parent"
-                android:layout_margin="10dp"
+                android:layout_margin="@dimen/x10"
                 android:background="@color/md_grey_400_color_code"/>
             <ImageView
                 android:id="@+id/iv_search_clear"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp"
+                android:paddingLeft="@dimen/x8"
+                android:paddingRight="@dimen/x8"
                 android:visibility="gone"
                 />
             <ImageView
@@ -78,22 +78,22 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal|center_vertical"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
+                android:layout_marginRight="@dimen/x10"
+                android:layout_marginLeft="@dimen/x10"
                 android:src="@drawable/search"/>
         </LinearLayout>
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:layout_margin="10dp"
+        android:layout_height="@dimen/x30"
+        android:layout_margin="@dimen/x10"
         android:background="@color/md_light_blue_300_color_code"
         >
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rl_tran_type"
             android:layout_weight="1"
             android:layout_width="0dp"
-            android:layout_height="30dp"
+            android:layout_height="@dimen/x30"
             >
         </android.support.v7.widget.RecyclerView>
         <ImageView
@@ -112,7 +112,7 @@
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp"
+        android:layout_margin="@dimen/x10"
         card_view:cardCornerRadius="1dp"
         card_view:cardElevation="2dp"
        >
@@ -123,8 +123,8 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
+                android:layout_marginLeft="@dimen/x5"
+                android:layout_marginRight="@dimen/x5"
                 android:orientation="horizontal">
                 <TextView
                     android:id="@+id/tv_tran_result"
@@ -146,9 +146,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginBottom="10dp"
+                android:layout_marginTop="@dimen/x10"
+                android:layout_marginLeft="@dimen/x5"
+                android:layout_marginBottom="@dimen/x10"
                 android:orientation="horizontal">
                 <ImageView
                     android:layout_width="wrap_content"
@@ -161,7 +161,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="10dp"
+                    android:layout_marginLeft="@dimen/x10"
                     android:src="@drawable/voice"/>
                 <TextView
                     android:layout_width="wrap_content"
@@ -174,7 +174,7 @@
         <android.support.v7.widget.CardView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="10dp"
+            android:layout_margin="@dimen/x10"
             card_view:cardCornerRadius="1dp"
             card_view:cardElevation="2dp">
 

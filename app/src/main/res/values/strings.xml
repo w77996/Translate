@@ -15,10 +15,12 @@
     <string name="permissions_quit">退出</string>
 
 
-    <string name="back">&lt; Back</string>
+    <string name="back">&lt;  Back</string>
     <string name="user">用户</string>
     <string name="edu">教育</string>
     <string name="travel">出行</string>
     <string name="strategy">攻略</string>
     <string name="translate">翻译</string>
+    <string name="ignore"><![CDATA[跳过 >]]></string>
+
 </resources>

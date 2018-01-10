@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+<!--
+
+    <item android:color="#9e9e9e" android:drawable="@drawable/gv_btn_normal" android:state_selected="false"></item>
+    <item android:color="@color/color_white" android:drawable="@drawable/gv_btn_select" android:state_selected="true"></item>
+-->
+
+</selector>
