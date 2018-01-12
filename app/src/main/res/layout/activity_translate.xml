@@ -1,183 +1,343 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_white">
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/x45"
-        android:background="@color/main_title_color">
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textColor="@color/color_white"
-                android:layout_alignParentLeft="true"
-                android:layout_marginLeft="@dimen/x5"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:textSize="16sp"
-                android:text="@string/back"/>
-            <TextView
-                android:id="@+id/main_title_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:textSize="20sp"
-                android:textColor="@color/color_white"
-                android:text="输入翻译"/>
+    android:background="@color/color_white"
+    android:orientation="vertical">
 
-        </RelativeLayout>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/x40"
-        android:layout_marginTop="@dimen/x10"
-        android:layout_marginLeft="@dimen/x10"
-        android:layout_marginRight="@dimen/x10"
-
-        android:background="@drawable/search_box_linearlayout"
-        android:orientation="vertical">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-            <EditText
-                android:id="@+id/search_box_ed"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_marginLeft="@dimen/x5"
-                android:focusable="true"
-                android:background="@null"
-                android:singleLine="true"
-                android:layout_gravity="center_vertical|center_horizontal"
-                android:focusableInTouchMode="true"
-                android:textSize="24sp"
-                android:layout_height="@dimen/x40" />
-
-            <View
-                android:layout_width="@dimen/x1"
-                android:layout_height="match_parent"
-                android:layout_margin="@dimen/x10"
-                android:background="@color/md_grey_400_color_code"/>
-            <ImageView
-                android:id="@+id/iv_search_clear"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:paddingLeft="@dimen/x8"
-                android:paddingRight="@dimen/x8"
-                android:visibility="gone"
-                />
-            <ImageView
-                android:id="@+id/search_box_img"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal|center_vertical"
-                android:layout_marginRight="@dimen/x10"
-                android:layout_marginLeft="@dimen/x10"
-                android:src="@drawable/search"/>
-        </LinearLayout>
-    </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/x30"
-        android:layout_margin="@dimen/x10"
-        android:background="@color/md_light_blue_300_color_code"
-        >
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rl_tran_type"
-            android:layout_weight="1"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/x30"
-            >
-        </android.support.v7.widget.RecyclerView>
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            />
-    </LinearLayout>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/md_grey_400_color_code"
-        >
-
-    </View>
-
-    <android.support.v7.widget.CardView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/x10"
-        card_view:cardCornerRadius="1dp"
-        card_view:cardElevation="2dp"
-       >
+        android:layout_weight="1">
+
         <LinearLayout
+            android:id="@+id/lin_tran_main_title"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/x45"
+            android:background="@color/main_title_color"
             android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/tv_tran_back"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/x5"
+                    android:text="@string/back"
+                    android:textColor="@color/color_white"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/main_title_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="输入翻译"
+                    android:textColor="@color/color_white"
+                    android:textSize="20sp" />
+
+            </RelativeLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lin_tran_search"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/x40"
+            android:layout_below="@+id/lin_tran_main_title"
+            android:layout_marginLeft="@dimen/x10"
+            android:layout_marginRight="@dimen/x10"
+            android:layout_marginTop="@dimen/x10"
+
+            android:background="@drawable/search_box_linearlayout"
+            android:orientation="vertical">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/x5"
-                android:layout_marginRight="@dimen/x5"
                 android:orientation="horizontal">
-                <TextView
-                    android:id="@+id/tv_tran_result"
-                    android:layout_weight="1"
+
+                <EditText
+                    android:id="@+id/search_box_ed"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:textSize="30sp"
-                    android:textColor="#000"
-                    android:text="What's up"
-                    />
+                    android:layout_height="@dimen/x40"
+                    android:layout_gravity="center_vertical|center_horizontal"
+                    android:layout_marginLeft="@dimen/x5"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:singleLine="true"
+                    android:textSize="24sp" />
+
                 <ImageView
-                    android:id="@+id/img_start_normal"
+                    android:id="@+id/img_tran_ed_clear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:src="@drawable/clear"
+                    android:visibility="gone" />
+
+                <View
+                    android:layout_width="@dimen/x1"
+                    android:layout_height="match_parent"
+                    android:layout_margin="@dimen/x10"
+                    android:background="@color/md_grey_400_color_code" />
+
+                <ImageView
+                    android:id="@+id/iv_search_clear"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:paddingLeft="@dimen/x8"
+                    android:paddingRight="@dimen/x8"
+                    android:visibility="gone" />
+
+                <ImageView
+                    android:id="@+id/search_box_img"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_horizontal|center_vertical"
-                    android:src="@drawable/start_normal"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:layout_marginTop="@dimen/x10"
-                android:layout_marginLeft="@dimen/x5"
-                android:layout_marginBottom="@dimen/x10"
-                android:orientation="horizontal">
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/voice"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="英"/>
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
                     android:layout_marginLeft="@dimen/x10"
-                    android:src="@drawable/voice"/>
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="美"/>
+                    android:layout_marginRight="@dimen/x10"
+                    android:src="@drawable/search" />
             </LinearLayout>
         </LinearLayout>
 
-        </android.support.v7.widget.CardView>
+        <LinearLayout
+            android:id="@+id/lin_tran_language_select"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/x15"
+            android:layout_below="@+id/lin_tran_search"
+            android:layout_margin="@dimen/x10"
+            android:layout_gravity="center"
+            android:gravity="center"
+            >
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/rl_tran_type"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/x15"
+                android:layout_weight="1"></android.support.v7.widget.RecyclerView>
+
+            <ImageView
+
+
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/more"/>
+        </LinearLayout>
+
+        <View
+            android:id="@+id/v_tran_center"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@+id/lin_tran_language_select"
+            android:background="@color/md_grey_400_color_code">
+
+        </View>
+
         <android.support.v7.widget.CardView
+            android:id="@+id/card_result"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/v_tran_center"
             android:layout_margin="@dimen/x10"
             card_view:cardCornerRadius="1dp"
             card_view:cardElevation="2dp">
 
-        </android.support.v7.widget.CardView>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/x5"
+                    android:layout_marginRight="@dimen/x5"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/tv_tran_result"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="What's up"
+                        android:textColor="#000"
+                        android:textSize="30sp" />
+
+                    <ImageView
+                        android:id="@+id/img_start_normal"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal|center_vertical"
+                        android:src="@drawable/start_normal" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/x10"
+                    android:layout_marginLeft="@dimen/x5"
+                    android:layout_marginTop="@dimen/x10"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/voice" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="英" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/x10"
+                        android:src="@drawable/voice" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="美" />
+                </LinearLayout>
+            </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/rl"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom"
+        android:layout_marginBottom="0dp"
+        android:orientation="vertical">
+
+
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/md_green_500_color_code"
+            android:gravity="center"
+            android:orientation="vertical">
+            <LinearLayout
+                android:id="@+id/lin_keybord_voice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/x25"
+                    android:layout_weight="1"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/img_tran_keybord"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/tran_keybord_normal" />
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/tran_middle_line" />
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/x25"
+                    android:layout_weight="1"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/img_tran_voice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/tran_voicebtn_select" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lin_tran_type_txt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/lin_keybord_voice">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="@dimen/x10"
+                        android:layout_marginTop="@dimen/x10"
+                        android:background="@drawable/linear_tran_select_btn"
+                        android:padding="@dimen/x3">
+
+                        <TextView
+                            android:id="@+id/tv_tran_left"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="@dimen/x2"
+                            android:text="中"
+                            android:textColor="@color/md_black_color_code" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="/"
+                            android:textColor="@color/md_black_color_code" />
+
+                        <TextView
+                            android:id="@+id/tv_tran_right"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="@dimen/x2"
+                            android:text="英"
+                            android:textColor="#929292" />
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lin_tran_bottom"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/tran_outside_micro" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerInParent="true"
+                        android:src="@drawable/tran_inside_micro" />
+                </RelativeLayout>
+            </LinearLayout>
+
+
+        </LinearLayout>
+    </LinearLayout>
 </LinearLayout>

@@ -65,11 +65,22 @@ public class LanguageGrideViewAdapter extends BaseAdapter {
         {
             viewHolder = (ViewHolder) convertView.getTag();
         }
+
         viewHolder.tv_flag.setText(mData.get(position).getData());
         viewHolder.tv_flag.setTextColor(Color.parseColor("#686868"));
         viewHolder.tv_flag.setTextSize(12);
 
+        if(mData.get(position).isSelect){
+            viewHolder.linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.main_title_color));
+        }else{
+            viewHolder.linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.app_background));
+        }
+
+
+
         viewHolder.img_flag.setImageResource(countryImage[position]);
+
+
         return convertView;
 
 }
@@ -79,4 +90,6 @@ public class LanguageGrideViewAdapter extends BaseAdapter {
         public ImageView img_flag;
         public LinearLayout linearLayout;
     }
+
+
 }

@@ -15,8 +15,11 @@ import android.widget.ImageView;
 
 import com.wtwd.translate.R;
 import com.wtwd.translate.activity.ChatActivity;
+import com.wtwd.translate.activity.DevTranslateActivity;
+import com.wtwd.translate.activity.PhotoActivity;
 import com.wtwd.translate.activity.TranslateActivity;
 import com.wtwd.translate.activity.VoiceActivity;
+import com.wtwd.translate.utils.Constants;
 
 /**
  * time:2017/12/27
@@ -73,18 +76,6 @@ public class TranslateFragment extends Fragment implements View.OnClickListener{
         mVoiceTranButton.setOnClickListener(this);
         mSearchImageView.setOnClickListener(this);
         mStartImageView.setOnClickListener(this);
-
-      /*  mSearchEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                Log.d(TAG,"has fcus"+hasFocus);
-                if(hasFocus){
-                    Intent intent = new Intent(getActivity(), TranslateActivity.class);
-                    startActivity(intent);
-                }
-
-            }
-        });*/
     }
 
     private void initView(View view) {
@@ -104,9 +95,13 @@ public class TranslateFragment extends Fragment implements View.OnClickListener{
         switch (id){
             case R.id.btn_dev_tran:
                 Log.d(TAG,"btn_dev_tran");
+                Intent DevTranIntent = new Intent(mContext, DevTranslateActivity.class);
+                startActivity(DevTranIntent);
                 break;
             case R.id.btn_photo_tran:
                 Log.d(TAG,"btn_photo_tran");
+                Intent photoIntent = new Intent(mContext, PhotoActivity.class);
+                startActivity(photoIntent);
                 break;
             case R.id.btn_chat_tran:
                 Log.d(TAG,"btn_chat_tran");
@@ -115,11 +110,13 @@ public class TranslateFragment extends Fragment implements View.OnClickListener{
                 break;
             case R.id.btn_voice_tran:
                 Log.d(TAG,"btn_voice_tran");
-                Intent VoiceIntent = new Intent(mContext, VoiceActivity.class);
+                Intent VoiceIntent = new Intent(mContext, TranslateActivity.class);
+                VoiceIntent.putExtra("intent_type",Constants.INTENT_VOICE);
                 startActivity(VoiceIntent);
                 break;
             case R.id.img_search:
                 Intent TranslateIntent = new Intent(getActivity(), TranslateActivity.class);
+                TranslateIntent.putExtra("intent_type", Constants.INTENT_TRANT);
                 startActivity(TranslateIntent);
                 break;
             case R.id.img_start:

@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/x45"
+        android:background="@color/main_title_color"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x10"
+                android:background="@drawable/chat_back" />
+
+
+            <ImageView
+                android:id="@+id/img_photo_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="@dimen/x5"
+                android:layout_marginRight="@dimen/x5"
+                android:src="@drawable/chat_switch" />
+
+            <TextView
+                android:id="@+id/text_photo_left_language"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toLeftOf="@id/img_photo_switch"
+                android:text="中文"
+                android:textColor="@color/color_white"
+                android:textSize="20sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/x5"
+                android:layout_toLeftOf="@id/text_photo_left_language"
+                android:background="@drawable/chat_china_head" />
+
+            <TextView
+                android:id="@+id/text_photo_right_language"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/img_photo_switch"
+                android:text="英文"
+                android:textColor="@color/color_white"
+                android:textSize="20sp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x5"
+                android:layout_toRightOf="@id/text_photo_right_language"
+                android:background="@drawable/chat_english_head" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <SurfaceView
+            android:id="@+id/surface_photo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/x10">
+
+            <View
+                android:id="@+id/center_view"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_centerInParent="true" />
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@id/center_view">
+
+                <LinearLayout
+                    android:id="@+id/lin_photo_take_word"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/photo_tran_select"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/text_photo_take_word"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="@dimen/x5"
+                        android:paddingLeft="@dimen/x15"
+                        android:paddingRight="@dimen/x15"
+                        android:paddingTop="@dimen/x5"
+                        android:text="拍照取词"
+                        android:textColor="@color/main_title_color"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@id/center_view">
+
+                <LinearLayout
+                    android:id="@+id/lin_photo_tran"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:background="@drawable/photo_tran_select"
+                    android:gravity="center">
+
+                    <TextView
+                        android:id="@+id/text_photo_tran"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="@dimen/x5"
+                        android:paddingLeft="@dimen/x15"
+                        android:paddingRight="@dimen/x15"
+                        android:paddingTop="@dimen/x5"
+                        android:text="拍照翻译"
+                        android:textColor="@color/main_title_color"
+                        android:textSize="16sp" />
+
+                </LinearLayout>
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/color_white">
+
+        <ImageView
+            android:id="@+id/img_photo_camera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_margin="@dimen/x10"
+            android:background="@drawable/photo_camera" />
+
+        <ImageView
+            android:id="@+id/img_photo_picture"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="@dimen/x10"
+            android:background="@drawable/photo_picture" />
+
+        <ImageView
+            android:id="@+id/img_photo_flash_light"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/x10"
+            android:background="@drawable/photo_flash_light" />
+
+        <TextView
+            android:id="@+id/text_photo_light_state"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/img_photo_camera"
+            android:layout_alignEnd="@+id/img_photo_flash_light"
+            android:layout_marginTop="@dimen/x2"
+            android:text="自动"
+            android:textColor="@color/main_title_color"
+            android:textSize="12sp" />
+
+
+    </RelativeLayout>
+</LinearLayout>

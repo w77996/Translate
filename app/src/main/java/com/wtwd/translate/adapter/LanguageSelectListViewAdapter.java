@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.wtwd.translate.R;
+import com.wtwd.translate.bean.SelectBean;
 import com.wtwd.translate.utils.Utils;
 
 import java.util.ArrayList;
@@ -23,11 +24,10 @@ import java.util.List;
  */
 public class LanguageSelectListViewAdapter extends RecyclerView.Adapter<LanguageSelectListViewAdapter.LanguageSelectListViewHolder> {
     private Context context;
-    private List<String> datas =new ArrayList<String>();
+    private List<SelectBean> datas =new ArrayList<SelectBean>();
     int mWith ;
-    int isSelected;
 
-    public LanguageSelectListViewAdapter(Context mContext, List<String> datas) {
+    public LanguageSelectListViewAdapter(Context mContext, List<SelectBean> datas) {
         this.context = mContext;
         this.datas = datas;
        mWith =Utils.getDisplayWidth(context);
@@ -42,15 +42,11 @@ public class LanguageSelectListViewAdapter extends RecyclerView.Adapter<Language
 
      @Override
      public void onBindViewHolder(final LanguageSelectListViewAdapter.LanguageSelectListViewHolder holder, int position) {
-         String index = datas.get(position);
+         String index = datas.get(position).getData();
          holder.mLanguageTexView.setText(index);
-
-         Log.d("ddddd","ddddd");
+        holder.mLanguageTexView.setTextColor(Color.parseColor("#686868"));
          if (mOnItemClickLitener != null)
          {
-             /*for(int i = 0; i <datas.size();i++){
-
-             }*/
              holder.itemView.setOnClickListener(new View.OnClickListener()
              {
                  @Override
@@ -59,12 +55,16 @@ public class LanguageSelectListViewAdapter extends RecyclerView.Adapter<Language
 
                      int pos = holder.getLayoutPosition();
                      mOnItemClickLitener.onItemClick(holder.itemView, pos);
-                     holder.mLanguageTexView.setTextColor(Color.parseColor("#FFFFFF"));
-                     isSelected = pos;
 
                  }
              });
          }
+         if (datas.get(position).getisSelect()){
+             holder.mLanguageTexView.setTextColor(Color.parseColor("#000000"));
+         }/*else{
+             holder.mLanguageTexView.setTextColor(Color.parseColor("#686868"));
+         }*/
+
      }
 
      @Override
@@ -78,8 +78,6 @@ public class LanguageSelectListViewAdapter extends RecyclerView.Adapter<Language
          public LanguageSelectListViewHolder(View itemView) {
              super(itemView);
              mLanguageTexView = (TextView)itemView.findViewById(R.id.tv_language_select);
-            // mLanguageTexView.setTextColor(context.getResources().getColor(R.color.main_title_color));
-             Log.d("fsdfas","fasdf");
          }
      }
     public interface OnItemClickLitener

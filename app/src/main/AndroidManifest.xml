@@ -16,14 +16,29 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!--<activity android:name=".MainActivity"/>-->
+        <activity android:name=".activity.SplashLableActivity"/>
+        <activity android:name=".activity.SplashLanguageActivity"/>
+        <activity android:name=".activity.SplashDevBindActivity"/>
+        <activity android:name=".activity.SplashBTOpenActivity"/>
+        <activity android:name=".activity.SplashDevPairActivity"/>
         <activity android:name=".MainActivity"/>
+
+
+
+        <activity android:name=".activity.PhotoActivity"
+            android:theme="@style/AppTheme.NoActionBar.Permissions"/>
+        <activity android:name=".activity.DealImageActivity"
+            android:theme="@style/AppTheme.NoActionBar.Permissions"/>
         <activity android:name=".activity.VoiceActivity" />
         <activity android:name=".activity.TranslateActivity"
-            android:windowSoftInputMode="adjustPan"
             android:configChanges="orientation"
             />
+
         <activity android:name=".activity.ChatActivity"/>
         <activity android:name=".utils.permissions.PermissionsActivity"
+            android:theme="@style/AppTheme.NoActionBar.Permissions"/>
+        <activity android:name=".activity.DevTranslateActivity"
             android:theme="@style/AppTheme.NoActionBar.Permissions"/>
        <!-- <activity android:name=".activity.SplashLableActivity"/>-->
         <!--<activity android:name=".activity.SplashLanguageActivity"/>-->

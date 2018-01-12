@@ -73,4 +73,5 @@ public class LabelGrideViewAdapter extends BaseAdapter {
         public TextView gv_tv;
         public ImageView gv_img;
     }
+
 }

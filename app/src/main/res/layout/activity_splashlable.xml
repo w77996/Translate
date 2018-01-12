@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/app_background">
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -11,6 +12,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <TextView
+                android:id="@+id/label_ignore"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/color_white"
@@ -73,11 +75,26 @@
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/x50"
+        android:layout_height="@dimen/x60"
         android:gravity="center">
-        <ImageView
-            android:layout_width="@dimen/x160"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/rl_item_select"/>
+            android:layout_marginBottom="@dimen/x10">
+            <ImageView
+                android:id="@+id/img_label_next"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:src="@drawable/dev_bind_btn_bg"/>
+            <TextView
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="#FFFFFF"
+                android:textSize="19sp"
+                android:text="下一步"/>
+        </RelativeLayout>
+
     </LinearLayout>
 </LinearLayout>

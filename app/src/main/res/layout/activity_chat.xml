@@ -80,7 +80,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:background="@drawable/chat_voice"/>
+                android:background="@drawable/chat_voice_dynamics"/>
             <ImageButton
                 android:id="@+id/imgbtn_left"
                 android:layout_width="wrap_content"
