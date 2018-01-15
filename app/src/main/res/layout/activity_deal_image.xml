@@ -78,12 +78,15 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:background="@color/color_white"
+        >
 
         <com.wtwd.translate.view.ClipImageView
             android:id="@+id/img_deal_display"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"/>
 
     </RelativeLayout>
 

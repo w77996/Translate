@@ -5,6 +5,7 @@ package com.wtwd.translate.activity;
  * Created by w77996
  */
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
@@ -29,6 +30,8 @@ import android.widget.Toast;
 import com.wtwd.translate.R;
 import com.wtwd.translate.utils.Constants;
 import com.wtwd.translate.utils.Utils;
+import com.wtwd.translate.utils.permissions.PermissionsActivity;
+import com.wtwd.translate.utils.permissions.PermissionsChecker;
 import com.wtwd.translate.utils.photos.BitmapUtils;
 import com.wtwd.translate.utils.photos.CameraUtil;
 
@@ -105,10 +108,22 @@ public class PhotoActivity extends Activity implements SurfaceHolder.Callback, V
     private static final int VALUE_PICK_PICTURE = 0x03;
 
 
+    private static final int PERMISSIONS_REQUEST_CODE = 0111; // 请求码
+
+    private PermissionsChecker mPermissionsChecker; // 权限检测器
+
+    // 所需的全部权限
+    static final String[] PERMISSIONS = new String[]{
+            Manifest.permission.CAMERA,
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+    };
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo);
+
         initView();
         addListener();
 
@@ -150,7 +165,11 @@ public class PhotoActivity extends Activity implements SurfaceHolder.Callback, V
     @Override
     protected void onResume() {
         super.onResume();
-        if (this.mCamera == null) {
+        mPermissionsChecker = new PermissionsChecker(this);
+        // 缺少权限时, 进入权限配置页面
+        if (mPermissionsChecker.lacksPermissions(PERMISSIONS)) {
+            startPermissionsActivity();
+        }else if (this.mCamera == null) {
             this.mCamera = getCamera(mCameraId);
             if (mSurfaceHolder != null) {
                 startPreview(this.mCamera, mSurfaceHolder);
@@ -306,6 +325,10 @@ public class PhotoActivity extends Activity implements SurfaceHolder.Callback, V
                 Toast.makeText(this, "获取图片失败", Toast.LENGTH_SHORT).show();
             }
         }
+        // 拒绝时, 关闭页面, 缺少主要权限, 无法运行
+        if (requestCode == PERMISSIONS_REQUEST_CODE && resultCode == PermissionsActivity.PERMISSIONS_DENIED) {
+            finish();
+        }
     }
 
     private String getPath(Uri uri) {
@@ -413,4 +436,9 @@ public class PhotoActivity extends Activity implements SurfaceHolder.Callback, V
 
 
     }
+
+    private void startPermissionsActivity() {
+        PermissionsActivity.startActivityForResult(this, PERMISSIONS_REQUEST_CODE, PERMISSIONS);
+    }
+
 }

@@ -15,7 +15,7 @@
     <string name="permissions_quit">退出</string>
 
 
-    <string name="back">&lt;  Back</string>
+    <string name="back">Back</string>
     <string name="user">用户</string>
     <string name="edu">教育</string>
     <string name="travel">出行</string>

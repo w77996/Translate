@@ -64,7 +64,7 @@ public class InputTools {
                     m.hideSoftInputFromWindow(txtSearchKey.getWindowToken(), 0);
                 }
             }
-        }, 300);
+        }, 200);
     }
 
     /**

@@ -12,6 +12,8 @@ public class Constants {
     public static final String INTENT_VOICE = "INTENT_VOICE";
     public static final String APP_FIRST_START = "INTENT_VOICE";
 
+    public final static float KEYBOARY_H = 0.391f;
+
 
 
 }
