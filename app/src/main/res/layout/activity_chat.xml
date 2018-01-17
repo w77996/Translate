@@ -1,31 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="@dimen/x45"
-        android:background="@color/main_title_color">
+        android:background="@color/main_title_color"
+        android:orientation="vertical">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <ImageView
                 android:id="@+id/chat_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/chat_back"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/x10"/>
+                android:layout_marginLeft="@dimen/x10"
+                android:src="@drawable/chat_back" />
+
             <TextView
                 android:id="@+id/tv_chat_title_left"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toLeftOf="@+id/img_chat_switch"
                 android:layout_centerVertical="true"
-                android:textSize="20sp"
+                android:layout_toLeftOf="@+id/img_chat_switch"
+                android:text="中文"
                 android:textColor="@color/color_white"
-                android:text="中文"/>
+                android:textSize="16sp" />
+
             <ImageView
                 android:id="@+id/img_chat_switch"
                 android:layout_width="wrap_content"
@@ -33,71 +39,125 @@
                 android:layout_centerInParent="true"
                 android:layout_marginLeft="@dimen/x15"
                 android:layout_marginRight="@dimen/x15"
-                android:src="@drawable/chat_switch"/>
+                android:src="@drawable/chat_switch" />
+
             <TextView
                 android:id="@+id/tv_chat_title_right"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/img_chat_switch"
                 android:layout_centerVertical="true"
-                android:textSize="20sp"
+                android:layout_toRightOf="@+id/img_chat_switch"
+                android:text="英文"
                 android:textColor="@color/color_white"
-                android:text="英文"/>
+                android:textSize="16sp" />
+
             <ImageView
                 android:id="@+id/img_chat_down_row"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/chat_down_row"
-                android:layout_toRightOf="@+id/tv_chat_title_right"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/x15"/>
+                android:layout_marginLeft="@dimen/x15"
+                android:layout_toRightOf="@+id/tv_chat_title_right"
+                android:src="@drawable/chat_down_row" />
+
             <ImageView
                 android:id="@+id/chat_voice_close"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/chat_auto_play_close"
                 android:layout_alignParentRight="true"
+                android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/x10"
-                android:layout_centerHorizontal="true"/>
+                android:src="@drawable/chat_auto_play_close" />
         </RelativeLayout>
     </LinearLayout>
+
     <ListView
-        android:layout_weight="1"
+        android:id="@+id/lv_chat"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:divider="@null"
+        android:layout_weight="1">
 
     </ListView>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/x8">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <ImageButton
                 android:id="@+id/img_chat_voice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:background="@drawable/chat_voice_dynamics"/>
-            <ImageButton
-                android:id="@+id/imgbtn_left"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:background="@drawable/chat_voice_dynamics" />
+
+            <LinearLayout
+                android:id="@+id/lin_right"
                 android:layout_toRightOf="@+id/img_chat_voice"
+                android:layout_width="@dimen/x120"
+                android:layout_height="@dimen/x40"
                 android:layout_centerVertical="true"
-                android:src="@drawable/chat_right_background"
-                android:background="#00000000"
-                />
-            <ImageButton
-                android:id="@+id/imgbtn_right"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:background="@drawable/chat_right_btn_unselect">
+
+              <!--  <ImageButton
+                    android:id="@+id/imgbtn_left"
+                    android:layout_width="@dimen/x120"
+                    android:layout_height="@dimen/x40"
+                    android:layout_centerVertical="true"
+                    android:background="#00000000"
+                    android:src="@drawable/chat_right_btn_unselect" />-->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <ImageView
+                        android:id="@+id/chat_right_img"
+                        android:layout_width="@dimen/x30"
+                        android:layout_height="@dimen/x30"
+                        android:layout_marginRight="@dimen/x5"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/flag_eng"/>
+                </RelativeLayout>
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/lin_left"
                 android:layout_toLeftOf="@+id/img_chat_voice"
-                android:src="@drawable/chat_left_background"
+                android:layout_width="@dimen/x120"
+                android:layout_height="@dimen/x40"
                 android:layout_centerVertical="true"
-                android:background="#00000000"/>
+                android:background="@drawable/chat_left_btn_unselect">
+
+               <!-- <ImageButton
+                    android:id="@+id/imgbtn_right"
+                    android:layout_width="@dimen/x120"
+                    android:layout_height="@dimen/x40"
+                    android:layout_centerVertical="true"
+                    android:layout_toLeftOf="@+id/img_chat_voice"
+                    android:background="#00000000"
+                    android:src="@drawable/chat_left_btn_unselect" />-->
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <ImageView
+                        android:id="@+id/chat_left_img"
+                        android:layout_width="@dimen/x30"
+                        android:layout_height="@dimen/x30"
+                        android:layout_marginLeft="@dimen/x5"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:src="@drawable/flag_china"/>
+                </RelativeLayout>
+            </LinearLayout>
+
         </RelativeLayout>
     </LinearLayout>
 </LinearLayout>

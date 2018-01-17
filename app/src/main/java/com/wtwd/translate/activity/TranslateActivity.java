@@ -27,6 +27,7 @@ import com.wtwd.translate.adapter.LanguageSelectListViewAdapter;
 import com.wtwd.translate.bean.SelectBean;
 import com.wtwd.translate.utils.Constants;
 import com.wtwd.translate.utils.SpUtils;
+import com.wtwd.translate.utils.audio.AudioStateChange;
 import com.wtwd.translate.utils.keybord.InputTools;
 import com.wtwd.translate.utils.Utils;
 import com.wtwd.translate.utils.keybord.SoftKeyBoardListener;
@@ -39,7 +40,7 @@ import java.util.List;
  * time:2017/12/27
  * Created by w77996
  */
-public class TranslateActivity extends Activity implements View.OnClickListener{
+public class TranslateActivity extends Activity implements View.OnClickListener,AudioStateChange{
 
     private static final String TAG = "TranslateActivity";
     /**
@@ -356,5 +357,55 @@ public class TranslateActivity extends Activity implements View.OnClickListener{
         super.onBackPressed();
         isBack = true;
         finish();
+    }
+
+    @Override
+    public void onStartRecoderUseBluetoothEar() {
+
+    }
+
+    @Override
+    public void onStopRecoderUseBluetoothEar() {
+
+    }
+
+    @Override
+    public void onStartPlayUseBluetoothEar() {
+
+    }
+
+    @Override
+    public void onStopPlayuseBluetoothEar() {
+
+    }
+
+    @Override
+    public void onStartRecoderUsePhone() {
+
+    }
+
+    @Override
+    public void onStopRecoderUsePhone() {
+
+    }
+
+    @Override
+    public void onStartPlayUsePhone() {
+
+    }
+
+    @Override
+    public void onStopPlayUsePhone() {
+
+    }
+
+    @Override
+    public void onPlayCompletion() {
+
+    }
+
+    @Override
+    public void onPlayError() {
+
     }
 }

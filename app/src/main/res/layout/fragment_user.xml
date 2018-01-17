@@ -55,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:paddingLeft="@dimen/x15"
                 android:textColor="@color/md_black_color_code"
-                android:textSize="17sp"
+                android:textSize="15sp"
                 android:text="我的设备"/>
         </LinearLayout>
         <View
@@ -78,7 +78,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="17sp"
+                    android:textSize="15sp"
                     android:textColor="@color/md_black_color_code"
                     android:paddingLeft="@dimen/x10"
                     android:text="设备绑定"/>
@@ -100,7 +100,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="17sp"
+                    android:textSize="15sp"
                     android:textColor="@color/md_black_color_code"
                     android:paddingLeft="@dimen/x10"
                     android:text="固件升级"/>
@@ -122,7 +122,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="17sp"
+                    android:textSize="15sp"
                     android:textColor="@color/md_black_color_code"
                     android:paddingLeft="@dimen/x10"
                     android:text="常见问题"/>

@@ -42,8 +42,8 @@
                 android:textSize="20sp" />
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/x25"
+                android:layout_height="@dimen/x25"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/x5"
                 android:layout_toLeftOf="@id/text_photo_left_language"
@@ -60,8 +60,8 @@
                 android:textSize="20sp" />
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/x25"
+                android:layout_height="@dimen/x25"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/x5"
                 android:layout_toRightOf="@id/text_photo_right_language"
@@ -98,7 +98,7 @@
                 android:layout_height="wrap_content"
                 android:layout_toLeftOf="@id/center_view">
 
-                <LinearLayout
+               <!-- <LinearLayout
                     android:id="@+id/lin_photo_take_word"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -118,7 +118,7 @@
                         android:textColor="@color/main_title_color"
                         android:textSize="16sp" />
 
-                </LinearLayout>
+                </LinearLayout>-->
             </RelativeLayout>
 
             <RelativeLayout
@@ -126,7 +126,7 @@
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@id/center_view">
 
-                <LinearLayout
+               <!-- <LinearLayout
                     android:id="@+id/lin_photo_tran"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -146,7 +146,7 @@
                         android:textColor="@color/main_title_color"
                         android:textSize="16sp" />
 
-                </LinearLayout>
+                </LinearLayout>-->
             </RelativeLayout>
 
         </RelativeLayout>

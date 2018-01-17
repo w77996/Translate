@@ -40,11 +40,13 @@
             android:theme="@style/AppTheme.NoActionBar.Permissions"/>
         <activity android:name=".activity.DevTranslateActivity"
             android:theme="@style/AppTheme.NoActionBar.Permissions"/>
+        <activity android:name=".activity.LanguageSelectActivity"/>
        <!-- <activity android:name=".activity.SplashLableActivity"/>-->
         <!--<activity android:name=".activity.SplashLanguageActivity"/>-->
     </application>
     <!--录音权限-->
     <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+    <uses-permission android:name="android.permission.RECORD_MIC"/>
     <!--外部存储读写权限-->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>

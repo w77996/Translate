@@ -139,16 +139,16 @@ public class PhotoActivity extends Activity implements SurfaceHolder.Callback, V
         img_photo_camera = (ImageView) findViewById(R.id.img_photo_camera);
         img_photo_flash_light = (ImageView) findViewById(R.id.img_photo_flash_light);
         img_photo_picture = (ImageView) findViewById(R.id.img_photo_picture);
-        lin_photo_take_word = (LinearLayout) findViewById(R.id.lin_photo_take_word);
-        text_photo_take_word = (TextView) findViewById(R.id.text_photo_take_word);
-        lin_photo_tran = (LinearLayout) findViewById(R.id.lin_photo_tran);
-        text_photo_tran = (TextView) findViewById(R.id.text_photo_tran);
+        //lin_photo_take_word = (LinearLayout) findViewById(R.id.lin_photo_take_word);
+       // text_photo_take_word = (TextView) findViewById(R.id.text_photo_take_word);
+       // lin_photo_tran = (LinearLayout) findViewById(R.id.lin_photo_tran);
+       // text_photo_tran = (TextView) findViewById(R.id.text_photo_tran);
         text_photo_light_state = (TextView) findViewById(R.id.text_photo_light_state);
         text_photo_light_state.setText("关闭");
 
         mSurfaceHolder = surface_photo.getHolder();
         mSurfaceHolder.addCallback(this);
-        selectedPhoto(TAKE_WORD);
+//        selectedPhoto(TAKE_WORD);
     }
 
     /**
@@ -158,8 +158,8 @@ public class PhotoActivity extends Activity implements SurfaceHolder.Callback, V
         img_photo_camera.setOnClickListener(this);
         img_photo_picture.setOnClickListener(this);
         img_photo_flash_light.setOnClickListener(this);
-        lin_photo_tran.setOnClickListener(this);
-        lin_photo_take_word.setOnClickListener(this);
+//        lin_photo_tran.setOnClickListener(this);
+       // lin_photo_take_word.setOnClickListener(this);
     }
 
     @Override
@@ -376,15 +376,15 @@ public class PhotoActivity extends Activity implements SurfaceHolder.Callback, V
 
                 break;
 
-            case R.id.lin_photo_take_word:
-                /**选择拍照取词*/
+           /* case R.id.lin_photo_take_word:
+                *//**选择拍照取词*//*
                 selectedPhoto(TAKE_WORD);
                 break;
 
             case R.id.lin_photo_tran:
-                /**选择拍照翻译*/
+                *//**选择拍照翻译*//*
                 selectedPhoto(TRAN);
-                break;
+                break;*/
         }
 
     }

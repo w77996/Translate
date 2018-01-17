@@ -13,6 +13,8 @@ import android.widget.TextView;
 import com.wtwd.translate.R;
 import com.wtwd.translate.adapter.LanguageGrideViewAdapter;
 import com.wtwd.translate.bean.SelectBean;
+import com.wtwd.translate.utils.Constants;
+import com.wtwd.translate.utils.SpUtils;
 
 import org.w3c.dom.Text;
 
@@ -26,10 +28,22 @@ import java.util.List;
  */
 public class SplashLanguageActivity extends Activity implements View.OnClickListener{
 
+    /**
+     * 数据bean
+     */
     private List<SelectBean>  mSelectBeanList;
+    /**
+     * 中间的GridView
+     */
     private LanguageGrideViewAdapter mLanguageGrideViewAdapter;
     private GridView mGridView;
+    /**
+     * 跳过
+     */
     private TextView mIgnoreText;
+    /**
+     * 下一步
+     */
     private ImageView mImgNext;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,15 +55,16 @@ public class SplashLanguageActivity extends Activity implements View.OnClickList
 
 
     private void initView(){
-        final String[] countryText = {"中文[CHS]","英语[ENG]","法语[FRA]","德语[DEU]","韩语[KOR]","日语[JPN]","西班牙语[SPA]","葡萄牙语[POR]","意大利语[ITA]",
-                                "俄罗斯语[RUS]","泰语[THA]","印度语[HIN]"};
+        final String[] countryText = {"中文[CHS]","英语[ENG]","法语[FRA]","德语[DEU]","韩语[KOR]","日语[JPN]","西班牙语[SPA]","葡萄牙语[POR]",
+                                "俄罗斯语[RUS]"};
         int[] countryImage = {R.drawable.flag_china,R.drawable.flag_eng,R.drawable.flag_fra,R.drawable.flag_deu,R.drawable.flag_kor,R.drawable.flag_jpa,
-                                R.drawable.flag_spa,R.drawable.flag_por,R.drawable.flag_ita,R.drawable.flag_rus,R.drawable.flag_tha,R.drawable.flag_hin};
-
+                                R.drawable.flag_spa,R.drawable.flag_por,R.drawable.flag_rus};
+        String [] languageType = {Constants.zh_CN,Constants.en_US,Constants.fr_FR,Constants.de_DE,Constants.ko_KR,Constants.ja_JP,Constants.es_ES,Constants.pt_PT,Constants.ru_RU};
         mSelectBeanList = new ArrayList<>();
         for(int i = 0; i< countryText.length;i++){
             SelectBean selectBean = new SelectBean();
             selectBean.setData(countryText[i]);
+            selectBean.setLanguageType(languageType[i]);
             selectBean.setSelect(false);
             mSelectBeanList.add(selectBean);
         }
@@ -69,7 +84,8 @@ public class SplashLanguageActivity extends Activity implements View.OnClickList
                         mSelectBeanList.get(i).setSelect(false);
                     }
                 }
-
+                //保存母语
+                SpUtils.putString(SplashLanguageActivity.this,Constants.LEFT_LANGUAGE,mSelectBeanList.get(position).getLanguageType());
                 mLanguageGrideViewAdapter.notifyDataSetChanged();
 
             }

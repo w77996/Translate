@@ -4,12 +4,21 @@ import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Build;
+import android.os.Environment;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.wtwd.translate.R;
+
+import java.io.File;
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 /**
  * time:2017/12/28
@@ -92,5 +101,80 @@ public class Utils {
         }
 
         return dpi;
+    }
+
+    /**
+     * 判断SDCard是否可用
+     */
+    public static boolean existSDCard() {
+        return Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
+    }
+    public static String getVoiceFilePath(){
+        File voiceFile;
+        if (existSDCard())
+            voiceFile = new File(Environment.getExternalStorageDirectory(), "/voice");
+        else voiceFile = Environment.getDataDirectory();
+        voiceFile = createFile(voiceFile, "voice_", ".3pg");
+        // mVoiceFilePath = Environment.getExternalStorageState()+ File.separator + System.currentTimeMillis() + ".3pg";
+
+        return voiceFile.getAbsolutePath();
+    }
+    /**
+     * 根据系统时间、前缀、后缀产生一个文件
+     */
+    public static File createFile(File folder, String prefix, String suffix) {
+        if (!folder.exists() || !folder.isDirectory()) folder.mkdirs();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.CHINA);
+        String filename = prefix + dateFormat.format(new Date(System.currentTimeMillis())) + suffix;
+        return new File(folder, filename);
+    }
+
+    /**
+     * 解析语言类型
+     * @param context
+     * @param type
+     * @param imageView
+     * @param textView
+     */
+    public static void perseLanguage(Context context,String type, ImageView imageView, TextView textView){
+        switch (type){
+            case Constants.zh_CN:
+                imageView.setImageDrawable(context.getDrawable(R.drawable.flag_china));
+                textView.setText("中文");
+                break;
+            case Constants.en_US:
+                imageView.setImageDrawable(context.getDrawable(R.drawable.flag_eng));
+                textView.setText("英语");
+                break;
+            case Constants.fr_FR:
+                imageView.setImageDrawable(context.getDrawable(R.drawable.flag_fra));
+                textView.setText("法语");
+                break;
+            case Constants.de_DE:
+                imageView.setImageDrawable(context.getDrawable(R.drawable.flag_deu));
+                textView.setText("德语");
+                break;
+            case Constants.ko_KR:
+                imageView.setImageDrawable(context.getDrawable(R.drawable.flag_kor));
+                textView.setText("韩语");
+                break;
+            case Constants.ja_JP:
+                imageView.setImageDrawable(context.getDrawable(R.drawable.flag_jpa));
+                textView.setText("日语");
+                break;
+            case Constants.es_ES:
+                imageView.setImageDrawable(context.getDrawable(R.drawable.flag_spa));
+                textView.setText("西班牙语");
+                break;
+            case Constants.pt_PT:
+                imageView.setImageDrawable(context.getDrawable(R.drawable.flag_por));
+                textView.setText("葡萄牙语");
+                break;
+            case Constants.ru_RU:
+                imageView.setImageDrawable(context.getDrawable(R.drawable.language_rus));
+                textView.setText("俄罗斯语");
+                break;
+        }
+
     }
 }

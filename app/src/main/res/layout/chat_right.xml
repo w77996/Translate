@@ -2,12 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="10dp"
-    android:layout_marginRight="10dp">
+    >
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
         >
         <RelativeLayout
             android:layout_width="match_parent"
@@ -22,22 +24,18 @@
 
             <LinearLayout
                 android:layout_toLeftOf="@+id/img_chat_right_head"
-                android:layout_width="wrap_content"
+                android:layout_width="@dimen/x200"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/x10"
                 android:orientation="vertical"
-                android:background="@drawable/chat_item_right"
+                android:background="@drawable/talk_right"
                 >
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginRight="@dimen/x10"
-                    android:layout_marginLeft="@dimen/x10"
-                    android:layout_marginTop="@dimen/x10">
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                    >
                         <TextView
-                            android:id="@+id/robot_left_tv"
+                            android:id="@+id/tv_chat_send"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center"
@@ -51,7 +49,7 @@
                             android:src="@drawable/chat_more"
                             android:layout_centerVertical="true"/>
 
-                    </RelativeLayout>
+
 
                 </LinearLayout>
                 <View
@@ -62,28 +60,39 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/x10"
-                    android:layout_marginRight="@dimen/x10"
-                    android:layout_marginBottom="@dimen/x10"
                     >
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:textSize="12sp"
-                            android:text="fasfdasdf"
-                            />
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:src="@drawable/chat_play"
-                            android:layout_centerVertical="true"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <LinearLayout
+                            android:layout_weight="1"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content">
 
-                    </RelativeLayout>
+                            <TextView
+                                android:id="@+id/tv_chat_recv"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:textSize="12sp"
+                                android:text="test"
+                                />
+                        </LinearLayout>
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+                            <ImageView
+                                android:id="@+id/img_chat_play"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentRight="true"
+                                android:src="@drawable/chat_play"
+                                android:layout_centerVertical="true"/>
+                        </LinearLayout>
+
+
+                    </LinearLayout>
                 </LinearLayout>
 
             </LinearLayout>

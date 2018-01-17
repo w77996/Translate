@@ -2,35 +2,39 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="10dp"
-    android:layout_marginLeft="10dp">
+
+    >
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
         >
         <ImageView
+            android:id="@+id/img_chat_left_head"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="10dp"
             android:background="@drawable/chat_china_head"/>
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="@dimen/x200"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:background="@drawable/chat_item_left"
+            android:background="@drawable/talk_left"
             >
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="@dimen/x10"
+                android:layout_marginTop="@dimen/x10"
                 android:layout_marginLeft="@dimen/x10"
-                android:layout_marginTop="@dimen/x10">
+                android:layout_marginRight="@dimen/x10"
+                >
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
                     <TextView
-                        android:id="@+id/robot_left_tv"
+                        android:id="@+id/tv_chat_send"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"
@@ -50,19 +54,21 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_margin="@dimen/x10"
+                android:layout_marginBottom="@dimen/x10"
+                android:layout_marginTop="@dimen/x10"
                 android:background="#686868"/>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/x10"
                 android:layout_marginLeft="@dimen/x10"
                 android:layout_marginRight="@dimen/x10"
-                android:layout_marginBottom="@dimen/x10"
                 >
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content">
                     <TextView
+                        android:id="@+id/tv_chat_recv"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:gravity="center"

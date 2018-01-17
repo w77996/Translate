@@ -51,7 +51,7 @@
         <GridView
             android:id="@+id/gv_language"
             android:layout_width="match_parent"
-            android:numColumns="4"
+            android:numColumns="3"
             android:choiceMode ="singleChoice"
             android:layout_marginTop="@dimen/x10"
             android:verticalSpacing="@dimen/x30"

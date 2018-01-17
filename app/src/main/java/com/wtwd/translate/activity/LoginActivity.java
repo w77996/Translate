@@ -117,6 +117,9 @@ public class LoginActivity extends Activity implements View.OnClickListener{
 
     }
 
+    /**
+     * 解析用户名和密码
+     */
     private void perseUsernameAndPwd() {
         String username = mLoginUsernameEdit.getText().toString();
         String pwd = mPwdEdit.getText().toString();
@@ -136,6 +139,6 @@ public class LoginActivity extends Activity implements View.OnClickListener{
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }
-
+        //和服务器进行通信，通信返回后进入下一个界面
     }
 }

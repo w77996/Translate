@@ -7,8 +7,18 @@ import android.widget.TextView;
  * Created by w77996
  */
 public class SelectBean {
+    public int img;
     public String data;
+    public String languageType;
     public boolean isSelect;
+
+    public int getImg() {
+        return img;
+    }
+
+    public void setImg(int img) {
+        this.img = img;
+    }
 
     public String getData() {
         return data;
@@ -24,5 +34,13 @@ public class SelectBean {
 
     public void setSelect(boolean select) {
         isSelect = select;
+    }
+
+    public String getLanguageType() {
+        return languageType;
+    }
+
+    public void setLanguageType(String languageType) {
+        this.languageType = languageType;
     }
 }
