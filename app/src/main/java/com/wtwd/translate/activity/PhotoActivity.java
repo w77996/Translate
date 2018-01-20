@@ -29,6 +29,7 @@ import android.widget.Toast;
 
 import com.wtwd.translate.R;
 import com.wtwd.translate.utils.Constants;
+import com.wtwd.translate.utils.SpUtils;
 import com.wtwd.translate.utils.Utils;
 import com.wtwd.translate.utils.permissions.PermissionsActivity;
 import com.wtwd.translate.utils.permissions.PermissionsChecker;
@@ -95,6 +96,22 @@ public class PhotoActivity extends Activity implements SurfaceHolder.Callback, V
      */
     private int lightNum = 0;
 
+    /**
+     * 标题栏的互译语言和国旗
+     */
+    TextView text_photo_left_language;
+    TextView text_photo_right_language;
+
+    ImageView leftlanguage_head;
+    ImageView rightlanguage_head;
+
+
+    ImageView img_photo_switch;
+    /**
+     * 互译的语言
+     */
+    private String leftLanguage;
+    private String rightLanguage;
 
     /**
      * 选择取词或翻译flag
@@ -108,21 +125,14 @@ public class PhotoActivity extends Activity implements SurfaceHolder.Callback, V
     private static final int VALUE_PICK_PICTURE = 0x03;
 
 
-    private static final int PERMISSIONS_REQUEST_CODE = 0111; // 请求码
-
-    private PermissionsChecker mPermissionsChecker; // 权限检测器
-
-    // 所需的全部权限
-    static final String[] PERMISSIONS = new String[]{
-            Manifest.permission.CAMERA,
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-    };
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_photo);
+        leftLanguage = SpUtils.getString(this,Constants.LEFT_LANGUAGE,Constants.zh_CN);
+        rightLanguage = SpUtils.getString(this,Constants.RIGHT_LANGUAGE,Constants.en_US);
+
 
         initView();
         addListener();
@@ -143,9 +153,20 @@ public class PhotoActivity extends Activity implements SurfaceHolder.Callback, V
        // text_photo_take_word = (TextView) findViewById(R.id.text_photo_take_word);
        // lin_photo_tran = (LinearLayout) findViewById(R.id.lin_photo_tran);
        // text_photo_tran = (TextView) findViewById(R.id.text_photo_tran);
+
+        img_photo_switch = (ImageView)findViewById(R.id.img_photo_switch);
+
+        text_photo_left_language = (TextView)findViewById(R.id.text_photo_left_language);
+        text_photo_right_language = (TextView)findViewById(R.id.text_photo_right_language);
+        leftlanguage_head = (ImageView)findViewById(R.id.leftlanguage_head);
+        rightlanguage_head = (ImageView)findViewById(R.id.rightlanguage_head);
+
+        Utils.perseLanguage(this,leftLanguage,leftlanguage_head,text_photo_left_language);
+        Utils.perseLanguage(this,rightLanguage,rightlanguage_head,text_photo_right_language);
+
         text_photo_light_state = (TextView) findViewById(R.id.text_photo_light_state);
         text_photo_light_state.setText("关闭");
-
+        //Utils.setLanguageHead(this,);
         mSurfaceHolder = surface_photo.getHolder();
         mSurfaceHolder.addCallback(this);
 //        selectedPhoto(TAKE_WORD);
@@ -158,6 +179,10 @@ public class PhotoActivity extends Activity implements SurfaceHolder.Callback, V
         img_photo_camera.setOnClickListener(this);
         img_photo_picture.setOnClickListener(this);
         img_photo_flash_light.setOnClickListener(this);
+        img_photo_switch.setOnClickListener(this);
+
+        leftlanguage_head.setOnClickListener(this);
+        rightlanguage_head.setOnClickListener(this);
 //        lin_photo_tran.setOnClickListener(this);
        // lin_photo_take_word.setOnClickListener(this);
     }
@@ -165,11 +190,7 @@ public class PhotoActivity extends Activity implements SurfaceHolder.Callback, V
     @Override
     protected void onResume() {
         super.onResume();
-        mPermissionsChecker = new PermissionsChecker(this);
-        // 缺少权限时, 进入权限配置页面
-        if (mPermissionsChecker.lacksPermissions(PERMISSIONS)) {
-            startPermissionsActivity();
-        }else if (this.mCamera == null) {
+        if (this.mCamera == null) {
             this.mCamera = getCamera(mCameraId);
             if (mSurfaceHolder != null) {
                 startPreview(this.mCamera, mSurfaceHolder);
@@ -324,10 +345,11 @@ public class PhotoActivity extends Activity implements SurfaceHolder.Callback, V
             } else {
                 Toast.makeText(this, "获取图片失败", Toast.LENGTH_SHORT).show();
             }
-        }
-        // 拒绝时, 关闭页面, 缺少主要权限, 无法运行
-        if (requestCode == PERMISSIONS_REQUEST_CODE && resultCode == PermissionsActivity.PERMISSIONS_DENIED) {
-            finish();
+        }else if(resultCode == Constants.LANGUAGE_CHANGE){
+            leftLanguage = SpUtils.getString(this,Constants.LEFT_LANGUAGE,Constants.zh_CN);
+            rightLanguage = SpUtils.getString(this,Constants.RIGHT_LANGUAGE,Constants.en_US);
+            Utils.perseLanguage(this,leftLanguage,leftlanguage_head,text_photo_left_language);
+            Utils.perseLanguage(this,rightLanguage,rightlanguage_head,text_photo_right_language);
         }
     }
 
@@ -343,6 +365,7 @@ public class PhotoActivity extends Activity implements SurfaceHolder.Callback, V
     @Override
     public void onClick(View view) {
         int id = view.getId();
+        Intent LanguageSelectIntent;
         switch (id) {
             case R.id.img_photo_flash_light:
                 /**闪关灯切换*/
@@ -385,6 +408,24 @@ public class PhotoActivity extends Activity implements SurfaceHolder.Callback, V
                 *//**选择拍照翻译*//*
                 selectedPhoto(TRAN);
                 break;*/
+            case R.id.leftlanguage_head:
+                 LanguageSelectIntent = new Intent(this, LanguageSelectActivity.class);
+                LanguageSelectIntent.putExtra("derect",0);
+                startActivityForResult(LanguageSelectIntent,Constants.LANGUAGE_CHANGE);
+                break;
+            case R.id.rightlanguage_head:
+                 LanguageSelectIntent = new Intent(this,LanguageSelectActivity.class);
+                LanguageSelectIntent.putExtra("derect",1);
+                startActivityForResult(LanguageSelectIntent,Constants.LANGUAGE_CHANGE);
+                break;
+            case R.id.img_photo_switch:
+                leftLanguage = SpUtils.getString(PhotoActivity.this,Constants.LEFT_LANGUAGE,Constants.zh_CN);
+                rightLanguage = SpUtils.getString(PhotoActivity.this,Constants.RIGHT_LANGUAGE,Constants.en_US);
+                SpUtils.putString(PhotoActivity.this,Constants.LEFT_LANGUAGE,rightLanguage);
+                SpUtils.putString(PhotoActivity.this,Constants.RIGHT_LANGUAGE,leftLanguage);
+                Utils.perseLanguage(PhotoActivity.this, leftLanguage,leftlanguage_head,text_photo_left_language);
+                Utils.perseLanguage(PhotoActivity.this,rightLanguage,rightlanguage_head,text_photo_right_language);
+                break;
         }
 
     }
@@ -433,12 +474,9 @@ public class PhotoActivity extends Activity implements SurfaceHolder.Callback, V
                 text_photo_light_state.setText("自动");
                 break;
         }
-
-
     }
 
-    private void startPermissionsActivity() {
-        PermissionsActivity.startActivityForResult(this, PERMISSIONS_REQUEST_CODE, PERMISSIONS);
-    }
+
+
 
 }

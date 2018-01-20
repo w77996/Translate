@@ -11,7 +11,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
             <TextView
-                android:id="@+id/tv_ignore"
+                android:id="@+id/tv_refresh"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/color_white"
@@ -20,7 +20,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:textSize="16sp"
-                android:text="@string/ignore"/>
+                android:text="刷新"/>
             <TextView
                 android:id="@+id/main_title_text"
                 android:layout_width="wrap_content"
@@ -36,7 +36,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-        <RelativeLayout
+      <!--  <RelativeLayout
             android:layout_weight="1"
             android:layout_width="match_parent"
             android:layout_height="0dp">
@@ -71,15 +71,32 @@
                 android:textColor="#686868"
                 android:text="请检查设备是否开启"/>
 
-        </RelativeLayout>
+        </RelativeLayout>-->
         <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginRight="@dimen/x10"
+            android:layout_marginLeft="@dimen/x10"
+            android:layout_marginBottom="@dimen/x10">
+            <ListView
+                android:id="@+id/lv_scan_blue"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="none"
+                >
+
+            </ListView>
+        </LinearLayout>
+        <!--<LinearLayout
             android:layout_width="match_parent"
             android:layout_height="@dimen/x60"
             android:gravity="center">
             <RelativeLayout
+                android:id="@+id/rel_next"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="@dimen/x10">
+                >
                 <ImageView
                     android:id="@+id/img_next"
                     android:layout_width="wrap_content"
@@ -95,6 +112,6 @@
                     android:text="下一步"/>
             </RelativeLayout>
 
-        </LinearLayout>
+        </LinearLayout>-->
     </LinearLayout>
 </LinearLayout>

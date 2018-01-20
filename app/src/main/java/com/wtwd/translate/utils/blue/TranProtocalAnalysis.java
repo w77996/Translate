@@ -322,7 +322,7 @@ public class TranProtocalAnalysis implements SppBluetoothManager.BluetoothReceiv
     };
 
 
-    interface OnDeviceButtonPressedStateListener {
+    public interface OnDeviceButtonPressedStateListener {
         /**
          * 返回设备按钮操作指令
          */

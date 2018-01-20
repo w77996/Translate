@@ -15,12 +15,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/color_white"
-                android:layout_alignParentRight="true"
+                android:layout_toLeftOf="@+id/devbind_ignore_img"
                 android:layout_marginRight="@dimen/x5"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
-                android:textSize="16sp"
-                android:text="@string/ignore"/>
+                android:textSize="15sp"
+                android:text="跳过"/>
+            <ImageView
+                android:id="@+id/devbind_ignore_img"
+                android:layout_width="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="@dimen/x5"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:src="@drawable/right_row"/>
             <TextView
                 android:id="@+id/main_title_text"
                 android:layout_width="wrap_content"

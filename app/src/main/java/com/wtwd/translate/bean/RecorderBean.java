@@ -8,6 +8,8 @@ package com.wtwd.translate.bean;
  */
 
 public class RecorderBean {
+
+    private String language_type;
     /**
      * 左边和右边界面判断
      */
@@ -24,6 +26,15 @@ public class RecorderBean {
      * 翻译结果语音保存路径
      */
     private String mFilePath;
+
+
+    public String getLanguage_type() {
+        return language_type;
+    }
+
+    public void setLanguage_type(String language_type) {
+        this.language_type = language_type;
+    }
 
     public int getType() {
         return type;

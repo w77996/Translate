@@ -40,7 +40,7 @@ public class SplashLanguageActivity extends Activity implements View.OnClickList
     /**
      * 跳过
      */
-    private TextView mIgnoreText;
+   // private TextView mIgnoreText;
     /**
      * 下一步
      */
@@ -62,13 +62,18 @@ public class SplashLanguageActivity extends Activity implements View.OnClickList
         String [] languageType = {Constants.zh_CN,Constants.en_US,Constants.fr_FR,Constants.de_DE,Constants.ko_KR,Constants.ja_JP,Constants.es_ES,Constants.pt_PT,Constants.ru_RU};
         mSelectBeanList = new ArrayList<>();
         for(int i = 0; i< countryText.length;i++){
+
             SelectBean selectBean = new SelectBean();
             selectBean.setData(countryText[i]);
             selectBean.setLanguageType(languageType[i]);
-            selectBean.setSelect(false);
+            if(i == 0){
+                selectBean.setSelect(true);
+            }else{
+                selectBean.setSelect(false);
+            }
             mSelectBeanList.add(selectBean);
         }
-        mIgnoreText = (TextView)findViewById(R.id.language_ignore);
+       // mIgnoreText = (TextView)findViewById(R.id.language_ignore);
         mImgNext = (ImageView)findViewById(R.id.img_language_next);
         mGridView = (GridView)findViewById(R.id.gv_language);
         mLanguageGrideViewAdapter = new LanguageGrideViewAdapter(SplashLanguageActivity.this,mSelectBeanList,countryImage);
@@ -97,7 +102,7 @@ public class SplashLanguageActivity extends Activity implements View.OnClickList
      */
     private void addListener() {
 
-        mIgnoreText.setOnClickListener(this);
+       // mIgnoreText.setOnClickListener(this);
         mImgNext.setOnClickListener(this);
     }
 
@@ -105,8 +110,8 @@ public class SplashLanguageActivity extends Activity implements View.OnClickList
     public void onClick(View v) {
         int id = v.getId();
         switch (id){
-            case R.id.language_ignore:
-                break;
+           /* case R.id.language_ignore:
+                break;*/
             case R.id.img_language_next:
                 Intent splashDevBindIntent = new Intent(SplashLanguageActivity.this,SplashDevBindActivity.class);
                 startActivity(splashDevBindIntent);

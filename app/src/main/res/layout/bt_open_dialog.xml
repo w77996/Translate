@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/x20"
         android:layout_marginTop="@dimen/x20"
-        android:text="当前手机蓝牙关闭,是否打开蓝牙设备?"
+        android:text="请打开蓝牙并连接设备"
          />
 
     <View

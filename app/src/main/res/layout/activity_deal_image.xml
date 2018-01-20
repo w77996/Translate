@@ -45,11 +45,12 @@
                 android:layout_toLeftOf="@id/img_deal_switch"
                 android:text="中文"
                 android:textColor="@color/color_white"
-                android:textSize="20sp" />
+                android:textSize="16sp" />
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/leftlanguage_head"
+                android:layout_width="@dimen/x25"
+                android:layout_height="@dimen/x25"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/x5"
                 android:layout_toLeftOf="@id/text_deal_left_language"
@@ -63,11 +64,12 @@
                 android:layout_toRightOf="@id/img_deal_switch"
                 android:text="英文"
                 android:textColor="@color/color_white"
-                android:textSize="20sp" />
+                android:textSize="16sp" />
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/rightlanguage_head"
+                android:layout_width="@dimen/x25"
+                android:layout_height="@dimen/x25"
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="@dimen/x5"
                 android:layout_toRightOf="@id/text_deal_right_language"

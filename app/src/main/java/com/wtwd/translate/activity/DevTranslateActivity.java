@@ -18,6 +18,7 @@ import com.wtwd.translate.utils.Constants;
 import com.wtwd.translate.utils.Utils;
 import com.wtwd.translate.utils.audio.AudioMediaPlayManager;
 import com.wtwd.translate.utils.audio.AudioStateChange;
+import com.wtwd.translate.utils.blue.TranProtocalAnalysis;
 
 import java.io.File;
 import java.security.Key;
@@ -28,7 +29,7 @@ import java.util.List;
  * time:2017/12/27
  * Created by w77996
  */
-public class DevTranslateActivity extends Activity implements AudioStateChange {
+public class DevTranslateActivity extends Activity implements AudioStateChange,TranProtocalAnalysis.OnDeviceButtonPressedStateListener {
 
     public final static String TAG = "DevTransalteActivity";
 
@@ -54,6 +55,7 @@ public class DevTranslateActivity extends Activity implements AudioStateChange {
      */
     String mVoiceFilePath;
 
+    TranProtocalAnalysis mTranProtocalAnalysis;
     List<RecorderBean> mRecorderList;
     DevTranListViewAdapter mDevTranListViewAdapter;
 
@@ -63,6 +65,8 @@ public class DevTranslateActivity extends Activity implements AudioStateChange {
         setContentView(R.layout.activity_devtran);
         mAudioMediaPlayManager = AudioMediaPlayManager.getAudioMediaPlayManager(DevTranslateActivity.this);
         mAudioMediaPlayManager.setAudioStateChange(this);
+        mTranProtocalAnalysis = TranProtocalAnalysis.getTranProtocalAnalysis(this);
+        mTranProtocalAnalysis.setOnDevicePressedStateListener(this);
         initView();
         addListener();
 
@@ -77,7 +81,14 @@ public class DevTranslateActivity extends Activity implements AudioStateChange {
         mVoiceImage = (ImageView) findViewById(R.id.dev_voice);
 
         mRecorderList = new ArrayList<RecorderBean>();
-        mDevTranListViewAdapter = new DevTranListViewAdapter(this, mRecorderList);
+        mDevTranListViewAdapter = new DevTranListViewAdapter(this, mRecorderList, new DevTranListViewAdapter.PlayVoceClick() {
+            @Override
+            public void click(View v) {
+                int pos =  (Integer) v.getTag();
+                Log.d(TAG,pos+" 点击按钮位置");
+                mAudioMediaPlayManager.startPlayingUsePhone(mRecorderList.get(pos).getmFilePath());
+            }
+        });
         mListViewDevTran.setAdapter(mDevTranListViewAdapter);
         // mVoiceFile = Utils.createFile(mVoiceFile, "VOICE_", ".3pg");
         mVoiceImage.setOnTouchListener(new View.OnTouchListener() {
@@ -86,15 +97,16 @@ public class DevTranslateActivity extends Activity implements AudioStateChange {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
                         Log.d(TAG, "按钮按下");
-                        File voiceFile;
+                       /* File voiceFile;
                         if (Utils.existSDCard())
                             voiceFile = new File(Environment.getExternalStorageDirectory(), "/voice");
                         else voiceFile = Environment.getDataDirectory();
                         voiceFile = Utils.createFile(voiceFile, "voice_", ".3pg");
-                        // mVoiceFilePath = Environment.getExternalStorageState()+ File.separator + System.currentTimeMillis() + ".3pg";
-                        mVoiceFilePath = voiceFile.getAbsolutePath();
+                        // mVoiceFilePath = Environment.getExternalStorageState()+ File.separator + System.currentTimeMillis() + ".3pg";*/
+                        // TODO: 2018/1/17 判断是否连接？
+                        mVoiceFilePath = Utils.getVoiceFilePath();
                         Log.d(TAG, "文件名和路径 " + mVoiceFilePath);
-                        mAudioMediaPlayManager.startRecorderUsePhone(voiceFile.getAbsolutePath());
+                       // mAudioMediaPlayManager.star(mVoiceFilePath);
                         break;
                     case MotionEvent.ACTION_UP:
                         Log.d(TAG, "按钮松开");
@@ -109,6 +121,12 @@ public class DevTranslateActivity extends Activity implements AudioStateChange {
     @Override
     public void onStartRecoderUseBluetoothEar() {
 
+        Log.d(TAG, "录音结束");
+        RecorderBean recorderBean = new RecorderBean();
+        recorderBean.setmFilePath(mVoiceFilePath);
+        recorderBean.setType(Constants.ITEM_RIGHT);
+        mRecorderList.add(recorderBean);
+        mDevTranListViewAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -133,12 +151,7 @@ public class DevTranslateActivity extends Activity implements AudioStateChange {
 
     @Override
     public void onStopRecoderUsePhone() {
-       Log.d(TAG, "录音结束");
-         RecorderBean recorderBean = new RecorderBean();
-        recorderBean.setmFilePath(mVoiceFilePath);
-        recorderBean.setType(Constants.ITEM_RIGHT);
-        mRecorderList.add(recorderBean);
-        mDevTranListViewAdapter.notifyDataSetChanged();
+
     }
 
     @Override
@@ -153,6 +166,7 @@ public class DevTranslateActivity extends Activity implements AudioStateChange {
 
     }
 
+    //指令接收
     @Override
     public void onPlayCompletion() {
 
@@ -164,4 +178,23 @@ public class DevTranslateActivity extends Activity implements AudioStateChange {
     }
 
 
+    @Override
+    public void onDevicePressedStateListener(int type) {
+        Log.d(TAG,type+"");
+    }
+
+    @Override
+    public void onDeviceReceiverTextMessageListener(String msg) {
+
+    }
+
+    @Override
+    public void writeByteToOtherDeviceSuccess() {
+
+    }
+
+    @Override
+    public void writeByteToOtherDeviceFailed() {
+
+    }
 }

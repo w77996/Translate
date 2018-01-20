@@ -39,7 +39,7 @@ public class SplashLableActivity extends Activity implements View.OnClickListene
     LabelGrideViewAdapter mAdapter;
 
     /**跳过**/
-    private TextView tv_ignore;
+   // private TextView tv_ignore;
     private ImageView img_next;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,7 +61,7 @@ public class SplashLableActivity extends Activity implements View.OnClickListene
             selectBean.isSelect = false;
             data.add(selectBean);
         }
-        tv_ignore = (TextView)findViewById(R.id.label_ignore);
+        //tv_ignore = (TextView)findViewById(R.id.label_ignore);
         img_next = (ImageView)findViewById(R.id.img_label_next);
         mGridView = (GridView)findViewById(R.id.mygridview);
          mAdapter = new LabelGrideViewAdapter(getApplicationContext(),data);
@@ -92,7 +92,7 @@ public class SplashLableActivity extends Activity implements View.OnClickListene
         });
     }
     private void addLisener(){
-        tv_ignore.setOnClickListener(this);
+       // tv_ignore.setOnClickListener(this);
         img_next.setOnClickListener(this);
     }
 
@@ -100,8 +100,8 @@ public class SplashLableActivity extends Activity implements View.OnClickListene
     public void onClick(View v) {
         int id = v.getId();
         switch (id){
-            case R.id.label_ignore:
-                break;
+            /*case R.id.label_ignore:
+                break;*/
             case R.id.img_label_next:
                 Intent splashIntent = new Intent(SplashLableActivity.this,SplashLanguageActivity.class);
                 startActivity(splashIntent);

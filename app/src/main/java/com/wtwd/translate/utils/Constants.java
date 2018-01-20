@@ -22,6 +22,11 @@ public class Constants {
 
     public static final int LANGUAGE_CHANGE = 1111;//语言选择改变
 
+    public static final String BLUE_DEVICE = "BLUE_DEVICE";
+
+    public static final int BLUE_SCAN = 1122; //蓝牙连接扫描
+    public static final int  SETTING_BLUE =1133;//进入设置连接蓝牙
+
     public static final String zh_CN = "zh-CN";//Chinese (Mandarin, simplified)
     public static final String zh_TW = "zh-TW";//Chinese (Mandarin, Taiwanese)
     public static final String en_AU = "en-AU";//English (Australia)
@@ -63,8 +68,6 @@ public class Constants {
     public static final String de_DE = "de-DE";//German (Germany)
     public static final String el_GR = "el-GR";//el-GR	Greek (Greece)
     public static final String he_IL = "he-IL";//he-IL	Hebrew (Israel)
-
-
 
 
 

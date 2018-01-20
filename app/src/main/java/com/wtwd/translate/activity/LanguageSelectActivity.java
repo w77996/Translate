@@ -124,17 +124,18 @@ public class LanguageSelectActivity extends Activity implements View.OnClickList
         lv_language_select.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                /*for (int i = 0; i < mLanguageList.size(); i++) {
+                for (int i = 0; i < mLanguageList.size(); i++) {
                     if(i == position){
                         mLanguageList.get(i).setSelect(true);
                     }else{
                         mLanguageList.get(i).setSelect(false);
                     }
-                }*/
+                }
                 if(derect == 0){//左侧语言选择
                     SpUtils.putString(LanguageSelectActivity.this,Constants.LEFT_LANGUAGE,mLanguageList.get(position).getLanguageType());
                     Utils.perseLanguage(LanguageSelectActivity.this,mLanguageList.get(position).getLanguageType(),language_select_left_head,language_select_left_text);
                     setResult(Constants.LANGUAGE_CHANGE);
+                    //mLanguageList.get(position).setSelect(true);
                 }else if(derect == 1){//右侧语言选择
                     SpUtils.putString(LanguageSelectActivity.this,Constants.RIGHT_LANGUAGE,mLanguageList.get(position).getLanguageType());
                     Utils.perseLanguage(LanguageSelectActivity.this,mLanguageList.get(position).getLanguageType(),language_select_right_head,language_select_right_text);

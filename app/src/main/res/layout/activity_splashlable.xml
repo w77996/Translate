@@ -11,7 +11,7 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
-            <TextView
+            <!--<TextView
                 android:id="@+id/label_ignore"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -21,7 +21,7 @@
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:textSize="16sp"
-                android:text="@string/ignore"/>
+                android:text="@string/ignore"/>-->
             <TextView
                 android:id="@+id/main_title_text"
                 android:layout_width="wrap_content"

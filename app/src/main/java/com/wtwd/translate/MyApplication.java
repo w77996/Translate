@@ -1,0 +1,21 @@
+package com.wtwd.translate;
+
+import android.app.Application;
+
+import com.wtwd.translate.utils.blue.SppBluetoothManager;
+
+/**
+ * time:2018/1/18
+ * Created by w77996
+ */
+
+public class MyApplication extends Application {
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        SppBluetoothManager.getInstance(getApplicationContext()).bluetoothRegisterReceiver();
+       // SppBluetoothManager.getInstance(getApplicationContext()).start();
+    }
+
+
+}

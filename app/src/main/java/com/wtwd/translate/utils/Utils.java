@@ -114,7 +114,7 @@ public class Utils {
         if (existSDCard())
             voiceFile = new File(Environment.getExternalStorageDirectory(), "/voice");
         else voiceFile = Environment.getDataDirectory();
-        voiceFile = createFile(voiceFile, "voice_", ".3pg");
+        voiceFile = createFile(voiceFile, "voice_", ".wav");
         // mVoiceFilePath = Environment.getExternalStorageState()+ File.separator + System.currentTimeMillis() + ".3pg";
 
         return voiceFile.getAbsolutePath();
@@ -175,6 +175,83 @@ public class Utils {
                 textView.setText("俄罗斯语");
                 break;
         }
+
+    }
+
+    /**
+     * 设置语言头像
+     * @param context
+     * @param imageView
+     * @param type
+     */
+    public static void setLanguageHead(Context context,ImageView imageView, String type) {
+
+        switch (type){
+            case Constants.zh_CN:
+                imageView.setImageDrawable(context.getDrawable(R.drawable.flag_china));
+                break;
+            case Constants.en_US:
+                imageView.setImageDrawable(context.getDrawable(R.drawable.flag_eng));
+                break;
+            case Constants.fr_FR:
+                imageView.setImageDrawable(context.getDrawable(R.drawable.flag_fra));
+                break;
+            case Constants.de_DE:
+                imageView.setImageDrawable(context.getDrawable(R.drawable.flag_deu));
+                break;
+            case Constants.ko_KR:
+                imageView.setImageDrawable(context.getDrawable(R.drawable.flag_kor));
+                break;
+            case Constants.ja_JP:
+                imageView.setImageDrawable(context.getDrawable(R.drawable.flag_jpa));
+                break;
+            case Constants.es_ES:
+                imageView.setImageDrawable(context.getDrawable(R.drawable.flag_spa));
+                break;
+            case Constants.pt_PT:
+                imageView.setImageDrawable(context.getDrawable(R.drawable.flag_por));
+                break;
+            case Constants.ru_RU:
+                imageView.setImageDrawable(context.getDrawable(R.drawable.language_rus));
+                break;
+        }
+    }
+
+    public static Locale setLocalLanguag( String type) {
+        Locale locale = null;
+        switch (type) {
+            case Constants.zh_CN:
+                locale = Locale.CHINESE;
+            break;
+            case Constants.en_US:
+                locale =  Locale.ENGLISH;
+            break;
+            case Constants.fr_FR:
+                locale = Locale.FRANCE;
+            break;
+            case Constants.de_DE:
+                locale = Locale.GERMANY;
+            break;
+            case Constants.ko_KR:
+                locale = Locale.KOREA;
+            break;
+            case Constants.ja_JP:
+                locale = Locale.JAPAN;
+            break;
+           /* case Constants.es_ES:
+                return Locale.;
+                break;
+            case Constants.pt_PT:
+                imageView.setImageDrawable(context.getDrawable(R.drawable.flag_por));
+                break;
+            case Constants.ru_RU:
+                imageView.setImageDrawable(context.getDrawable(R.drawable.language_rus));
+                break;*/
+           default:
+               break;
+
+        }
+        return locale;
 
     }
 }

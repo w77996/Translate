@@ -39,9 +39,10 @@
                 android:layout_toLeftOf="@id/img_photo_switch"
                 android:text="中文"
                 android:textColor="@color/color_white"
-                android:textSize="20sp" />
+                android:textSize="16sp" />
 
             <ImageView
+                android:id="@+id/leftlanguage_head"
                 android:layout_width="@dimen/x25"
                 android:layout_height="@dimen/x25"
                 android:layout_centerVertical="true"
@@ -57,9 +58,10 @@
                 android:layout_toRightOf="@id/img_photo_switch"
                 android:text="英文"
                 android:textColor="@color/color_white"
-                android:textSize="20sp" />
+                android:textSize="16sp" />
 
             <ImageView
+                android:id="@+id/rightlanguage_head"
                 android:layout_width="@dimen/x25"
                 android:layout_height="@dimen/x25"
                 android:layout_centerVertical="true"

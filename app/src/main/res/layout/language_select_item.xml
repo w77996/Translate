@@ -25,8 +25,8 @@
             android:text="中文"/>
         <ImageView
             android:id="@+id/language_select_item_select"
-            android:layout_width="@dimen/x10"
-            android:layout_height="@dimen/x10"
+            android:layout_width="@dimen/x25"
+            android:layout_height="@dimen/x25"
             android:src="@drawable/language_select_unselect"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
