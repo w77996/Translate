@@ -3,6 +3,8 @@ package com.wtwd.translate.utils;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Environment;
 import android.util.DisplayMetrics;
@@ -32,6 +34,7 @@ public class Utils {
 
     /**
      * 设置状态栏的颜色
+     *
      * @param activity
      * @param colorResId
      */
@@ -64,6 +67,7 @@ public class Utils {
             e.printStackTrace();
         }
     }
+
     /**
      * 获取手机屏幕宽度
      *
@@ -109,7 +113,8 @@ public class Utils {
     public static boolean existSDCard() {
         return Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
     }
-    public static String getVoiceFilePath(){
+
+    public static String getVoiceFilePath() {
         File voiceFile;
         if (existSDCard())
             voiceFile = new File(Environment.getExternalStorageDirectory(), "/voice");
@@ -119,6 +124,7 @@ public class Utils {
 
         return voiceFile.getAbsolutePath();
     }
+
     /**
      * 根据系统时间、前缀、后缀产生一个文件
      */
@@ -131,13 +137,14 @@ public class Utils {
 
     /**
      * 解析语言类型
+     *
      * @param context
      * @param type
      * @param imageView
      * @param textView
      */
-    public static void perseLanguage(Context context,String type, ImageView imageView, TextView textView){
-        switch (type){
+    public static void perseLanguage(Context context, String type, ImageView imageView, TextView textView) {
+        switch (type) {
             case Constants.zh_CN:
                 imageView.setImageDrawable(context.getDrawable(R.drawable.flag_china));
                 textView.setText("中文");
@@ -180,13 +187,14 @@ public class Utils {
 
     /**
      * 设置语言头像
+     *
      * @param context
      * @param imageView
      * @param type
      */
-    public static void setLanguageHead(Context context,ImageView imageView, String type) {
+    public static void setLanguageHead(Context context, ImageView imageView, String type) {
 
-        switch (type){
+        switch (type) {
             case Constants.zh_CN:
                 imageView.setImageDrawable(context.getDrawable(R.drawable.flag_china));
                 break;
@@ -217,27 +225,27 @@ public class Utils {
         }
     }
 
-    public static Locale setLocalLanguag( String type) {
+    public static Locale setLocalLanguag(String type) {
         Locale locale = null;
         switch (type) {
             case Constants.zh_CN:
                 locale = Locale.CHINESE;
-            break;
+                break;
             case Constants.en_US:
-                locale =  Locale.ENGLISH;
-            break;
+                locale = Locale.ENGLISH;
+                break;
             case Constants.fr_FR:
                 locale = Locale.FRANCE;
-            break;
+                break;
             case Constants.de_DE:
                 locale = Locale.GERMANY;
-            break;
+                break;
             case Constants.ko_KR:
                 locale = Locale.KOREA;
-            break;
+                break;
             case Constants.ja_JP:
                 locale = Locale.JAPAN;
-            break;
+                break;
            /* case Constants.es_ES:
                 return Locale.;
                 break;
@@ -247,11 +255,29 @@ public class Utils {
             case Constants.ru_RU:
                 imageView.setImageDrawable(context.getDrawable(R.drawable.language_rus));
                 break;*/
-           default:
-               break;
+            default:
+                break;
 
         }
         return locale;
 
+    }
+
+    /**
+     * 判断是否联网
+     * @param context
+     * @return
+     */
+    public static boolean isNetworkConnected(Context context) {
+        if (context != null) {
+            ConnectivityManager mConnectivityManager = (ConnectivityManager) context
+                    .getSystemService(Context.CONNECTIVITY_SERVICE);
+            NetworkInfo mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
+            if (mNetworkInfo != null) {
+//mNetworkInfo.isAvailable();
+                return true;//有网
+            }
+        }
+        return false;//没有网
     }
 }

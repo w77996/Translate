@@ -41,11 +41,13 @@ public class SplashDevPairActivity extends Activity implements View.OnClickListe
     /**
      * 配对旋转进度
      */
-    private ImageView img_bind_outside_circle;
+    private ImageView img_bind_circle;
     /**
      *  连接状态
      */
     private TextView tv_pair_state;
+
+
 
     BluetoothDevice mBluetoothDevice;
     private SppBluetoothManager mSppBluetoothManager;
@@ -82,16 +84,16 @@ public class SplashDevPairActivity extends Activity implements View.OnClickListe
     private void initView() {
         tv_ignore = (TextView)findViewById(R.id.devpair_ignore);
         img_pair_state = (ImageView)findViewById(R.id.img_devpair_next);
-        img_bind_outside_circle = (ImageView)findViewById(R.id.img_bind_outside_circle);
+        img_bind_circle = (ImageView)findViewById(R.id.img_bind_circle);
         tv_pair_state = (TextView)findViewById(R.id.tv_pair_state);
         Animation circle_anim = AnimationUtils.loadAnimation(SplashDevPairActivity.this, R.anim.anim_round_rotate);
         LinearInterpolator interpolator = new LinearInterpolator();  //设置匀速旋转，在xml文件中设置会出现卡顿
         circle_anim.setInterpolator(interpolator);
         if (circle_anim != null) {
-            img_bind_outside_circle.startAnimation(circle_anim);  //开始动画
+            img_bind_circle.startAnimation(circle_anim);  //开始动画
         }
         tv_pair_state.setText("正在配对中...");
-        tv_pair_state.setClickable(false);
+        img_pair_state.setClickable(false);
     }
 
     /**
@@ -111,22 +113,21 @@ public class SplashDevPairActivity extends Activity implements View.OnClickListe
                 startActivity(mianIntent);
                 break;
             case R.id.img_devpair_next:
-                //if(tv_pair_state.getText().toString().equals("配对成功")){
-                    Intent intent = new Intent(SplashDevPairActivity.this,MainActivity.class);
-                    startActivity(intent);
-               // }
+                Intent intent = new Intent(SplashDevPairActivity.this,MainActivity.class);
+                startActivity(intent);
+                finish();
                 break;
         }
     }
 
     @Override
     public void notifyChangeConnectstate(int mState) {
-        if(mState == BluetoothAdapter.STATE_CONNECTED){
+        if(mState == SppBluetoothManager.STATE_CONNECTED){
             Log.d(TAG,"蓝牙连接state "+mState);
-            img_bind_outside_circle.clearAnimation();
+           /* img_bind_circle.clearAnimation();
            // Toast.makeText(SplashDevPairActivity.this,"蓝牙连接state "+mState,Toast.LENGTH_SHORT).show();
             tv_pair_state.setText("配对成功");
-            tv_pair_state.setClickable(true);
+            img_pair_state.setClickable(true);*/
           /*  try {
                 Thread.sleep(2000);
             } catch (InterruptedException e) {
@@ -137,19 +138,22 @@ public class SplashDevPairActivity extends Activity implements View.OnClickListe
             finish();*/
             //getHomeActivity();
         }
-        if(mState == BluetoothAdapter.STATE_CONNECTING){
+        if(mState == SppBluetoothManager.STATE_CONNECTING){
             Log.d(TAG,"蓝牙连接中state "+mState);
-            tv_pair_state.setText("配对中......");
-            tv_pair_state.setClickable(true);
+            /*tv_pair_state.setText("正在配对...");
+            img_pair_state.setClickable(true);*/
            // Toast.makeText(SplashDevPairActivity.this,"蓝牙连接中state "+mState,Toast.LENGTH_SHORT).show();
         }
-        if(mState == BluetoothAdapter.STATE_DISCONNECTED){
+        if(mState == SppBluetoothManager.STATE_NONE){
             Log.d(TAG,"蓝牙断开连接状态state "+mState);
-            img_bind_outside_circle.clearAnimation();
-            tv_pair_state.setText("配对失败");
-            tv_pair_state.setClickable(true);
+           // img_bind_circle.clearAnimation();
+           /* tv_pair_state.setText("配对失败");
+            img_pair_state.setClickable(true);*/
 
             //Toast.makeText(SplashDevPairActivity.this,"蓝牙断开连接状态state"+mState,Toast.LENGTH_SHORT).show();
+        }
+        if(mState == SppBluetoothManager.STATE_LISTEN){
+
         }
 
     }
@@ -186,9 +190,9 @@ public class SplashDevPairActivity extends Activity implements View.OnClickListe
         if(null == mDevice){
             Log.e(TAG,"mDevice 为空");
             Toast.makeText(SplashDevPairActivity.this,"错误,未连接设备",Toast.LENGTH_SHORT).show();
-            img_bind_outside_circle.clearAnimation();
+            img_bind_circle.clearAnimation();
             tv_pair_state.setText("配对失败");
-            tv_pair_state.setClickable(true);
+            img_pair_state.setClickable(true);
         }else{
             Log.e(TAG,"蓝牙连接");
             mSppBluetoothManager.connect(mDevice);

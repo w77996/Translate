@@ -82,10 +82,7 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
      * 输入框内的清除按键
      */
     private ImageView mEditClearImageView;
-    /**
-     * 横向的语言选择
-     */
-    private RecyclerView mTranSelectRecylerView;
+
     /**
      * ScrollView界面
      */
@@ -103,10 +100,6 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
      */
     ImageView img_tran_recro;
     /**
-     * 是否按下返回键
-     */
-    boolean isBack = false;
-    /**
      * 翻译界面Linearlayout
      */
     LinearLayout lin_tran;
@@ -118,12 +111,23 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
      * 语音image
      */
     ImageView img_tran_voice;
+    /**
+     * 标题栏按钮文字
+     */
+    TextView text_tran_left_language;
+    TextView text_tran_right_language;
+
+    ImageView leftlanguage_head;
+    ImageView rightlanguage_head;
+    ImageView img_tran_switch;
 
     String leftLanguage;
-    LanguageSelectListViewAdapter mAdapter;
+    String rightLanguage;
 
 
-    List<SelectBean> datas = new ArrayList<SelectBean>();
+  //  List<SelectBean> datas = new ArrayList<SelectBean>();
+
+    ImageView tran_back;
 
     private InputMethodManager mInputMethodManager;
 
@@ -136,18 +140,17 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_translate);
         initDatas();
-
+        initView();
         addListener();
         mMicroRecogitionManager = MicroRecogitionManager.getMicroRecogitionManager(this);
         mMicroRecogitionManager.setmicroRecogitionManagerCallBack(this);
-
     }
 
     /**
      * 初始化数据
      */
     private void initDatas() {
-        final String[] countryText = {"中文[CHS]", "英语[ENG]", "法语[FRA]", "德语[DEU]", "韩语[KOR]", "日语[JPN]", "西班牙语[SPA]", "葡萄牙语[POR]", "意大利语[ITA]",
+       /* final String[] countryText = {"中文[CHS]", "英语[ENG]", "法语[FRA]", "德语[DEU]", "韩语[KOR]", "日语[JPN]", "西班牙语[SPA]", "葡萄牙语[POR]", "意大利语[ITA]",
                 "俄罗斯语[RUS]", "泰语[THA]", "印度语[HIN]"};
         datas = new ArrayList<>();
         for (int i = 0; i < countryText.length; i++) {
@@ -155,7 +158,7 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
             selectBean.setData(countryText[i]);
             selectBean.setSelect(false);
             datas.add(selectBean);
-        }
+        }*/
         mKeybordHight = Integer.valueOf(SpUtils.getString(TranslateActivity.this, "keybord_hight", 0 + ""));
         Intent intent = getIntent();
         String intent_type = intent.getStringExtra("intent_type");
@@ -167,13 +170,7 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
             mIntentType = 1;//语音翻译
         }
         leftLanguage = SpUtils.getString(this,Constants.LEFT_LANGUAGE,Constants.zh_CN);
-        initView();
-    }
-
-    private void switchImageBtn(int mIntentType) {
-        if(mIntentType == 0){
-
-        }
+        rightLanguage = SpUtils.getString(this,Constants.RIGHT_LANGUAGE,Constants.en_US);
     }
 
     /**
@@ -187,6 +184,18 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
         lin_tran_bottom.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, mKeybordHight));
         lin_tran = (LinearLayout) findViewById(R.id.lin_tran);
         img_tran_recro = (ImageView)findViewById(R.id.img_tran_recro);
+
+
+        text_tran_left_language = (TextView)findViewById(R.id.text_tran_left_language);
+        text_tran_right_language = (TextView)findViewById(R.id.text_tran_right_language);
+        leftlanguage_head = (ImageView)findViewById(R.id.leftlanguage_head);
+        rightlanguage_head = (ImageView)findViewById(R.id.rightlanguage_head);
+        img_tran_switch = (ImageView)findViewById(R.id.img_tran_switch);
+
+        tran_back = (ImageView)findViewById(R.id.tran_back);
+
+        Utils.perseLanguage(this,leftLanguage,leftlanguage_head,text_tran_left_language);
+        Utils.perseLanguage(this,rightLanguage,rightlanguage_head,text_tran_right_language);
 
         img_tran_keybord = (ImageView)findViewById(R.id.img_tran_keybord);
         img_tran_voice = (ImageView)findViewById(R.id.img_tran_voice);
@@ -216,35 +225,10 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
        // mTranSelectRecylerView = (RecyclerView) findViewById(R.id.rl_tran_type);
         mEditClearImageView = (ImageView) findViewById(R.id.img_tran_ed_clear);
 
-
         mTranScrollView = (ScrollView) findViewById(R.id.scrol_tran);
         lin_tran_text = (LinearLayout) findViewById(R.id.lin_tran_keybord);
         lin_tran_vocie = (LinearLayout) findViewById(R.id.lin_tran_voice);
-      /*  mTranSelectRecylerView.setLayoutManager(new LinearLayoutManager(TranslateActivity.this, LinearLayoutManager.HORIZONTAL, true));
-        Collections.reverse(datas);
-        mAdapter = new LanguageSelectListViewAdapter(TranslateActivity.this, datas);
 
-        mTranSelectRecylerView.setAdapter(mAdapter);
-
-        //InputTools.ShowKeyboard(mSearchBoxEditText);
-        //横向的语言选择
-        mAdapter.setOnItemClickLitener(new LanguageSelectListViewAdapter.OnItemClickLitener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                Toast.makeText(TranslateActivity.this, position + " click",
-                        Toast.LENGTH_SHORT).show();
-                for (int i = 0; i < datas.size(); i++) {
-                    if (i == position) {
-                        datas.get(i).setSelect(true);
-                    } else {
-                        datas.get(i).setSelect(false);
-                    }
-                }
-                mAdapter.notifyDataSetChanged();
-                mTranSelectRecylerView.scrollToPosition(position);
-
-            }
-        });*/
         //EditText输入框的监听，显示清除按钮
         mSearchBoxEditText.addTextChangedListener(new TextWatcher() {
 
@@ -269,10 +253,12 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
 
             }
         });
-
-
-       // mTranSelectRecylerView.scrollToPosition(11);
-
+        mSearchBoxEditText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                Log.e(TAG,"focus : "+hasFocus);
+            }
+        });
     }
 
 
@@ -307,10 +293,15 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
         lin_tran_text.setOnClickListener(this);
         lin_tran_vocie.setOnClickListener(this);
         img_tran_recro.setOnClickListener(this);
+        leftlanguage_head.setOnClickListener(this);
+        rightlanguage_head.setOnClickListener(this);
+        img_tran_switch.setOnClickListener(this);
+        tran_back.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
+        Intent LanguageSelectIntent;
         switch (v.getId()) {
             case R.id.img_tran_ed_clear:
                 mSearchBoxEditText.setText("");
@@ -329,6 +320,27 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
                 break;
             case R.id.img_tran_recro:
                 mMicroRecogitionManager.initSpeechRecognition(leftLanguage);
+                break;
+            case R.id.leftlanguage_head:
+                LanguageSelectIntent = new Intent(this, LanguageSelectActivity.class);
+                LanguageSelectIntent.putExtra("derect",0);
+                startActivityForResult(LanguageSelectIntent,Constants.LANGUAGE_CHANGE);
+                break;
+            case R.id.rightlanguage_head:
+                LanguageSelectIntent = new Intent(this,LanguageSelectActivity.class);
+                LanguageSelectIntent.putExtra("derect",1);
+                startActivityForResult(LanguageSelectIntent,Constants.LANGUAGE_CHANGE);
+                break;
+            case R.id.img_tran_switch:
+                leftLanguage = SpUtils.getString(TranslateActivity.this,Constants.LEFT_LANGUAGE,Constants.zh_CN);
+                rightLanguage = SpUtils.getString(TranslateActivity.this,Constants.RIGHT_LANGUAGE,Constants.en_US);
+                SpUtils.putString(TranslateActivity.this,Constants.LEFT_LANGUAGE,rightLanguage);
+                SpUtils.putString(TranslateActivity.this,Constants.RIGHT_LANGUAGE,leftLanguage);
+                Utils.perseLanguage(TranslateActivity.this, leftLanguage,leftlanguage_head,text_tran_left_language);
+                Utils.perseLanguage(TranslateActivity.this,rightLanguage,rightlanguage_head,text_tran_right_language);
+                break;
+            case R.id.tran_back:
+                finish();
                 break;
         }
     }
@@ -356,5 +368,20 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
     @Override
     public void ononFinalResponseResultEmtity(String error) {
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == Constants.LANGUAGE_CHANGE){
+            leftLanguage = SpUtils.getString(this,Constants.LEFT_LANGUAGE,Constants.zh_CN);
+            rightLanguage = SpUtils.getString(this,Constants.RIGHT_LANGUAGE,Constants.en_US);
+            Utils.perseLanguage(this,leftLanguage,leftlanguage_head,text_tran_left_language);
+            Utils.perseLanguage(this,rightLanguage,rightlanguage_head,text_tran_right_language);
+            Log.d(TAG,"mIntentType : "+mIntentType);
+            if(mIntentType == 0){
+                showKeyBord();
+            }
+        }
     }
 }

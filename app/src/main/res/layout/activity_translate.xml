@@ -17,6 +17,7 @@
             android:layout_height="match_parent">
 
             <ImageView
+                android:id="@+id/tran_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -71,6 +72,7 @@
         </RelativeLayout>
     </LinearLayout>
     <RelativeLayout
+        android:layout_below="@+id/lin_tran_main_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1">
@@ -78,7 +80,7 @@
             android:id="@+id/lin_tran_search"
             android:layout_width="match_parent"
             android:layout_height="@dimen/x40"
-            android:layout_below="@+id/lin_tran_main_title"
+
             android:layout_margin="@dimen/x10"
             android:background="@drawable/search_box_linearlayout"
             android:orientation="vertical">
@@ -265,6 +267,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
+            android:background="@drawable/lin_tran_switch_bg"
             android:orientation="vertical">
             <LinearLayout
                 android:id="@+id/lin_keybord_voice"
@@ -285,10 +288,11 @@
                         android:src="@drawable/tran_keybord_normal" />
                 </LinearLayout>
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/tran_middle_line" />
+                <View
+                    android:layout_margin="@dimen/x3"
+                    android:layout_width="1px"
+                    android:layout_height="match_parent"
+                    android:background="@color/md_grey_400_color_code"/>
 
                 <LinearLayout
                     android:id="@+id/lin_tran_voice"
@@ -305,51 +309,7 @@
                 </LinearLayout>
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/lin_tran_type_txt"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/lin_keybord_voice">
 
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="@dimen/x10"
-                        android:layout_marginTop="@dimen/x10"
-                        android:background="@drawable/linear_tran_select_btn"
-                        android:padding="@dimen/x3">
-
-                        <TextView
-                            android:id="@+id/tv_tran_left"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginRight="@dimen/x2"
-                            android:text="中"
-                            android:textColor="@color/md_black_color_code" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="/"
-                            android:textColor="@color/md_black_color_code" />
-
-                        <TextView
-                            android:id="@+id/tv_tran_right"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="@dimen/x2"
-                            android:text="英"
-                            android:textColor="#929292" />
-                    </LinearLayout>
-
-                </RelativeLayout>
-
-            </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/lin_tran_bottom"

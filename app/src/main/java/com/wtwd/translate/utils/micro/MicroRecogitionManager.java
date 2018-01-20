@@ -48,6 +48,11 @@ public class MicroRecogitionManager implements ISpeechRecognitionServerEvents {
         this.mContext = mContext;
     }
 
+    /**
+     * 微软语音单例
+     * @param mContext
+     * @return
+     */
     public static MicroRecogitionManager getMicroRecogitionManager(Context mContext) {
         if (mInstance == null) {
             synchronized (MicroRecogitionManager.class) {
@@ -70,6 +75,10 @@ public class MicroRecogitionManager implements ISpeechRecognitionServerEvents {
         return mMicroRecogitionManagerCallBack;
     }
 
+    /**
+     * 初始化微软语音合成
+     * @param mLanguageType
+     */
     public void initSpeechRecognition(String mLanguageType){
         this.micClient = SpeechRecognitionServiceFactory.createMicrophoneClient((Activity) mContext, SpeechRecognitionMode.ShortPhrase , mLanguageType, this, "c96c2a771c6e4548a24e269884889478");
         this.micClient.setAuthenticationUri("");
@@ -126,12 +135,17 @@ public class MicroRecogitionManager implements ISpeechRecognitionServerEvents {
 
 
 
-
     public interface MicroRecogitionManagerCallBack{
-
+        /**
+         * 返回结果
+         * @param result
+         */
         void onFinalResponseResult(String result);
 
-
+        /**
+         * 返回结果为空
+         * @param error
+         */
         void ononFinalResponseResultEmtity(String error);
     }
 }
