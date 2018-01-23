@@ -2,7 +2,9 @@ package com.wtwd.translate;
 
 import android.app.Application;
 
+import com.mob.MobSDK;
 import com.wtwd.translate.utils.blue.SppBluetoothManager;
+import com.wtwd.translate.utils.blue.SppBluetoothMessagerManager;
 
 /**
  * time:2018/1/18
@@ -14,6 +16,8 @@ public class MyApplication extends Application {
     public void onCreate() {
         super.onCreate();
         SppBluetoothManager.getInstance(getApplicationContext()).bluetoothRegisterReceiver();
+       /* SppBluetoothMessagerManager.getInstance(getApplicationContext()).bluetoothRegisterReceiver();*/
+        MobSDK.init(this);
        // SppBluetoothManager.getInstance(getApplicationContext()).start();
     }
 

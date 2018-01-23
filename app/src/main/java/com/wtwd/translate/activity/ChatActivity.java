@@ -50,8 +50,8 @@ public class ChatActivity extends Activity implements View.OnClickListener,Audio
     ImageButton mLeftVoiceImg;
     /**底部右录音按钮**/
     ImageButton mRightVoiceImg;
-    /**头部语言选择按钮**/
-    ImageView mDownImg;
+   // /**头部语言选择按钮**/
+   // ImageView mDownImg;
     /**返回**/
     ImageView mBack;
 
@@ -59,6 +59,9 @@ public class ChatActivity extends Activity implements View.OnClickListener,Audio
     TextView mLeftText;
     /**头部右侧侧语言选择栏**/
     TextView mRightText;
+    /**头部的语言头像**/
+    ImageView leftlanguage_head;
+    ImageView rightlanguage_head;
     /**关闭语音**/
     ImageView mVoiceClose;
     /**语音键**/
@@ -170,10 +173,10 @@ public class ChatActivity extends Activity implements View.OnClickListener,Audio
         Utils.setWindowStatusBarColor(this,R.color.main_title_color);
        // mLeftVoiceImg = (ImageButton)findViewById(R.id.imgbtn_left);
       //  mRightVoiceImg = (ImageButton)findViewById(R.id.imgbtn_right);
-        mDownImg = (ImageView)findViewById(R.id.img_chat_down_row);
+       // mDownImg = (ImageView)findViewById(R.id.img_chat_down_row);
         mBack = (ImageView)findViewById(R.id.chat_back);
-        mLeftText = (TextView)findViewById(R.id.tv_chat_title_left);
-        mRightText = (TextView)findViewById(R.id.tv_chat_title_right);
+        mLeftText = (TextView)findViewById(R.id.text_chat_left_language);
+        mRightText = (TextView)findViewById(R.id.text_chat_right_language);
         mVoiceClose = (ImageView)findViewById(R.id.chat_voice_close);
         mVoice = (ImageView)findViewById(R.id.img_chat_voice);
         img_chat_switch = (ImageView)findViewById(R.id.img_chat_switch);
@@ -181,8 +184,13 @@ public class ChatActivity extends Activity implements View.OnClickListener,Audio
         chat_right_img = (ImageView)findViewById(R.id.chat_right_img);
         lin_left = (LinearLayout)findViewById(R.id.lin_left);
         lin_right = (LinearLayout)findViewById(R.id.lin_right);
+
+        leftlanguage_head = (ImageView)findViewById(R.id.leftlanguage_head);
+        rightlanguage_head = (ImageView)findViewById(R.id.rightlanguage_head);
         Utils.perseLanguage(ChatActivity.this, leftLanguage,chat_left_img,mLeftText);
         Utils.perseLanguage(ChatActivity.this,rightLanguage,chat_right_img,mRightText);
+        Utils.setLanguageHead(ChatActivity.this,leftlanguage_head,leftLanguage);
+        Utils.setLanguageHead(ChatActivity.this,rightlanguage_head,rightLanguage);
 
         mListViewChat = (ListView)findViewById(R.id.lv_chat);
         //initSpeechRecognition();
@@ -200,7 +208,7 @@ public class ChatActivity extends Activity implements View.OnClickListener,Audio
 
       //  mLeftVoiceImg.setOnClickListener(this);
      //   mRightVoiceImg.setOnClickListener(this);
-        mDownImg.setOnClickListener(this);
+        //mDownImg.setOnClickListener(this);
         mBack.setOnClickListener(this);
         mLeftText.setOnClickListener(this);
         mRightText.setOnClickListener(this);
@@ -209,12 +217,16 @@ public class ChatActivity extends Activity implements View.OnClickListener,Audio
         img_chat_switch.setOnClickListener(this);
         lin_left.setOnClickListener(this);
         lin_right.setOnClickListener(this);
+        leftlanguage_head.setOnClickListener(this);
+        rightlanguage_head.setOnClickListener(this);
 
 
     }
 
     @Override
     public void onClick(View v) {
+        Intent mLanguageSelectLeftIntent;
+        Intent mLanguageSelectRightIntent;
         switch (v.getId()){
             case R.id.lin_left:
                /* if(rightBtnPress){
@@ -284,22 +296,36 @@ public class ChatActivity extends Activity implements View.OnClickListener,Audio
                     lin_left.setClickable(false);
                 }
                 break;
-            case R.id.img_chat_down_row:
+            /*case R.id.img_chat_down_row:
                 Intent mLanguageSelectIntent = new Intent(this,LanguageSelectActivity.class);
                 mLanguageSelectIntent.putExtra("derect",0);
                 startActivityForResult(mLanguageSelectIntent,Constants.LANGUAGE_CHANGE);
-                break;
+                break;*/
             case R.id.chat_back:
                 finish();
                 break;
-            case R.id.tv_chat_title_left:
-                Intent mLanguageSelectLeftIntent = new Intent(this,LanguageSelectActivity.class);
-                mLanguageSelectLeftIntent.putExtra("derect",0);
+            case R.id.text_chat_left_language:
+                 mLanguageSelectLeftIntent = new Intent(this,LanguageSelectActivity.class);
+                mLanguageSelectLeftIntent.putExtra(Constants.LANGUAGE_SELECT_TYPE,Constants.LANGUAGE_SELECT_NORMAL_TYPE);
+                mLanguageSelectLeftIntent.putExtra(Constants.DETRECT,Constants.DETRECT_LEFT);
                 startActivityForResult(mLanguageSelectLeftIntent,Constants.LANGUAGE_CHANGE);
                 break;
-            case R.id.tv_chat_title_right:
-                Intent mLanguageSelectRightIntent = new Intent(this,LanguageSelectActivity.class);
-                mLanguageSelectRightIntent.putExtra("derect",1);
+            case R.id.text_chat_right_language:
+                 mLanguageSelectRightIntent = new Intent(this,LanguageSelectActivity.class);
+                mLanguageSelectRightIntent.putExtra(Constants.LANGUAGE_SELECT_TYPE,Constants.LANGUAGE_SELECT_NORMAL_TYPE);
+                mLanguageSelectRightIntent.putExtra(Constants.DETRECT,Constants.DETRECT_RIGHT);
+                startActivityForResult(mLanguageSelectRightIntent,Constants.LANGUAGE_CHANGE);
+                break;
+            case R.id.leftlanguage_head:
+                 mLanguageSelectLeftIntent = new Intent(this,LanguageSelectActivity.class);
+                mLanguageSelectLeftIntent.putExtra(Constants.LANGUAGE_SELECT_TYPE,Constants.LANGUAGE_SELECT_NORMAL_TYPE);
+                mLanguageSelectLeftIntent.putExtra(Constants.DETRECT,Constants.DETRECT_LEFT);
+                startActivityForResult(mLanguageSelectLeftIntent,Constants.LANGUAGE_CHANGE);
+                break;
+            case R.id.rightlanguage_head:
+                mLanguageSelectRightIntent = new Intent(this,LanguageSelectActivity.class);
+                mLanguageSelectRightIntent.putExtra(Constants.LANGUAGE_SELECT_TYPE,Constants.LANGUAGE_SELECT_NORMAL_TYPE);
+                mLanguageSelectRightIntent.putExtra(Constants.DETRECT,Constants.DETRECT_RIGHT);
                 startActivityForResult(mLanguageSelectRightIntent,Constants.LANGUAGE_CHANGE);
                 break;
             case R.id.chat_voice_close:
@@ -567,6 +593,8 @@ public class ChatActivity extends Activity implements View.OnClickListener,Audio
             rightLanguage = SpUtils.getString(ChatActivity.this,Constants.RIGHT_LANGUAGE,Constants.en_US);
             Utils.perseLanguage(ChatActivity.this, leftLanguage,chat_left_img,mLeftText);
             Utils.perseLanguage(ChatActivity.this,rightLanguage,chat_right_img,mRightText);
+            Utils.setLanguageHead(ChatActivity.this,leftlanguage_head,leftLanguage);
+            Utils.setLanguageHead(ChatActivity.this,rightlanguage_head,rightLanguage);
             Log.d(TAG,"左边："+ leftLanguage);
             Log.d(TAG,"右边: "+rightLanguage);
         }

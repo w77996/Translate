@@ -154,14 +154,20 @@ public class DealImageActivity extends Activity implements View.OnClickListener 
 
             case R.id.btn_deal_all_tran:
                 // TODO: 2018/1/11 0011 将整张图片发送到服务器，即mDisplayBitmap
+                String bitmapBase64 = BitmapUtils.bitmapToBase64(mDisplayBitmap);
+                if(bitmapBase64 != null ){
 
+                }
                 break;
 
             case R.id.btn_deal_area_tran:
                 if (showClipFrame) {
                     Bitmap clipBitmap = img_deal_display.getClippedBitmap();
                     // TODO: 2018/1/11 0011 将截取的图片发送到服务器
+                    String clipBitmapBase64 = BitmapUtils.bitmapToBase64(clipBitmap);
+                    if(clipBitmapBase64 != null){
 
+                    }
 
                     //发送完成后回收bitmap
                     if (!clipBitmap.isRecycled()) {

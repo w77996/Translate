@@ -24,5 +24,19 @@
     <string name="ignore"><![CDATA[跳过 >]]></string>
 
     <string name="miscor_primarykey">c96c2a771c6e4548a24e269884889478 </string>
+    <string name="regist">注册</string>
+    <string name="login_user_tips">请输入已注册的账号</string>
+    <string name="regist_user_tips">请输入手机号码注册</string>
+    <string name="login_pwd_tips">请输入密码</string>
+    <string name="regist_pwd_tips">请输入登录密码</string>
+    <string name="regist_code_tips">请输入验证码</string>
+    <string name="login">登录</string>
+    <string name="code_login">验证码登录</string>
+    <string name="pwd_forget">忘记密码</string>
+    <string name="pwd_login">密码登录</string>
+    <string name="tips_input_sure_number">请输入正确手机号</string>
+    <string name="tips_code_send_success">验证码发送成功</string>
+    <string name="tips_intput_username">请输入用户名</string>
+    <string name="tips_intput_code">请输入验证码</string>
 
 </resources>

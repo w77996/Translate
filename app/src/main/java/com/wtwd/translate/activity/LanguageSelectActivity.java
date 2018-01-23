@@ -67,7 +67,7 @@ public class LanguageSelectActivity extends Activity implements View.OnClickList
     /**
      * 完成
      */
-    TextView main_title_finish;
+   /* TextView main_title_finish;*/
     List<SelectBean> mLanguageList;
 
     ListView lv_language_select;
@@ -81,6 +81,7 @@ public class LanguageSelectActivity extends Activity implements View.OnClickList
     private String[] languageType = {Constants.zh_CN,Constants.en_US,Constants.fr_FR,Constants.de_DE,Constants.ko_KR,Constants.ja_JP,Constants.es_ES,Constants.pt_PT,Constants.ru_RU};
 
     int derect ;//点击左边
+    int type ;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -103,10 +104,11 @@ public class LanguageSelectActivity extends Activity implements View.OnClickList
         lv_language_select = (ListView)findViewById(R.id.lv_language_select);//listview
 
         if(derect == 0){
-            lin_left.setBackground(getDrawable(R.drawable.language_select_left_selected));
-            lin_right.setBackground(getDrawable(R.drawable.language_select_right_unselect));
-            language_select_left_text.setTextColor(getApplicationContext().getResources().getColor(R.color.color_white));
-            language_select_right_text.setTextColor(getApplicationContext().getResources().getColor(R.color.md_black_color_code));
+                lin_left.setBackground(getDrawable(R.drawable.language_select_left_selected));
+                lin_right.setBackground(getDrawable(R.drawable.language_select_right_unselect));
+                language_select_left_text.setTextColor(getApplicationContext().getResources().getColor(R.color.color_white));
+                language_select_right_text.setTextColor(getApplicationContext().getResources().getColor(R.color.md_black_color_code));
+
         }else{
             lin_right.setBackground(getDrawable(R.drawable.language_select_right_selected));
             lin_left.setBackground(getDrawable(R.drawable.language_select_left_unselect));
@@ -114,11 +116,31 @@ public class LanguageSelectActivity extends Activity implements View.OnClickList
             language_select_right_text.setTextColor(getApplicationContext().getResources().getColor(R.color.color_white));
         }
 
-        main_title_finish = (TextView)findViewById(R.id.main_title_finish);//完成
+       // main_title_finish = (TextView)findViewById(R.id.main_title_finish);//完成
         language_select_back = (ImageView)findViewById(R.id.language_select_back);//返回
+        if(type == Constants.LANGUAGE_SELECT_NORMAL_TYPE){
+            Utils.perseLanguage(LanguageSelectActivity.this,leftLanguage,language_select_left_head,language_select_left_text);
+            Utils.perseLanguage(LanguageSelectActivity.this,rightLanguage,language_select_right_head,language_select_right_text);
+        }else if (type == Constants.LANGUAGE_SELECT_DEV_TYPE){
+            language_select_left_text.setText("设备语言");
+            language_select_right_text.setText("手机语言");
 
-        Utils.perseLanguage(LanguageSelectActivity.this,leftLanguage,language_select_left_head,language_select_left_text);
-        Utils.perseLanguage(LanguageSelectActivity.this,rightLanguage,language_select_right_head,language_select_right_text);
+            if(derect == 0){
+                //左边
+                language_select_left_head.setImageDrawable(getDrawable(R.drawable.language_select_dev_select));
+                language_select_right_head.setImageDrawable(getDrawable(R.drawable.language_select_mobile_unselect));
+               // Utils.perseLanguage(LanguageSelectActivity.this,leftLanguage,language_select_left_head,language_select_left_text);
+               // Utils.perseLanguage(LanguageSelectActivity.this,rightLanguage,language_select_right_head,language_select_right_text);
+            }else{
+                //右边
+
+                language_select_right_head.setImageDrawable(getDrawable(R.drawable.language_select_mobile_select));
+                language_select_left_head.setImageDrawable(getDrawable(R.drawable.language_select_dev_unselect));
+
+
+            }
+        }
+
         mLanguageSelectAdapter = new LanguageSelectAdapter(this,mLanguageList);
         lv_language_select.setAdapter(mLanguageSelectAdapter);
         lv_language_select.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -131,6 +153,9 @@ public class LanguageSelectActivity extends Activity implements View.OnClickList
                         mLanguageList.get(i).setSelect(false);
                     }
                 }
+//                if(type == Constants.LANGUAGE_SELECT_NORMAL_TYPE){
+//
+//                }
                 if(derect == 0){//左侧语言选择
                     SpUtils.putString(LanguageSelectActivity.this,Constants.LEFT_LANGUAGE,mLanguageList.get(position).getLanguageType());
                     Utils.perseLanguage(LanguageSelectActivity.this,mLanguageList.get(position).getLanguageType(),language_select_left_head,language_select_left_text);
@@ -155,7 +180,8 @@ public class LanguageSelectActivity extends Activity implements View.OnClickList
         lin_right.setOnClickListener(this);
         lin_left.setOnClickListener(this);
         language_select_back.setOnClickListener(this);
-        main_title_finish.setOnClickListener(this);
+       // main_title_finish.setOnClickListener(this);
+
     }
 
     /**
@@ -164,10 +190,10 @@ public class LanguageSelectActivity extends Activity implements View.OnClickList
     private void initData() {
         mLanguageList = new ArrayList<>();
         Intent derectIntent = getIntent();
-        derect = derectIntent.getIntExtra("derect",0);
-
-         leftLanguage = SpUtils.getString(this,Constants.LEFT_LANGUAGE, Constants.zh_CN);
-         rightLanguage = SpUtils.getString(this,Constants.RIGHT_LANGUAGE,Constants.en_US);
+        derect = derectIntent.getIntExtra(Constants.DETRECT,Constants.DETRECT_LEFT);
+        type = derectIntent.getIntExtra(Constants.LANGUAGE_SELECT_TYPE,Constants.LANGUAGE_SELECT_NORMAL_TYPE);
+        leftLanguage = SpUtils.getString(this,Constants.LEFT_LANGUAGE, Constants.zh_CN);
+        rightLanguage = SpUtils.getString(this,Constants.RIGHT_LANGUAGE,Constants.en_US);
         for (int i = 0; i < countryText.length; i++) {
             SelectBean selectBean = new SelectBean();
             selectBean.setImg(countryImage[i]);
@@ -186,7 +212,6 @@ public class LanguageSelectActivity extends Activity implements View.OnClickList
                     selectBean.setSelect(false);
                 }
             }
-
             mLanguageList.add(selectBean);
         }
     }
@@ -199,13 +224,17 @@ public class LanguageSelectActivity extends Activity implements View.OnClickList
             case R.id.lin_left:
                 Log.d(TAG,"点击左侧语音");
                 //mLanguageList.clear();
-
                 mLanguageList.clear();
+                if(type == Constants.LANGUAGE_SELECT_NORMAL_TYPE){
 
-                    lin_left.setBackground(getDrawable(R.drawable.language_select_left_selected));
-                    lin_right.setBackground(getDrawable(R.drawable.language_select_right_unselect));
-                    language_select_left_text.setTextColor(getApplicationContext().getResources().getColor(R.color.color_white));
-                    language_select_right_text.setTextColor(getApplicationContext().getResources().getColor(R.color.md_black_color_code));
+                }else if (type == Constants.LANGUAGE_SELECT_DEV_TYPE){
+                    language_select_left_head.setImageDrawable(getDrawable(R.drawable.language_select_dev_select));
+                    language_select_right_head.setImageDrawable(getDrawable(R.drawable.language_select_mobile_unselect));
+                }
+                lin_left.setBackground(getDrawable(R.drawable.language_select_left_selected));
+                lin_right.setBackground(getDrawable(R.drawable.language_select_right_unselect));
+                language_select_left_text.setTextColor(getApplicationContext().getResources().getColor(R.color.color_white));
+                language_select_right_text.setTextColor(getApplicationContext().getResources().getColor(R.color.md_black_color_code));
 
 
                 derect =0;
@@ -227,6 +256,12 @@ public class LanguageSelectActivity extends Activity implements View.OnClickList
             case R.id.lin_right:
                 Log.d(TAG,"点击右侧语言");
 
+                if(type == Constants.LANGUAGE_SELECT_NORMAL_TYPE){
+
+                }else if (type == Constants.LANGUAGE_SELECT_DEV_TYPE){
+                    language_select_right_head.setImageDrawable(getDrawable(R.drawable.language_select_mobile_select));
+                    language_select_left_head.setImageDrawable(getDrawable(R.drawable.language_select_dev_unselect));
+                }
                    /* language_select_right_head.setImageDrawable(getDrawable(R.drawable.language_select_left_unselect));
                     language_select_left_head.setImageDrawable(getDrawable(R.drawable.language_select_right_selected));*/
                 lin_right.setBackground(getDrawable(R.drawable.language_select_right_selected));
@@ -253,10 +288,10 @@ public class LanguageSelectActivity extends Activity implements View.OnClickList
                 }
                 mLanguageSelectAdapter.notifyDataSetChanged();
                 break;
-            case R.id.main_title_finish:
+            /*case R.id.main_title_finish:
                 setResult(Constants.LANGUAGE_CHANGE);
                 finish();
-                break;
+                break;*/
             case R.id.language_select_back:
                 finish();
                 break;

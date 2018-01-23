@@ -11,7 +11,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.util.Log;
 
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -23,13 +22,13 @@ import java.util.UUID;
  * Created by Administrator on 2018/1/16 0016.
  */
 
-public class SppBluetoothManager {
+public class SppBluetoothMessagerManager {
 
-    private static final String TAG = "SppBluetoothManager";
+    private static final String TAG = "SppBlueMessagerManager";
     private static final UUID CONNECT_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 //    private static final UUID CONNECT_UUID = UUID.fromString("00000000-0000-0000-0099-aabbccddeeff");//00000000-0000-0000-0099-aabbccddeeff
     private static final byte[] UUID_AIROHA1520 = {0, 0, 0, 0, 0, 0, 0, 0, 0, -103, -86, -69, -52, -35, -18, -1};
-    private static SppBluetoothManager mInstance;
+    private static SppBluetoothMessagerManager mInstance;
 
     private Context mContext;
     private UUID mConnectUuid;
@@ -49,18 +48,18 @@ public class SppBluetoothManager {
     private BluetoothListener mBluetoothListener;
     private BluetoothReceiverMessageListener mMessageListener;
 
-    private SppBluetoothManager(Context mContext) {
+    private SppBluetoothMessagerManager(Context mContext) {
         this.mContext = mContext;
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 //        setState(STATE_NONE);
 
     }
 
-    public static SppBluetoothManager getInstance(Context mContext) {
+    public static SppBluetoothMessagerManager getInstance(Context mContext) {
         if (mInstance == null) {
-            synchronized (SppBluetoothManager.class) {
+            synchronized (SppBluetoothMessagerManager.class) {
                 if (mInstance == null) {
-                    mInstance = new SppBluetoothManager(mContext);
+                    mInstance = new SppBluetoothMessagerManager(mContext);
                 }
             }
         }
@@ -211,6 +210,33 @@ public class SppBluetoothManager {
 //        setState(STATE_CONNECTING);
     }
 
+    public synchronized void connect(String address) {
+    BluetoothDevice mDevice = null;
+        if(mBluetoothAdapter != null){
+            mDevice = mBluetoothAdapter.getRemoteDevice(address);
+        }
+
+        if(mDevice == null){
+            return;
+        }
+
+        if (mState == STATE_CONNECTING) {
+            if (mConnectThread != null) {
+                mConnectThread.cancel();
+                mConnectThread = null;
+            }
+        }
+
+        if (mConnectedThread != null) {
+            mConnectedThread.cancel();
+            mConnectedThread = null;
+        }
+
+        mConnectThread = new ConnectThread(mDevice);
+        mConnectThread.start();
+//        setState(STATE_CONNECTING);
+    }
+
     /**
      * Start the chat service. Specifically start AcceptThread to begin a
      * session in listening (server) mode. Called by the Activity onResume()
@@ -298,7 +324,7 @@ public class SppBluetoothManager {
 
         setState(STATE_NONE);
         // Start the service over to restart listening mode
-        SppBluetoothManager.this.start();
+        SppBluetoothMessagerManager.this.start();
     }
 
     /**
@@ -327,7 +353,7 @@ public class SppBluetoothManager {
 
 
         // Start the service over to restart listening mode
-        SppBluetoothManager.this.start();
+        SppBluetoothMessagerManager.this.start();
     }
 
   /**
@@ -449,6 +475,7 @@ public class SppBluetoothManager {
         return new UUID(localByteBuffer.getLong(), localByteBuffer.getLong());
     }
 
+
     /**
      * This thread runs while listening for incoming connections. It behaves
      * like a server-side client. It runs until a connection is accepted
@@ -462,7 +489,7 @@ public class SppBluetoothManager {
         public AcceptThread() {
             BluetoothServerSocket tmp = null;
             mSocketType = "Secure";
-            UUID localUUID = getUuidFromByteArray(UUID_AIROHA1520);
+            UUID localUUID = CONNECT_UUID;
             // Create a new listening server socket
             try {
 //                if (true) {
@@ -499,7 +526,7 @@ public class SppBluetoothManager {
 
                 // If a connection was accepted
                 if (socket != null) {
-                    synchronized (SppBluetoothManager.this) {
+                    synchronized (SppBluetoothMessagerManager.this) {
                         switch (mState) {
                             case STATE_LISTEN:
                             case STATE_CONNECTING:
@@ -548,7 +575,7 @@ public class SppBluetoothManager {
             mmDevice = device;
             BluetoothSocket tmp = null;
             mSocketType = "Secure";
-            UUID localUUID = getUuidFromByteArray(UUID_AIROHA1520);
+            UUID localUUID = CONNECT_UUID;
             // Get a BluetoothSocket for a connection with the
             // given BluetoothDevice
             try {
@@ -592,7 +619,7 @@ public class SppBluetoothManager {
             }
 
             // Reset the ConnectThread because we're done
-            synchronized (SppBluetoothManager.this) {
+            synchronized (SppBluetoothMessagerManager.this) {
                 mConnectThread = null;
             }
 
@@ -651,9 +678,12 @@ public class SppBluetoothManager {
 //                    Log.e(TAG, "bytes : " + bytes);
 
                     byte[] result = new byte[20];
-                    System.arraycopy(buffer,0,result,0,result.length);
 
-                  //  mMessageListener.readByteFromOtherDevice(result);
+                    System.arraycopy(buffer,0,result,0,result.length);
+                    if(result[0] != 0x00){
+                        mMessageListener.readByteFromOtherDevice(result);
+                    }
+                    //mMessageListener.readByteFromOtherDevice(result);
                     // Send the obtained bytes to the UI Activity
 //                    mHandler.obtainMessage(Constants.MESSAGE_READ, bytes, -1, buffer)
 //                            .sendToTarget();

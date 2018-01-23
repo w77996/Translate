@@ -7,6 +7,16 @@ package com.wtwd.translate.utils;
 public class Constants {
 
 
+    public static final String BASEURL = "";
+    public static final String RIGTSTURL = "registUser.action";//注册用户
+    public static final String LOGINURL = "loginUser.action";//用户登陆
+    public static final String VERCODEURL = "verificationCodeLogin.action";//验证码登陆
+    public static final String CHECKUSERURL = "checkRegist.action";//检测用户是否已经注册
+
+
+
+
+
     public static final String IMG_PATH_KEY = "IMG_PATH";//照片存储
     public static final String INTENT_TRANT = "INTENT_TRANT";//intent 语言翻译
     public static final String INTENT_VOICE = "INTENT_VOICE";//intent 语音翻译
@@ -14,19 +24,39 @@ public class Constants {
 
     public static final float KEYBOARY_H = 0.391f;
 
+    public static final int REGIST = 0001;//注册
+    public static final int CODELOGIN = 0002;//验证码登录
+    /**
+     * 对话左右判断
+     */
     public static final int ITEM_RIGHT =0;
     public static final int ITEM_LEFT =1;
-
+    /**
+     * 语言左右选择
+     */
     public static final String LEFT_LANGUAGE = "LEFT_LANGUAGE";//左侧语言
     public static final String RIGHT_LANGUAGE = "RIGHT_LANGUAGE";//右侧语言
 
     public static final int LANGUAGE_CHANGE = 1111;//语言选择改变
+    public static final String DETRECT = "detrect";
+    public static final int  DETRECT_LEFT = 0;
+    public static final int  DETRECT_RIGHT = 1;
 
+
+    public static final int LANGUAGE_SELECT_NORMAL_TYPE = 1144;//语言选择界面（普通语言选择)
+    public static final String LANGUAGE_SELECT_TYPE = "LANGUAGE_SELECT_TYPE";
+    public static final int LANGUAGE_SELECT_DEV_TYPE = 1155;//语言选择界面（设备)
+    /**
+     * 蓝牙传递
+     */
     public static final String BLUE_DEVICE = "BLUE_DEVICE";
 
     public static final int BLUE_SCAN = 1122; //蓝牙连接扫描
     public static final int  SETTING_BLUE =1133;//进入设置连接蓝牙
 
+    /**
+     * 微软语言转换
+     */
     public static final String zh_CN = "zh-CN";//Chinese (Mandarin, simplified)
     public static final String zh_TW = "zh-TW";//Chinese (Mandarin, Taiwanese)
     public static final String en_AU = "en-AU";//English (Australia)

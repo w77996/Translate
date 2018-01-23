@@ -84,6 +84,7 @@ public class MicroRecogitionManager implements ISpeechRecognitionServerEvents {
         this.micClient.setAuthenticationUri("");
         this.micClient.startMicAndRecognition();
 
+
     }
 
 

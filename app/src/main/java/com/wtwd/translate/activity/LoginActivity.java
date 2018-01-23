@@ -11,13 +11,21 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.Response;
 import com.wtwd.translate.MainActivity;
 import com.wtwd.translate.R;
+import com.wtwd.translate.bean.ResultBean;
 import com.wtwd.translate.utils.Constants;
+import com.wtwd.translate.utils.GsonUtils;
 import com.wtwd.translate.utils.SharedPreferencesUtils;
 import com.wtwd.translate.utils.SpUtils;
 import com.wtwd.translate.utils.Utils;
 import com.wtwd.translate.utils.keybord.SoftKeyBoardListener;
+
+import cn.smssdk.EventHandler;
+import cn.smssdk.SMSSDK;
 
 /**
  * time:2018/1/8
@@ -103,15 +111,17 @@ public class LoginActivity extends Activity implements View.OnClickListener{
             case R.id.ed_pwd:
                 break;
             case R.id.img_login:
-
                 perseUsernameAndPwd();
-
                 break;
             case R.id.img_regist:
+                Intent registIntent = new Intent(LoginActivity.this,RegistActivity.class);
+                startActivityForResult(registIntent,Constants.REGIST);
                 break;
             case R.id.login_forget_pwd:
                 break;
             case R.id.login_code:
+                Intent codeLoginIntent = new Intent(LoginActivity.this,CodeLoginActivity.class);
+                startActivityForResult(codeLoginIntent,Constants.CODELOGIN);
                 break;
         }
 
@@ -119,6 +129,7 @@ public class LoginActivity extends Activity implements View.OnClickListener{
 
     /**
      * 解析用户名和密码
+     * 通信服务器
      */
     private void perseUsernameAndPwd() {
         String username = mLoginUsernameEdit.getText().toString();
@@ -131,14 +142,40 @@ public class LoginActivity extends Activity implements View.OnClickListener{
             Toast.makeText(LoginActivity.this,"请输入密码",Toast.LENGTH_SHORT).show();
             return;
         }
-        boolean isFirstStart = SpUtils.getBoolean(getApplication(), Constants.APP_FIRST_START,true);
-        if(isFirstStart){
-            Intent splashIntent = new Intent(this,SplashLableActivity.class);
-            startActivity(splashIntent);
-        }else{
-            Intent intent = new Intent(this, MainActivity.class);
-            startActivity(intent);
-        }
+        OkGo.<String>post(Constants.BASEURL+Constants.LOGINURL)
+                .params("username",username)
+                .params("passwrod",pwd)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        ResultBean resultBean = GsonUtils.getInstance().GsonToBean(response.toString(), ResultBean.class);
+                        if(resultBean.getStatus() == 0){
+                            boolean isFirstStart = SpUtils.getBoolean(getApplication(), Constants.APP_FIRST_START,true);
+                            if(isFirstStart){
+                                Intent splashIntent = new Intent(LoginActivity.this,SplashLableActivity.class);
+                                startActivity(splashIntent);
+                                finish();
+                            }else{
+                                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                                startActivity(intent);
+                                finish();
+                            }
+                        }
+                    }
+                });
+
         //和服务器进行通信，通信返回后进入下一个界面
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(resultCode == Constants.REGIST){
+
+        }
+        if(resultCode == Constants.CODELOGIN){
+
+        }
     }
 }

@@ -323,12 +323,14 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
                 break;
             case R.id.leftlanguage_head:
                 LanguageSelectIntent = new Intent(this, LanguageSelectActivity.class);
-                LanguageSelectIntent.putExtra("derect",0);
+                LanguageSelectIntent.putExtra(Constants.LANGUAGE_SELECT_TYPE,Constants.LANGUAGE_SELECT_NORMAL_TYPE);
+                LanguageSelectIntent.putExtra(Constants.DETRECT,Constants.DETRECT_LEFT);
                 startActivityForResult(LanguageSelectIntent,Constants.LANGUAGE_CHANGE);
                 break;
             case R.id.rightlanguage_head:
                 LanguageSelectIntent = new Intent(this,LanguageSelectActivity.class);
-                LanguageSelectIntent.putExtra("derect",1);
+                LanguageSelectIntent.putExtra(Constants.LANGUAGE_SELECT_TYPE,Constants.LANGUAGE_SELECT_NORMAL_TYPE);
+                LanguageSelectIntent.putExtra(Constants.DETRECT,Constants.DETRECT_RIGHT);
                 startActivityForResult(LanguageSelectIntent,Constants.LANGUAGE_CHANGE);
                 break;
             case R.id.img_tran_switch:

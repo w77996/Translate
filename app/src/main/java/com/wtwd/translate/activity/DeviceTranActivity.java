@@ -19,14 +19,11 @@ import com.wtwd.translate.adapter.DevTranListViewAdapter;
 import com.wtwd.translate.bean.Recorder;
 import com.wtwd.translate.bean.RecorderBean;
 import com.wtwd.translate.utils.Constants;
-import com.wtwd.translate.utils.SpUtils;
 import com.wtwd.translate.utils.Utils;
 import com.wtwd.translate.utils.audio.AudioMediaPlayManager;
 import com.wtwd.translate.utils.audio.AudioStateChange;
 import com.wtwd.translate.utils.blue.SppBluetoothManager;
-import com.wtwd.translate.utils.blue.SppBluetoothMessagerManager;
 import com.wtwd.translate.utils.blue.TranProtocalAnalysis;
-import com.wtwd.translate.utils.micro.MicroRecogitionManager;
 import com.wtwd.translate.view.BTOpenDialog;
 
 import java.io.File;
@@ -38,7 +35,7 @@ import java.util.List;
  * time:2017/12/27
  * Created by w77996
  */
-public class DevTranslateActivity extends Activity implements AudioStateChange,TranProtocalAnalysis.OnDeviceButtonPressedStateListener,View.OnClickListener,SppBluetoothManager.BluetoothListener,MicroRecogitionManager.MicroRecogitionManagerCallBack{
+public class DeviceTranActivity extends Activity implements AudioStateChange,TranProtocalAnalysis.OnDeviceButtonPressedStateListener,View.OnClickListener,SppBluetoothManager.BluetoothListener,SppBluetoothManager.BluetoothReceiverMessageListener {
 
     public final static String TAG = "DevTransalteActivity";
 
@@ -78,56 +75,19 @@ public class DevTranslateActivity extends Activity implements AudioStateChange,T
     DevTranListViewAdapter mDevTranListViewAdapter;
 
     SppBluetoothManager mSppBluetoothManager;
-    MicroRecogitionManager mMicroRecogitionManager;
-
-    SppBluetoothMessagerManager mSppBluetoothMessagerManager;
-
-    String leftLanguage;
-    String rightLanguage;
-
-    private SppBluetoothMessagerManager.BluetoothListener mSppMsgBluetoothListener = new SppBluetoothMessagerManager.BluetoothListener() {
-        @Override
-        public void notifyChangeConnectstate(int mState) {
-
-        }
-
-        @Override
-        public void foundBluetoothDevice(BluetoothDevice mDevice) {
-
-        }
-
-        @Override
-        public void scanBluetoothFinish() {
-
-        }
-
-        @Override
-        public void notifyChangeOpenstate(int mState) {
-
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_devtran);
-        //录音和播放
-        mAudioMediaPlayManager = AudioMediaPlayManager.getAudioMediaPlayManager(DevTranslateActivity.this);
+        mAudioMediaPlayManager = AudioMediaPlayManager.getAudioMediaPlayManager(DeviceTranActivity.this);
         mAudioMediaPlayManager.setAudioStateChange(this);
-        //协议解析
         mTranProtocalAnalysis = TranProtocalAnalysis.getTranProtocalAnalysis(this);
         mTranProtocalAnalysis.setOnDevicePressedStateListener(this);
-        //spp蓝牙连接
         mSppBluetoothManager = SppBluetoothManager.getInstance(this);
-       // mSppBluetoothManager.setBluetoothReceiverMessageListener(this);
+        mSppBluetoothManager.setBluetoothReceiverMessageListener(this);
         mSppBluetoothManager.setBluetoothListener(this);
-        //微软
-        mMicroRecogitionManager = MicroRecogitionManager.getMicroRecogitionManager(this);
-        mMicroRecogitionManager.setmicroRecogitionManagerCallBack(this);
 
-        //连接spp协议
-        mSppBluetoothMessagerManager  = SppBluetoothMessagerManager.getInstance(this);
-        mSppBluetoothMessagerManager.setBluetoothListener(mSppMsgBluetoothListener);
 
         checkBlueConnect();
 
@@ -138,17 +98,12 @@ public class DevTranslateActivity extends Activity implements AudioStateChange,T
 
     private void checkBlueConnect() {
         if(mSppBluetoothManager.getState() != SppBluetoothManager.STATE_CONNECTED){
-            Log.d(TAG,"蓝牙设备未连接");
-            Toast.makeText(DevTranslateActivity.this,"请连接设备",Toast.LENGTH_SHORT).show();
-
-        }else{
-            Log.d(TAG,"蓝牙设备已连接");
+            Toast.makeText(DeviceTranActivity.this,"请连接设备",Toast.LENGTH_SHORT).show();
         }
     }
 
     private void addListener() {
         mDevMenu.setOnClickListener(this);
-        mVoiceImage.setOnClickListener(this);
     }
 
     private void initView() {
@@ -165,25 +120,23 @@ public class DevTranslateActivity extends Activity implements AudioStateChange,T
             }
         });
         mListViewDevTran.setAdapter(mDevTranListViewAdapter);
-        leftLanguage = SpUtils.getString(this,Constants.LEFT_LANGUAGE,Constants.zh_CN);
-        rightLanguage = SpUtils.getString(this,Constants.RIGHT_LANGUAGE,Constants.en_US);
         // mVoiceFile = Utils.createFile(mVoiceFile, "VOICE_", ".3pg");
-       /* mVoiceImage.setOnTouchListener(new View.OnTouchListener() {
+        mVoiceImage.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
                         Log.d(TAG, "按钮按下");
-                       *//* File voiceFile;
+                       /* File voiceFile;
                         if (Utils.existSDCard())
                             voiceFile = new File(Environment.getExternalStorageDirectory(), "/voice");
                         else voiceFile = Environment.getDataDirectory();
                         voiceFile = Utils.createFile(voiceFile, "voice_", ".3pg");
-                        // mVoiceFilePath = Environment.getExternalStorageState()+ File.separator + System.currentTimeMillis() + ".3pg";*//*
+                        // mVoiceFilePath = Environment.getExternalStorageState()+ File.separator + System.currentTimeMillis() + ".3pg";*/
                         // TODO: 2018/1/17 判断是否连接？
                         mVoiceFilePath = Utils.getVoiceFilePath();
                         Log.d(TAG, "文件名和路径 " + mVoiceFilePath);
-                       // mAudioMediaPlayManager.star(mVoiceFilePath);
+                        // mAudioMediaPlayManager.star(mVoiceFilePath);
                         break;
                     case MotionEvent.ACTION_UP:
                         Log.d(TAG, "按钮松开");
@@ -192,7 +145,7 @@ public class DevTranslateActivity extends Activity implements AudioStateChange,T
                 }
                 return false;
             }
-        });*/
+        });
         /*mBTOpenDialog = new BTOpenDialog(this,R.layout.bt_open_dialog,new int[]{R.id.dialog_cancel, R.id.dialog_sure});
         mBTOpenDialog.setOnCenterItemClickListener(new BTOpenDialog.OnCenterItemClickListener() {
             @Override
@@ -215,11 +168,11 @@ public class DevTranslateActivity extends Activity implements AudioStateChange,T
     public void onStartRecoderUseBluetoothEar() {
 
         Log.d(TAG, "录音结束");
-       /* RecorderBean recorderBean = new RecorderBean();
+        RecorderBean recorderBean = new RecorderBean();
         recorderBean.setmFilePath(mVoiceFilePath);
         recorderBean.setType(Constants.ITEM_RIGHT);
         mRecorderList.add(recorderBean);
-        mDevTranListViewAdapter.notifyDataSetChanged();*/
+        mDevTranListViewAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -262,25 +215,29 @@ public class DevTranslateActivity extends Activity implements AudioStateChange,T
     //指令接收
     @Override
     public void onPlayCompletion() {
-        Log.d(TAG," onPlayCompletion");
+
     }
 
     @Override
     public void onPlayError() {
-        Log.d(TAG," onPlayError");
+
     }
 
 
     @Override
     public void onDevicePressedStateListener(int type) {
-        Log.d(TAG,type+" onDevicePressedStateListener");
+        Log.d(TAG,type+"");
     }
 
     @Override
     public void onDeviceReceiverTextMessageListener(String msg) {
-        Log.d(TAG,msg+" onDeviceReceiverTextMessageListener");
+
     }
 
+    @Override
+    public void readByteFromOtherDevice(byte[] reads) {
+
+    }
 
     @Override
     public void writeByteToOtherDeviceSuccess() {
@@ -297,14 +254,10 @@ public class DevTranslateActivity extends Activity implements AudioStateChange,T
         int id =v.getId();
         switch (id){
             case R.id.dev_menu:
-                Intent LanguageSelectIntent = new Intent(DevTranslateActivity.this,LanguageSelectActivity.class);
+                Intent LanguageSelectIntent = new Intent(DeviceTranActivity.this,LanguageSelectActivity.class);
                 LanguageSelectIntent.putExtra(Constants.LANGUAGE_SELECT_TYPE,Constants.LANGUAGE_SELECT_DEV_TYPE);
                 LanguageSelectIntent.putExtra(Constants.DETRECT,Constants.DETRECT_LEFT);
                 startActivityForResult(LanguageSelectIntent,Constants.LANGUAGE_CHANGE);
-                break;
-            case R.id.dev_voice:
-
-                mMicroRecogitionManager.initSpeechRecognition(rightLanguage);
                 break;
         }
     }
@@ -332,16 +285,6 @@ public class DevTranslateActivity extends Activity implements AudioStateChange,T
 
     @Override
     public void notifyChangeOpenstate(int mState) {
-
-    }
-    /**************微软录音***************/
-    @Override
-    public void onFinalResponseResult(String result) {
-            Log.d(TAG,"微软语音返回结果:"+result);
-    }
-
-    @Override
-    public void ononFinalResponseResultEmtity(String error) {
 
     }
 }

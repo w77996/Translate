@@ -27,7 +27,7 @@
                 android:textSize="20sp"
                 android:textColor="@color/color_white"
                 android:text="语言选择"/>
-            <TextView
+           <!-- <TextView
                 android:id="@+id/main_title_finish"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -35,7 +35,7 @@
                 android:layout_marginRight="@dimen/x10"
                 android:layout_centerVertical="true"
                 android:textColor="@color/color_white"
-                android:text="完成"/>
+                android:text="完成"/>-->
         </RelativeLayout>
     </LinearLayout>
     <LinearLayout

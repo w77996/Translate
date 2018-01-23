@@ -20,7 +20,7 @@ import java.util.List;
  * 2.解析设备发送过来的文字数据
  */
 
-public class TranProtocalAnalysis implements SppBluetoothManager.BluetoothReceiverMessageListener {
+public class TranProtocalAnalysis implements SppBluetoothManager.BluetoothReceiverMessageListener,SppBluetoothMessagerManager.BluetoothReceiverMessageListener{
     private static final String TAG = "TranProtocalAnalysis";
     /**
      * 一包最长数据长度
@@ -64,6 +64,7 @@ public class TranProtocalAnalysis implements SppBluetoothManager.BluetoothReceiv
     private TranProtocalAnalysis(Context mContext) {
         this.mContext = mContext;
         SppBluetoothManager.getInstance(mContext).setBluetoothReceiverMessageListener(this);
+        SppBluetoothMessagerManager.getInstance(mContext).setBluetoothReceiverMessageListener(this);
     }
 
     /**
@@ -125,7 +126,7 @@ public class TranProtocalAnalysis implements SppBluetoothManager.BluetoothReceiv
         int buttonPressDigit = cmd[digit];
 
         int packageNum = cmd[6];
-
+        buttonDigit = buttonDigit & 0xFF;
         if (0x63 == checkDigit) {
             //按键指令
             if (buttonDigit == 0x84) {

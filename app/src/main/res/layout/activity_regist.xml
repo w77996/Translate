@@ -2,6 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
     android:background="@drawable/login_bg">
 
     <LinearLayout
@@ -22,7 +23,7 @@
                 android:layout_centerInParent="true"
                 android:textSize="20sp"
                 android:textColor="@color/color_white"
-                android:text="@string/login"/>
+                android:text="@string/regist"/>
         </RelativeLayout>
     </LinearLayout>
     <LinearLayout
@@ -41,12 +42,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginRight="20dp"
-            android:layout_marginLeft="20dp"
+            android:layout_marginRight="@dimen/x20"
+            android:layout_marginLeft="@dimen/x20"
             >
             <LinearLayout
                 android:layout_width="match_parent"
@@ -68,7 +70,7 @@
                     android:layout_height="wrap_content"
                     android:background="@null"
                     android:paddingLeft="@dimen/x5"
-                    android:hint="请输入已注册的账号"
+                    android:hint="@string/regist_user_tips"
                     />
                 <ImageView
                     android:layout_width="wrap_content"
@@ -98,7 +100,7 @@
                     android:background="@null"
                     android:inputType="textPassword"
                     android:paddingLeft="5dp"
-                    android:hint="请输入密码"
+                    android:hint="@string/regist_pwd_tips"
                     />
                 <ImageView
                     android:layout_width="wrap_content"
@@ -110,40 +112,50 @@
             </LinearLayout>
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="@dimen/x40"
+                android:layout_marginBottom="@dimen/x10"
+                android:background="@drawable/login_edittext_background"
+                android:padding="@dimen/x5"
+                android:gravity="center">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/regist_code"
+                    />
+                <EditText
+                    android:id="@+id/ed_code"
+                    android:layout_weight="1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:inputType="textPassword"
+                    android:paddingLeft="5dp"
+                    android:hint="@string/regist_code_tips"
+                    />
                 <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:id="@+id/login_forget_pwd"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="忘记密码"/>
-                    <TextView
-                        android:id="@+id/login_code"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:text="@string/code_login"/>
+                    android:layout_width="@dimen/x80"
+                    android:layout_height="match_parent">
                     <ImageView
-                        android:id="@+id/img_login"
-                        android:layout_below="@+id/login_forget_pwd"
+                        android:id="@+id/img_getcode"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:src="@drawable/login_loginbtn"
-                        android:layout_alignParentLeft="true"
-                        android:layout_marginTop="@dimen/x10"/>
-                    <ImageView
-                        android:id="@+id/img_regist"
-                        android:layout_below="@+id/login_code"
+                        android:src="@drawable/regist_code_btn"
+                        android:layout_marginRight="@dimen/x5"
+                        android:layout_centerInParent="true"
+                        android:layout_centerVertical="true"/>
+                    <TextView
+                        android:id="@+id/tv_getcode"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginTop="@dimen/x10"
-                        android:src="@drawable/login_registbtn"/>
-
+                        android:textColor="@color/main_title_color"
+                        android:layout_marginRight="@dimen/x5"
+                        android:layout_centerVertical="true"
+                        android:layout_centerInParent="true"
+                        android:text="获取验证码"/>
                 </RelativeLayout>
+
             </LinearLayout>
+
         </LinearLayout>
 
     </RelativeLayout>
@@ -153,55 +165,31 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/x30"
         android:gravity="center">
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/login_left_line"
-            />
-        <TextView
-            android:layout_marginLeft="@dimen/x15"
-            android:layout_marginRight="@dimen/x15"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/main_title_color"
-            android:text="第三方登录"/>
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@drawable/login_right_line"
-            />
+
     </LinearLayout>
     <LinearLayout
-        android:id="@+id/linear_login_else"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginBottom="@dimen/x50"
+        android:layout_marginBottom="@dimen/x30"
         android:layout_alignParentBottom="true">
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
-        <ImageView
-            android:id="@+id/img_wechat_login"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toLeftOf="@+id/img_sina_login"
-            android:src="@drawable/wechat_login"/>
-        <ImageView
-            android:id="@+id/img_sina_login"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginLeft="@dimen/x50"
-            android:layout_marginRight="@dimen/x50"
-            android:src="@drawable/sina_login"/>
-        <ImageView
-            android:id="@+id/img_qq_login"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/img_sina_login"
-            android:src="@drawable/qqlogin"/>
-    </RelativeLayout>
+            >
+          <ImageView
+              android:id="@+id/img_regist_btn"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_centerInParent="true"
+              android:src="@drawable/regist_btn_bg"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:textColor="@color/color_white"
+                android:textSize="16sp"
+                android:text="@string/regist"/>
+        </RelativeLayout>
     </LinearLayout>
 </RelativeLayout>

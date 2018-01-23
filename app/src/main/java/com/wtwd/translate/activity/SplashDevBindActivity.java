@@ -24,7 +24,7 @@ import com.wtwd.translate.view.BTOpenDialog;
  * time:2018/1/11
  * Created by w77996
  */
-public class SplashDevBindActivity extends Activity implements View.OnClickListener,SppBluetoothManager.BluetoothListener,BTOpenDialog.OnCenterItemClickListener{
+public class SplashDevBindActivity extends Activity implements View.OnClickListener,SppBluetoothManager.BluetoothListener,BTOpenDialog.OnCenterItemClickListener,SppBluetoothManager.BluetoothReceiverMessageListener {
 
 
     public static final String TAG = "SplashDevBindActivity";
@@ -64,10 +64,12 @@ public class SplashDevBindActivity extends Activity implements View.OnClickListe
         setContentView(R.layout.activity_dev_bind);
         mSppBluetoothManager = SppBluetoothManager.getInstance(this);
         mSppBluetoothManager.setBluetoothListener(this);
+        mSppBluetoothManager.setBluetoothReceiverMessageListener(this);
         initView();
         mBTOpenDialog.show();
         addListener();
     }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -195,5 +197,20 @@ public class SplashDevBindActivity extends Activity implements View.OnClickListe
             default:
                 break;
         }
+    }
+
+    @Override
+    public void readByteFromOtherDevice(byte[] reads) {
+        Log.d(TAG,reads.length+"");
+    }
+
+    @Override
+    public void writeByteToOtherDeviceSuccess() {
+
+    }
+
+    @Override
+    public void writeByteToOtherDeviceFailed() {
+
     }
 }
