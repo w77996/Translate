@@ -38,5 +38,33 @@
     <string name="tips_code_send_success">验证码发送成功</string>
     <string name="tips_intput_username">请输入用户名</string>
     <string name="tips_intput_code">请输入验证码</string>
+    <string name="record_fail">录音失败</string>
+    <string name="no_network">请连接网络</string>
+    <string name="dev_tran">设备翻译</string>
+    <string name="chat">双人对话</string>
+    <string name="voice_tran">语音翻译</string>
+    <string name="tran_matine">翻译机</string>
+    <string name="open_connect_blue">请打开蓝牙并连接设备</string>
+    <string name="cancel">取消</string>
+    <string name="sure">确定</string>
+    <string name="detect_dev_open">请检查设备是否开启</string>
+    <string name="open_dev_near_mobile">开启后请将设备靠近手机</string>
+    <string name="dev_bind">设备绑定</string>
+    <string name="connect_dev">请连接设备</string>
+    <string name="dev_isrecoder">设备在录音</string>
+    <string name="user_info">个人信息</string>
+    <string name="my_head_img">我的头像</string>
+    <string name="user_name">用户名</string>
+    <string name="sex">性别</string>
+    <string name="birthday">生日</string>
+    <string name="hight">身高</string>
+    <string name="weight">体重</string>
+    <string name="mobile_number">手机号</string>
+    <string name="mail">邮箱</string>
+    <string name="wechat">微信</string>
+    <string name="sex_male">男</string>
+    <string name="my_dev">我的设备</string>
+    <string name="question">常见问题</string>
+    <string name="click_edit_head">点击编辑头像</string>
 
 </resources>

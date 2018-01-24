@@ -122,7 +122,7 @@ public class Utils {
         if (existSDCard())
             voiceFile = new File(Environment.getExternalStorageDirectory(), "/voice");
         else voiceFile = Environment.getDataDirectory();
-        voiceFile = createFile(voiceFile, "voice_", ".wav");
+        voiceFile = createFile(voiceFile, "voice_", ".3pg");
         // mVoiceFilePath = Environment.getExternalStorageState()+ File.separator + System.currentTimeMillis() + ".3pg";
 
         return voiceFile.getAbsolutePath();

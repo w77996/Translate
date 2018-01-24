@@ -22,13 +22,15 @@ import java.util.UUID;
  * Created by Administrator on 2018/1/16 0016.
  */
 
-public class SppBluetoothMessagerManager {
+public class SppBluetoothReceivedManager {
 
-    private static final String TAG = "SppBlueMessagerManager";
+    private static final String TAG = "SppBlueReceivedManager";
     private static final UUID CONNECT_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+    private static final UUID SPP_DEFAULT_UUID =
+            UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
 //    private static final UUID CONNECT_UUID = UUID.fromString("00000000-0000-0000-0099-aabbccddeeff");//00000000-0000-0000-0099-aabbccddeeff
     private static final byte[] UUID_AIROHA1520 = {0, 0, 0, 0, 0, 0, 0, 0, 0, -103, -86, -69, -52, -35, -18, -1};
-    private static SppBluetoothMessagerManager mInstance;
+    private static SppBluetoothReceivedManager mInstance;
 
     private Context mContext;
     private UUID mConnectUuid;
@@ -48,18 +50,18 @@ public class SppBluetoothMessagerManager {
     private BluetoothListener mBluetoothListener;
     private BluetoothReceiverMessageListener mMessageListener;
 
-    private SppBluetoothMessagerManager(Context mContext) {
+    private SppBluetoothReceivedManager(Context mContext) {
         this.mContext = mContext;
         mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 //        setState(STATE_NONE);
 
     }
 
-    public static SppBluetoothMessagerManager getInstance(Context mContext) {
+    public static SppBluetoothReceivedManager getInstance(Context mContext) {
         if (mInstance == null) {
-            synchronized (SppBluetoothMessagerManager.class) {
+            synchronized (SppBluetoothReceivedManager.class) {
                 if (mInstance == null) {
-                    mInstance = new SppBluetoothMessagerManager(mContext);
+                    mInstance = new SppBluetoothReceivedManager(mContext);
                 }
             }
         }
@@ -210,33 +212,6 @@ public class SppBluetoothMessagerManager {
 //        setState(STATE_CONNECTING);
     }
 
-    public synchronized void connect(String address) {
-    BluetoothDevice mDevice = null;
-        if(mBluetoothAdapter != null){
-            mDevice = mBluetoothAdapter.getRemoteDevice(address);
-        }
-
-        if(mDevice == null){
-            return;
-        }
-
-        if (mState == STATE_CONNECTING) {
-            if (mConnectThread != null) {
-                mConnectThread.cancel();
-                mConnectThread = null;
-            }
-        }
-
-        if (mConnectedThread != null) {
-            mConnectedThread.cancel();
-            mConnectedThread = null;
-        }
-
-        mConnectThread = new ConnectThread(mDevice);
-        mConnectThread.start();
-//        setState(STATE_CONNECTING);
-    }
-
     /**
      * Start the chat service. Specifically start AcceptThread to begin a
      * session in listening (server) mode. Called by the Activity onResume()
@@ -324,7 +299,7 @@ public class SppBluetoothMessagerManager {
 
         setState(STATE_NONE);
         // Start the service over to restart listening mode
-        SppBluetoothMessagerManager.this.start();
+        SppBluetoothReceivedManager.this.start();
     }
 
     /**
@@ -338,7 +313,7 @@ public class SppBluetoothMessagerManager {
             if (mState != STATE_CONNECTED) return;
             r = mConnectedThread;
         }
-//        Log.e(TAG, "send out lenght : " + out.length);
+//       Log.e(TAG, "send out lenght : " + out.length);
         r.write(out);
     }
 
@@ -353,7 +328,7 @@ public class SppBluetoothMessagerManager {
 
 
         // Start the service over to restart listening mode
-        SppBluetoothMessagerManager.this.start();
+        SppBluetoothReceivedManager.this.start();
     }
 
   /**
@@ -475,7 +450,6 @@ public class SppBluetoothMessagerManager {
         return new UUID(localByteBuffer.getLong(), localByteBuffer.getLong());
     }
 
-
     /**
      * This thread runs while listening for incoming connections. It behaves
      * like a server-side client. It runs until a connection is accepted
@@ -522,11 +496,14 @@ public class SppBluetoothMessagerManager {
                 } catch (IOException e) {
                     Log.e(TAG, "Socket Type: " + mSocketType + " accept() failed", e);
                     break;
+                }catch(NullPointerException e){
+                    Log.e(TAG,"");
+                    break;
                 }
 
                 // If a connection was accepted
                 if (socket != null) {
-                    synchronized (SppBluetoothMessagerManager.this) {
+                    synchronized (SppBluetoothReceivedManager.this) {
                         switch (mState) {
                             case STATE_LISTEN:
                             case STATE_CONNECTING:
@@ -555,6 +532,8 @@ public class SppBluetoothMessagerManager {
             try {
                 mmServerSocket.close();
             } catch (IOException e) {
+                Log.e(TAG, "Socket Type" + mSocketType + "close() of server failed", e);
+            }catch (NullPointerException e){
                 Log.e(TAG, "Socket Type" + mSocketType + "close() of server failed", e);
             }
         }
@@ -619,7 +598,7 @@ public class SppBluetoothMessagerManager {
             }
 
             // Reset the ConnectThread because we're done
-            synchronized (SppBluetoothMessagerManager.this) {
+            synchronized (SppBluetoothReceivedManager.this) {
                 mConnectThread = null;
             }
 
@@ -674,16 +653,16 @@ public class SppBluetoothMessagerManager {
             while (mState == STATE_CONNECTED) {
                 try {
                     // Read from the InputStream
-//                    bytes = mmInStream.read(buffer);
+                    bytes = mmInStream.read(buffer);
 //                    Log.e(TAG, "bytes : " + bytes);
 
-                    byte[] result = new byte[20];
 
-                    System.arraycopy(buffer,0,result,0,result.length);
-                    if(result[0] != 0x00){
+                    if(bytes > 0){
+                        byte[] result = new byte[20];
+                        System.arraycopy(buffer,0,result,0,bytes);
                         mMessageListener.readByteFromOtherDevice(result);
                     }
-                    //mMessageListener.readByteFromOtherDevice(result);
+
                     // Send the obtained bytes to the UI Activity
 //                    mHandler.obtainMessage(Constants.MESSAGE_READ, bytes, -1, buffer)
 //                            .sendToTarget();

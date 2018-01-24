@@ -27,7 +27,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/color_white"
-                    android:text="沃德 >"/>
+                    android:text="沃德"/>
                 <TextView
                     android:id="@+id/user_mobile"
                     android:layout_below="@+id/user_name"
@@ -35,7 +35,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="#929292"
-                    android:text="点击编辑头像"/>
+                    android:text="@string/click_edit_head"/>
             </LinearLayout>
         </LinearLayout>
     <LinearLayout
@@ -56,7 +56,7 @@
                 android:paddingLeft="@dimen/x15"
                 android:textColor="@color/md_black_color_code"
                 android:textSize="15sp"
-                android:text="我的设备"/>
+                android:text="@string/my_dev"/>
         </LinearLayout>
         <View
             android:layout_width="match_parent"
@@ -81,7 +81,7 @@
                     android:textSize="15sp"
                     android:textColor="@color/md_black_color_code"
                     android:paddingLeft="@dimen/x10"
-                    android:text="设备绑定"/>
+                    android:text="@string/dev_bind"/>
             </LinearLayout>
             <View
                 android:layout_width="match_parent"
@@ -125,7 +125,7 @@
                     android:textSize="15sp"
                     android:textColor="@color/md_black_color_code"
                     android:paddingLeft="@dimen/x10"
-                    android:text="常见问题"/>
+                    android:text="@string/question"/>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

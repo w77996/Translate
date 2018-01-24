@@ -48,6 +48,7 @@
         <activity android:name=".activity.DevTranslateActivity"
             android:theme="@style/AppTheme.NoActionBar.Permissions"/>
         <activity android:name=".activity.LanguageSelectActivity"/>
+        <activity android:name=".activity.UserActivity"/>
        <!-- <activity android:name=".activity.SplashLableActivity"/>-->
         <!--<activity android:name=".activity.SplashLanguageActivity"/>-->
     </application>
@@ -72,4 +73,10 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <uses-permission android:name="android.permission.BROADCAST_STICKY" />
+
+    <!--<uses-permission android:name="android.permission.WRITE_APN_SETTINGS"/>-->
 </manifest>

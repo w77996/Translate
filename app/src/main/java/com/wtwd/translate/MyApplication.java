@@ -4,7 +4,6 @@ import android.app.Application;
 
 import com.mob.MobSDK;
 import com.wtwd.translate.utils.blue.SppBluetoothManager;
-import com.wtwd.translate.utils.blue.SppBluetoothMessagerManager;
 
 /**
  * time:2018/1/18

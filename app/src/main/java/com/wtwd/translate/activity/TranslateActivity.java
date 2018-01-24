@@ -373,6 +373,16 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
     }
 
     @Override
+    public void onError(String s) {
+
+    }
+
+   /* @Override
+    public void onMicroStartRecoderUseBluetoothEar() {
+
+    }*/
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == Constants.LANGUAGE_CHANGE){

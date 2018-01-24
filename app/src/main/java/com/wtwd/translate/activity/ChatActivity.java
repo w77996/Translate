@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.microsoft.cognitiveservices.speechrecognition.DataRecognitionClient;
 import com.microsoft.cognitiveservices.speechrecognition.ISpeechRecognitionServerEvents;
@@ -234,6 +235,10 @@ public class ChatActivity extends Activity implements View.OnClickListener,Audio
                     mAudioMediaPlayManager.stopRecorderUsePhone();
                     lin_right.setBackground(this.getDrawable(R.drawable.chat_right_btn_selected));
                 }*/
+               if(!Utils.isNetworkConnected(this)){
+                   Toast.makeText(this,R.string.no_network,Toast.LENGTH_SHORT).show();
+                   return;
+               }
                Log.d(TAG,"左侧开始录音");
                 lin_left.setBackground(this.getDrawable(R.drawable.chat_left_btn_selected));
                 if(leftIsStartVoice){
@@ -268,6 +273,10 @@ public class ChatActivity extends Activity implements View.OnClickListener,Audio
                     mAudioMediaPlayManager.stopRecorderUsePhone();
                     leftIsStartVoice;
                 }*/
+                if(!Utils.isNetworkConnected(this)){
+                    Toast.makeText(this,R.string.no_network,Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 Log.d(TAG,"右侧开始录音");
                 lin_right.setBackground(this.getDrawable(R.drawable.chat_right_btn_selected));
                 if(rightIsStartVoice){
@@ -527,6 +536,8 @@ public class ChatActivity extends Activity implements View.OnClickListener,Audio
        // mAudioMediaPlayManager.stopRecorderUsePhone();
         if(recognitionResult.Results.length <= 0){
             Log.e(TAG,"recognitionResult 长度为0识别失败");
+            lin_right.setBackground(this.getDrawable(R.drawable.chat_right_btn_unselect));
+            lin_left.setBackground(this.getDrawable(R.drawable.chat_left_btn_unselect));
             return;
         }
         //更新界面

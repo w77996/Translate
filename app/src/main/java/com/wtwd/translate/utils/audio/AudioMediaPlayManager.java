@@ -83,30 +83,29 @@ public class AudioMediaPlayManager {
     /**
      * 使用蓝牙耳机录音,3gp格式
      *
-     * @param mFilePath 录音文件存储位置
      */
-    public void startRecorderUseBluetoothEar(String mFilePath) {
+    public void startRecorderUseBluetoothEar() {
         if (notClientedBluetoothEar()) {
             return;
         }
 
-        this.mFilePath = mFilePath;
-        mMediaRecorder = new MediaRecorder();
-        mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT);
+       /* this.mFilePath = mFilePath;
+       mMediaRecorder = new MediaRecorder();
+         mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT);
         mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
         mMediaRecorder.setOutputFile(mFilePath);
-        mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
-        try {
+        mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);*/
+       /* try {
             mMediaRecorder.prepare();//打开录音文件
         } catch (IOException e) {
             Log.e(TAG, "prepare() failed");
-        }
+        }*/
 
         if (!mAudioManager.isBluetoothScoAvailableOffCall()) {
             Log.e(TAG, "系统不支持蓝牙录音");
             return;
         }
-        mAudioManager.stopBluetoothSco();
+//        mAudioManager.stopBluetoothSco();
         //蓝牙录音的关键，启动SCO连接，耳机话筒才起作用
         mAudioManager.startBluetoothSco();
         //蓝牙SCO连接建立需要时间，连接建立后会发出ACTION_SCO_AUDIO_STATE_CHANGED消息，通过接收该消息而进入后续逻辑。
@@ -118,7 +117,7 @@ public class AudioMediaPlayManager {
                 Log.e(TAG, "state : " + state);
                 if (AudioManager.SCO_AUDIO_STATE_CONNECTED == state) {
                     mAudioManager.setBluetoothScoOn(true);  //打开SCO
-                    mMediaRecorder.start();//开始录音
+                  //  mMediaRecorder.start();//开始录音
 
                     mAudioStateChange.onStartRecoderUseBluetoothEar();
 
@@ -138,7 +137,64 @@ public class AudioMediaPlayManager {
         }, new IntentFilter(AudioManager.ACTION_SCO_AUDIO_STATE_UPDATED));
 
     }
+    /**
+     * 使用蓝牙耳机录音,3gp格式
+     *
+     * @param mFilePath 录音文件存储位置
+     */
+    public void startRecorderUseBluetoothEar(String mFilePath) {
+        if (notClientedBluetoothEar()) {
+            return;
+        }
 
+        this.mFilePath = mFilePath;
+       mMediaRecorder = new MediaRecorder();
+         mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.DEFAULT);
+        mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.THREE_GPP);
+        mMediaRecorder.setOutputFile(mFilePath);
+        mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AMR_NB);
+       try {
+            mMediaRecorder.prepare();//打开录音文件
+        } catch (IOException e) {
+            Log.e(TAG, "prepare() failed");
+        }
+
+        if (!mAudioManager.isBluetoothScoAvailableOffCall()) {
+            Log.e(TAG, "系统不支持蓝牙录音");
+            return;
+        }
+//        mAudioManager.stopBluetoothSco();
+        //蓝牙录音的关键，启动SCO连接，耳机话筒才起作用
+        mAudioManager.startBluetoothSco();
+        //蓝牙SCO连接建立需要时间，连接建立后会发出ACTION_SCO_AUDIO_STATE_CHANGED消息，通过接收该消息而进入后续逻辑。
+        //也有可能此时SCO已经建立，则不会收到上述消息，可以startBluetoothSco()前先stopBluetoothSco()
+        mContext.registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                int state = intent.getIntExtra(AudioManager.EXTRA_SCO_AUDIO_STATE, -1);
+                Log.e(TAG, "state : " + state);
+                if (AudioManager.SCO_AUDIO_STATE_CONNECTED == state) {
+                    mAudioManager.setBluetoothScoOn(true);  //打开SCO
+                    //  mMediaRecorder.start();//开始录音
+
+                    mAudioStateChange.onStartRecoderUseBluetoothEar();
+
+                    mContext.unregisterReceiver(this);//开始录音后就可以注销掉广播，下次录音再次注册
+                } else {//等待一秒后再尝试启动SCO
+                    Log.e(TAG, "start sco fail");
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                    mAudioManager.setBluetoothScoOn(true);
+                    mAudioManager.startBluetoothSco();
+
+                }
+            }
+        }, new IntentFilter(AudioManager.ACTION_SCO_AUDIO_STATE_UPDATED));
+
+    }
     /**
      * 停止蓝牙耳机录音
      **/
@@ -260,14 +316,14 @@ public class AudioMediaPlayManager {
      * 使用手机录音
      */
     public void startRecorderUsePhone(String mFilePath) {
-        this.mFilePath = mFilePath;
+        //this.mFilePath = mFilePath;
         //创建MediaRecorder对象
-        mMediaRecorder = new MediaRecorder();
+        //mMediaRecorder = new MediaRecorder();
         try {
 
             //配置mMediaRecorder相应参数
             //从麦克风采集声音数据
-            mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+           /* mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
             //设置保存文件格式为MP4
             mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
             //设置采样频率,44100是所有安卓设备都支持的频率,频率越高，音质越好，当然文件越大
@@ -280,7 +336,7 @@ public class AudioMediaPlayManager {
             mMediaRecorder.setOutputFile(mFilePath);
             //开始录音
             mMediaRecorder.prepare();
-            mMediaRecorder.start();
+            mMediaRecorder.start();*/
 
             mAudioStateChange.onStartRecoderUsePhone();
             //记录开始录音时间

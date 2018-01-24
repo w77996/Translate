@@ -1,7 +1,6 @@
 package com.wtwd.translate.activity;
 
 import android.app.Activity;
-import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,10 +15,11 @@ import android.widget.Toast;
 
 import com.wtwd.translate.MainActivity;
 import com.wtwd.translate.R;
-import com.wtwd.translate.utils.Constants;
 import com.wtwd.translate.utils.blue.GetConnectedBluetoothDeviceFromSystem;
 import com.wtwd.translate.utils.blue.SppBluetoothManager;
-import com.wtwd.translate.utils.blue.SppBluetoothMessagerManager;
+import com.wtwd.translate.utils.blue.SppBluetoothReceivedManager;
+import com.wtwd.translate.utils.blue.TranProtocalAnalysis;
+import com.wtwd.translate.utils.blue.TranProtocalReceivedAnalysis;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -48,15 +48,42 @@ public class SplashDevPairActivity extends Activity implements View.OnClickListe
      */
     private TextView tv_pair_state;
 
-
+    TranProtocalAnalysis mTranProtocalAnalysis;
+    TranProtocalReceivedAnalysis mTranProtocalReceivedAnalysis;
 
     BluetoothDevice mBluetoothDevice;
     private SppBluetoothManager mSppBluetoothManager;
-    private SppBluetoothMessagerManager mSppBluetoothMessagerManager;
-    private SppBluetoothMessagerManager.BluetoothListener mSppBlueMsgListener = new SppBluetoothMessagerManager.BluetoothListener() {
+    private SppBluetoothReceivedManager mSppBluetoothReceivedManager;
+    int mSppBluetoothManagerState = -1;
+    int mSppBluetoothReceivedManagerState = -1;
+    private SppBluetoothReceivedManager.BluetoothListener mSppBlueMsgListener = new SppBluetoothReceivedManager.BluetoothListener() {
         @Override
         public void notifyChangeConnectstate(int mState) {
             Log.d(TAG,"SppBluetoothMessagerManager :state"+mState);
+            mSppBluetoothReceivedManagerState = mState;
+            if(mSppBluetoothReceivedManagerState == SppBluetoothManager.STATE_CONNECTED && mSppBluetoothManagerState == SppBluetoothManager.STATE_CONNECTED){
+                Log.d(TAG,"mSppBluetoothReceivedManagerState蓝牙连接state "+mState);
+                // img_bind_circle.clearAnimation();
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        tv_pair_state.setText("配对成功");
+                        img_bind_circle.clearAnimation();
+                    }
+                });
+            }else{
+                Log.d(TAG,"mSppBluetoothReceivedManagerState蓝牙连接state "+mState);
+                // img_bind_circle.clearAnimation();
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        tv_pair_state.setText("配对失败");
+                        img_bind_circle.clearAnimation();
+                    }
+                });
+            }
         }
 
         @Override
@@ -75,6 +102,9 @@ public class SplashDevPairActivity extends Activity implements View.OnClickListe
         }
     } ;
 
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,9 +121,54 @@ public class SplashDevPairActivity extends Activity implements View.OnClickListe
         mSppBluetoothManager.setGetConnectedBluetoothDeviceFromSystem(this);
         mSppBluetoothManager.getConnectBt();
 
-        mSppBluetoothMessagerManager = SppBluetoothMessagerManager.getInstance(this);
-        mSppBluetoothMessagerManager.setBluetoothListener(mSppBlueMsgListener);
-        mSppBluetoothMessagerManager.setGetConnectedBluetoothDeviceFromSystem(new GetConnectedBluetoothDeviceFromSystem() {
+        mSppBluetoothReceivedManager = mSppBluetoothReceivedManager.getInstance(this);
+        mSppBluetoothReceivedManager.setBluetoothListener(mSppBlueMsgListener);
+
+        mTranProtocalAnalysis = TranProtocalAnalysis.getTranProtocalAnalysis(this);
+        mTranProtocalAnalysis.setOnDevicePressedStateListener(new TranProtocalAnalysis.OnDeviceButtonPressedStateListener() {
+            @Override
+            public void onDevicePressedStateListener(int type) {
+
+            }
+
+            @Override
+            public void onDeviceReceiverTextMessageListener(String msg) {
+
+            }
+
+            @Override
+            public void writeByteToOtherDeviceSuccess() {
+
+            }
+
+            @Override
+            public void writeByteToOtherDeviceFailed() {
+
+            }
+        });
+        mTranProtocalReceivedAnalysis = TranProtocalReceivedAnalysis.getTranProtocalAnalysis(this);
+        mTranProtocalReceivedAnalysis.setOnDevicePressedStateListener(new TranProtocalReceivedAnalysis.OnDeviceButtonPressedStateListener() {
+            @Override
+            public void onDevicePressedStateListener(int type) {
+
+            }
+
+            @Override
+            public void onDeviceReceiverTextMessageListener(String msg) {
+
+            }
+
+            @Override
+            public void writeByteToOtherDeviceSuccess() {
+
+            }
+
+            @Override
+            public void writeByteToOtherDeviceFailed() {
+
+            }
+        });
+        /*mSppBluetoothMessagerManager.setGetConnectedBluetoothDeviceFromSystem(new GetConnectedBluetoothDeviceFromSystem() {
             @Override
             public void onConnectedBluetoothDevice(BluetoothDevice mDevice) {
                 if(null == mDevice){
@@ -108,7 +183,7 @@ public class SplashDevPairActivity extends Activity implements View.OnClickListe
                 }
             }
         });
-        mSppBluetoothMessagerManager.getConnectBt();
+        mSppBluetoothMessagerManager.getConnectBt();*/
 
        // mSppBluetoothManager.start();
 
@@ -120,8 +195,9 @@ public class SplashDevPairActivity extends Activity implements View.OnClickListe
     protected void onResume() {
         super.onResume();
         Log.e(TAG,"mSppBluetoothManager.start()");
-        mSppBluetoothManager.start();
-        mSppBluetoothMessagerManager.start();
+        //mSppBluetoothManager.start();
+        mSppBluetoothReceivedManager.start();
+
     }
 
     /**
@@ -168,7 +244,8 @@ public class SplashDevPairActivity extends Activity implements View.OnClickListe
 
     @Override
     public void notifyChangeConnectstate(int mState) {
-        if(mState == SppBluetoothManager.STATE_CONNECTED){
+        mSppBluetoothManagerState = mState;
+        if(mSppBluetoothManagerState == SppBluetoothManager.STATE_CONNECTED && mSppBluetoothReceivedManagerState == SppBluetoothReceivedManager.STATE_CONNECTED){
             Log.d(TAG,"蓝牙连接state "+mState);
            // img_bind_circle.clearAnimation();
 
@@ -192,6 +269,14 @@ public class SplashDevPairActivity extends Activity implements View.OnClickListe
             startActivity(intent);
             finish();*/
             //getHomeActivity();
+        }else{
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    tv_pair_state.setText("配对失败");
+                    img_bind_circle.clearAnimation();
+                }
+            });
         }
         if(mState == SppBluetoothManager.STATE_CONNECTING){
             Log.d(TAG,"蓝牙连接中state "+mState);
@@ -266,7 +351,7 @@ public class SplashDevPairActivity extends Activity implements View.OnClickListe
         }else{
             Log.e(TAG,"蓝牙连接");
             mSppBluetoothManager.connect(mDevice);
-
+            mSppBluetoothReceivedManager.connect(mDevice);
         }
     }
 }

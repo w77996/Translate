@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.widget.RemoteViews;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,13 +19,13 @@ import java.util.List;
  * 2.解析设备发送过来的文字数据
  */
 
-public class TranProtocalAnalysis implements SppBluetoothManager.BluetoothReceiverMessageListener{
+public class TranProtocalReceivedAnalysis implements SppBluetoothReceivedManager.BluetoothReceiverMessageListener{
     private static final String TAG = "TranProtocalAnalysis";
     /**
      * 一包最长数据长度
      */
     private static final int PACKAGE_LENGTH = 12;
-    private static TranProtocalAnalysis mAnalysis;
+    private static TranProtocalReceivedAnalysis mAnalysis;
     private Context mContext;
 
     /**
@@ -41,39 +40,39 @@ public class TranProtocalAnalysis implements SppBluetoothManager.BluetoothReceiv
     /**
      * 设备F2按下时的flag
      */
-    public static final int BUTTON_F2_PRESSED = 0x01;
+    private static final int BUTTON_F2_PRESSED = 0x01;
     /**
      * 设备F2松开时的flag
      */
-    public static final int BUTTON_F2_RELEASED = 0x02;
+    private static final int BUTTON_F2_RELEASED = 0x02;
 
     /**
      * 设备F3按下时的flag
      */
-    public static final int BUTTON_F3_PRESSED = 0x03;
+    private static final int BUTTON_F3_PRESSED = 0x03;
     /**
      * 设备F3松开时的flag
      */
-    public static final int BUTTON_F3_RELEASED = 0x04;
+    private static final int BUTTON_F3_RELEASED = 0x04;
 
     /**
      * 监听设备按键状态，发送数据是否成功
      */
     private OnDeviceButtonPressedStateListener mOnDevicePressedStateListener;
 
-    private TranProtocalAnalysis(Context mContext) {
+    private TranProtocalReceivedAnalysis(Context mContext) {
         this.mContext = mContext;
-        SppBluetoothManager.getInstance(mContext).setBluetoothReceiverMessageListener(this);
+        SppBluetoothReceivedManager.getInstance(mContext).setBluetoothReceiverMessageListener(this);
     }
 
     /**
      * 获取TranProtocalAnalysis对象
      */
-    public static TranProtocalAnalysis getTranProtocalAnalysis(Context mContext) {
+    public static TranProtocalReceivedAnalysis getTranProtocalAnalysis(Context mContext) {
         if (mAnalysis == null) {
-            synchronized (TranProtocalAnalysis.class) {
+            synchronized (TranProtocalReceivedAnalysis.class) {
                 if (mAnalysis == null) {
-                    mAnalysis = new TranProtocalAnalysis(mContext);
+                    mAnalysis = new TranProtocalReceivedAnalysis(mContext);
                 }
             }
         }
@@ -119,6 +118,7 @@ public class TranProtocalAnalysis implements SppBluetoothManager.BluetoothReceiv
      * 解析设备按键状态和处理接收数据
      */
     private void analysisCMD(byte[] cmd) {
+        Log.e(TAG,"cmd:"+Arrays.toString(cmd));
         int digit = 0;
         int checkDigit = cmd[digit++];
         int buttonDigit = cmd[digit++];
@@ -303,18 +303,18 @@ public class TranProtocalAnalysis implements SppBluetoothManager.BluetoothReceiv
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case BUTTON_F2_PRESSED:
-                    mOnDevicePressedStateListener.onDevicePressedStateListener(BUTTON_F2_RELEASED);
-                    break;
-
-                case BUTTON_F2_RELEASED:
                     mOnDevicePressedStateListener.onDevicePressedStateListener(BUTTON_F2_PRESSED);
                     break;
 
+                case BUTTON_F2_RELEASED:
+                    mOnDevicePressedStateListener.onDevicePressedStateListener(BUTTON_F2_RELEASED);
+                    break;
+
                 case BUTTON_F3_PRESSED:
-                    mOnDevicePressedStateListener.onDevicePressedStateListener(BUTTON_F3_RELEASED);
+                    mOnDevicePressedStateListener.onDevicePressedStateListener(BUTTON_F3_PRESSED);
                     break;
                 case BUTTON_F3_RELEASED:
-                    mOnDevicePressedStateListener.onDevicePressedStateListener(BUTTON_F3_PRESSED);
+                    mOnDevicePressedStateListener.onDevicePressedStateListener(BUTTON_F3_RELEASED);
                     break;
             }
 

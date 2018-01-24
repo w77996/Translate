@@ -27,6 +27,7 @@ public class SppBluetoothManager {
 
     private static final String TAG = "SppBluetoothManager";
     private static final UUID CONNECT_UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB");
+
 //    private static final UUID CONNECT_UUID = UUID.fromString("00000000-0000-0000-0099-aabbccddeeff");//00000000-0000-0000-0099-aabbccddeeff
     private static final byte[] UUID_AIROHA1520 = {0, 0, 0, 0, 0, 0, 0, 0, 0, -103, -86, -69, -52, -35, -18, -1};
     private static SppBluetoothManager mInstance;
@@ -312,7 +313,7 @@ public class SppBluetoothManager {
             if (mState != STATE_CONNECTED) return;
             r = mConnectedThread;
         }
-//        Log.e(TAG, "send out lenght : " + out.length);
+//       Log.e(TAG, "send out lenght : " + out.length);
         r.write(out);
     }
 
@@ -493,6 +494,9 @@ public class SppBluetoothManager {
                     // successful connection or an exception
                     socket = mmServerSocket.accept();
                 } catch (IOException e) {
+                    Log.e(TAG, "Socket Type: " + mSocketType + " accept() failed", e);
+                    break;
+                }catch (NullPointerException e){
                     Log.e(TAG, "Socket Type: " + mSocketType + " accept() failed", e);
                     break;
                 }
