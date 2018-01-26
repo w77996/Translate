@@ -160,7 +160,7 @@ public class SplashDevBindActivity extends Activity implements View.OnClickListe
             if(mSppBluetoothManager.enableBluetooth()){
 
             }else{
-                Toast.makeText(SplashDevBindActivity.this,"蓝牙未打开",Toast.LENGTH_SHORT).show();
+                Toast.makeText(SplashDevBindActivity.this, R.string.blue_close,Toast.LENGTH_SHORT).show();
             }
         }
     }

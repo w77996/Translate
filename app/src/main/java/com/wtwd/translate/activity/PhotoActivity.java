@@ -165,7 +165,7 @@ public class PhotoActivity extends Activity implements SurfaceHolder.Callback, V
         Utils.perseLanguage(this,rightLanguage,rightlanguage_head,text_photo_right_language);
 
         text_photo_light_state = (TextView) findViewById(R.id.text_photo_light_state);
-        text_photo_light_state.setText("关闭");
+        text_photo_light_state.setText(R.string.close);
         //Utils.setLanguageHead(this,);
         mSurfaceHolder = surface_photo.getHolder();
         mSurfaceHolder.addCallback(this);
@@ -343,7 +343,8 @@ public class PhotoActivity extends Activity implements SurfaceHolder.Callback, V
                 Uri uri = data.getData();
                 gotoDealBitmap(getPath(uri));
             } else {
-                Toast.makeText(this, "获取图片失败", Toast.LENGTH_SHORT).show();
+               // Toast.makeText(this, "获取图片失败", Toast.LENGTH_SHORT).show();
+                Log.e(TAG,"获取图片失败");
             }
         }else if(resultCode == Constants.LANGUAGE_CHANGE){
             leftLanguage = SpUtils.getString(this,Constants.LEFT_LANGUAGE,Constants.zh_CN);
@@ -410,12 +411,12 @@ public class PhotoActivity extends Activity implements SurfaceHolder.Callback, V
                 break;*/
             case R.id.leftlanguage_head:
                  LanguageSelectIntent = new Intent(this, LanguageSelectActivity.class);
-                LanguageSelectIntent.putExtra("derect",0);
+                LanguageSelectIntent.putExtra(Constants.DETRECT,0);
                 startActivityForResult(LanguageSelectIntent,Constants.LANGUAGE_CHANGE);
                 break;
             case R.id.rightlanguage_head:
                  LanguageSelectIntent = new Intent(this,LanguageSelectActivity.class);
-                LanguageSelectIntent.putExtra("derect",1);
+                LanguageSelectIntent.putExtra(Constants.DETRECT,1);
                 startActivityForResult(LanguageSelectIntent,Constants.LANGUAGE_CHANGE);
                 break;
             case R.id.img_photo_switch:
@@ -459,19 +460,19 @@ public class PhotoActivity extends Activity implements SurfaceHolder.Callback, V
                 //关闭
                 parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);//关闭
                 mCamera.setParameters(parameters);
-                text_photo_light_state.setText("关闭");
+                text_photo_light_state.setText(R.string.close);
                 break;
 
             case 1:
                 parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);//开启
                 mCamera.setParameters(parameters);
-                text_photo_light_state.setText("开启");
+                text_photo_light_state.setText(R.string.open);
                 break;
 
             case 2:
                 parameters.setFlashMode(Camera.Parameters.FLASH_MODE_AUTO);
                 mCamera.setParameters(parameters);
-                text_photo_light_state.setText("自动");
+                text_photo_light_state.setText(R.string.auto);
                 break;
         }
     }

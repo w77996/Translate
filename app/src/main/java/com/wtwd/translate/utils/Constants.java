@@ -7,15 +7,17 @@ package com.wtwd.translate.utils;
 public class Constants {
 
 
-    public static final String BASEURL = "";
+    public static final String BASEURL = "http://192.168.13.34:8080/open/";
     public static final String RIGTSTURL = "registUser.action";//注册用户
     public static final String LOGINURL = "loginUser.action";//用户登陆
     public static final String VERCODEURL = "verificationCodeLogin.action";//验证码登陆
-    public static final String CHECKUSERURL = "checkRegist.action";//检测用户是否已经注册
+    public static final String CHECKUSERURL = "checkIsRegiste.action";//检测用户是否已经注册
+    public static final String TEXTTRANSLATE = "textTranslate.action";//语言翻译接口
+    public static final String OCRTRANSLATE = "ocrTranslate.action";//语言翻译接口
 
 
 
-
+    public static final String KEY_HIGHT = "KEY_HIGHT";//键盘高度
 
     public static final String IMG_PATH_KEY = "IMG_PATH";//照片存储
     public static final String INTENT_TRANT = "INTENT_TRANT";//intent 语言翻译
@@ -99,6 +101,14 @@ public class Constants {
     public static final String el_GR = "el-GR";//el-GR	Greek (Greece)
     public static final String he_IL = "he-IL";//he-IL	Hebrew (Israel)
 
+    //服务器
+
+    public static final int REQUEST_SUCCESS = 1;
+    public static final int REQUEST_FAIL = 0;
+
+
+    public static final int USER_ALREAD_REGIST = 2;//用户已注册
+    public static final int USER_NO_REGIST = 4;//用户未注册
 
 
 }

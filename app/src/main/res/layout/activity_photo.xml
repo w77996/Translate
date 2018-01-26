@@ -194,7 +194,7 @@
             android:layout_alignBottom="@+id/img_photo_camera"
             android:layout_alignEnd="@+id/img_photo_flash_light"
             android:layout_marginTop="@dimen/x2"
-            android:text="自动"
+            android:text="@string/auto"
             android:textColor="@color/main_title_color"
             android:textSize="12sp" />
 

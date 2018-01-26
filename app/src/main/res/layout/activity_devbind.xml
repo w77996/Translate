@@ -3,36 +3,82 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
     <LinearLayout
+        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <LinearLayout
+        android:layout_height="@dimen/x45"
+        android:background="@color/main_title_color"
+        >
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="2"
-            android:gravity="center"
-            android:orientation="horizontal">
-            <TextView
-                android:id="@+id/dev_bind_con_state"
+            android:layout_height="match_parent">
+            <ImageView
+                android:id="@+id/language_select_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="蓝牙未连接"
-                android:textColor="@color/main_title_color"
-                android:layout_marginRight="@dimen/x10"/>
-            <Switch
-                android:id="@+id/dev_bind_switch"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/x10"
+                android:src="@drawable/chat_back"/>
+            <TextView
+                android:id="@+id/main_title_text"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
-        </LinearLayout>
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:textSize="20sp"
+                android:textColor="@color/color_white"
+                android:text="@string/dev_bind"/>
+
+        </RelativeLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="2">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <LinearLayout
+                android:id="@+id/lin_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true">
+                <TextView
+                    android:id="@+id/dev_bind_con_state"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/blue_con"
+                    android:textColor="@color/main_title_color"
+                    android:layout_marginRight="@dimen/x10"/>
+                <Switch
+                    android:id="@+id/dev_bind_switch"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_below="@+id/lin_switch"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/open_blue_con_dev"/>
+            </LinearLayout>
+
+        </RelativeLayout>
 
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_weight="5"
         android:gravity="center">
         <ImageView
-            android:layout_width="@dimen/x150"
-            android:layout_height="@dimen/x150"
+            android:id="@+id/img_blue"
+            android:clickable="true"
+            android:layout_width="@dimen/x80"
+            android:layout_height="@dimen/x80"
             android:src="@drawable/blue"/>
     </LinearLayout>
 

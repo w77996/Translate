@@ -1,11 +1,13 @@
 package com.wtwd.translate.activity;
 
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.content.Intent;
 import android.nfc.Tag;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.BaseAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -16,6 +18,7 @@ import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.wtwd.translate.MainActivity;
 import com.wtwd.translate.R;
+import com.wtwd.translate.bean.GuestResultBean;
 import com.wtwd.translate.bean.ResultBean;
 import com.wtwd.translate.utils.Constants;
 import com.wtwd.translate.utils.GsonUtils;
@@ -23,6 +26,7 @@ import com.wtwd.translate.utils.SharedPreferencesUtils;
 import com.wtwd.translate.utils.SpUtils;
 import com.wtwd.translate.utils.Utils;
 import com.wtwd.translate.utils.keybord.SoftKeyBoardListener;
+import com.wtwd.translate.view.LoadingDialogFragment;
 
 import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
@@ -31,7 +35,7 @@ import cn.smssdk.SMSSDK;
  * time:2018/1/8
  * Created by w77996
  */
-public class LoginActivity extends Activity implements View.OnClickListener{
+public class LoginActivity extends BaseActivity implements View.OnClickListener{
 
     public static final  String TAG = "LoginActivity";
 
@@ -75,16 +79,16 @@ public class LoginActivity extends Activity implements View.OnClickListener{
         SoftKeyBoardListener.setListener(this,new SoftKeyBoardListener.OnSoftKeyBoardChangeListener() {
             @Override
             public void keyBoardShow(int height) {
-                Toast.makeText(LoginActivity.this, "键盘显示 高度" + height, Toast.LENGTH_SHORT).show();
+               // Toast.makeText(LoginActivity.this, "键盘显示 高度" + height, Toast.LENGTH_SHORT).show();
                 //  textView.setText(String.valueOf(height));
                 //mKeybordHight = height;
-                SpUtils.putString(LoginActivity.this,"keybord_hight",height+"");
+                SpUtils.putInt(LoginActivity.this,Constants.KEY_HIGHT,height);
                 Log.d(TAG,"键盘高度为"+height);
             }
 
             @Override
             public void keyBoardHide(int height) {
-                Toast.makeText(LoginActivity.this, "键盘隐藏 高度" + height, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(LoginActivity.this, "键盘隐藏 高度" + height, Toast.LENGTH_SHORT).show();
                 // textView.setText("高度："+String.valueOf(height));
             }
         });
@@ -111,7 +115,8 @@ public class LoginActivity extends Activity implements View.OnClickListener{
             case R.id.ed_pwd:
                 break;
             case R.id.img_login:
-                perseUsernameAndPwd();
+                loginUser();
+                showProgressDialog();
                 break;
             case R.id.img_regist:
                 Intent registIntent = new Intent(LoginActivity.this,RegistActivity.class);
@@ -131,29 +136,40 @@ public class LoginActivity extends Activity implements View.OnClickListener{
      * 解析用户名和密码
      * 通信服务器
      */
-    private void perseUsernameAndPwd() {
+    private void loginUser() {
         String username = mLoginUsernameEdit.getText().toString();
         String pwd = mPwdEdit.getText().toString();
         if(username == null || "".equals(username)){
-            Toast.makeText(LoginActivity.this,"请输入用户名",Toast.LENGTH_SHORT).show();
+            Toast.makeText(LoginActivity.this, R.string.tips_input_username,Toast.LENGTH_SHORT).show();
             return;
         }
         if(pwd == null || "".equals(pwd)){
-            Toast.makeText(LoginActivity.this,"请输入密码",Toast.LENGTH_SHORT).show();
+            Toast.makeText(LoginActivity.this, R.string.tips_input_pwd,Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(pwd.length() < 6){
+            Toast.makeText(LoginActivity.this, R.string.input_six_pwd,Toast.LENGTH_SHORT).show();
             return;
         }
         OkGo.<String>post(Constants.BASEURL+Constants.LOGINURL)
-                .params("username",username)
-                .params("passwrod",pwd)
+                .tag(this)
+                .params("userName",username)
+                .params("password",pwd)
+                .retryCount(0)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
-                        ResultBean resultBean = GsonUtils.getInstance().GsonToBean(response.toString(), ResultBean.class);
-                        if(resultBean.getStatus() == 0){
+                        dismissProgressDialog();
+                        Log.e(TAG,response.body().toString());
+                        GuestResultBean resultBean = GsonUtils.getInstance().GsonToBean(response.body().toString(), GuestResultBean.class);
+                        if(resultBean.getStatus() == Constants.REQUEST_SUCCESS){
+
+                            Log.e(TAG,"登录成功");
                             boolean isFirstStart = SpUtils.getBoolean(getApplication(), Constants.APP_FIRST_START,true);
                             if(isFirstStart){
-                                Intent splashIntent = new Intent(LoginActivity.this,SplashLableActivity.class);
+                                Intent splashIntent = new Intent(LoginActivity.this,SplashLanguageActivity.class);
                                 startActivity(splashIntent);
+                                Toast.makeText(LoginActivity.this, R.string.login_success,Toast.LENGTH_SHORT).show();
                                 finish();
                             }else{
                                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
@@ -161,6 +177,13 @@ public class LoginActivity extends Activity implements View.OnClickListener{
                                 finish();
                             }
                         }
+                    }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                        super.onError(response);
+                        Log.e(TAG,"请求错误");
+                        dismissProgressDialog();
                     }
                 });
 
@@ -172,10 +195,26 @@ public class LoginActivity extends Activity implements View.OnClickListener{
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(resultCode == Constants.REGIST){
+            Log.e(TAG,"注册成功，跳转");
 
         }
         if(resultCode == Constants.CODELOGIN){
-
+            boolean isFirst = SpUtils.getBoolean(this,Constants.APP_FIRST_START,true);
+            if(isFirst){
+                Intent splashIntent = new Intent(LoginActivity.this,SplashLanguageActivity.class);
+                startActivity(splashIntent);
+                finish();
+            }else{
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
+                finish();
+            }
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        OkGo.getInstance().cancelTag(this);
     }
 }

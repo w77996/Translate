@@ -67,6 +67,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
             <LinearLayout
+                android:id="@+id/lin_dev_bind"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/x35"
                 android:paddingLeft="@dimen/x25"
@@ -88,7 +89,7 @@
                 android:layout_height="1px"
                 android:background="@color/md_grey_400_color_code"
                 android:layout_marginLeft="@dimen/x25"/>
-            <LinearLayout
+           <!-- <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/x35"
                 android:paddingLeft="@dimen/x25"
@@ -104,7 +105,7 @@
                     android:textColor="@color/md_black_color_code"
                     android:paddingLeft="@dimen/x10"
                     android:text="固件升级"/>
-            </LinearLayout>
+            </LinearLayout>-->
             <View
                 android:layout_width="match_parent"
                 android:layout_height="1px"

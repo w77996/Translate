@@ -18,6 +18,8 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.inputmethod.InputMethodManager;
 import android.view.inputmethod.InputMethodSubtype;
 import android.widget.EditText;
@@ -27,10 +29,15 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.Response;
 import com.wtwd.translate.R;
 import com.wtwd.translate.adapter.LanguageSelectListViewAdapter;
 import com.wtwd.translate.bean.SelectBean;
+import com.wtwd.translate.bean.TranResultBean;
 import com.wtwd.translate.utils.Constants;
+import com.wtwd.translate.utils.GsonUtils;
 import com.wtwd.translate.utils.SpUtils;
 import com.wtwd.translate.utils.audio.AudioStateChange;
 import com.wtwd.translate.utils.keybord.InputTools;
@@ -111,20 +118,28 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
      * 语音image
      */
     ImageView img_tran_voice;
+    ImageView img_tran_recro_bg;
     /**
      * 标题栏按钮文字
      */
     TextView text_tran_left_language;
     TextView text_tran_right_language;
 
-    ImageView leftlanguage_head;
-    ImageView rightlanguage_head;
-    ImageView img_tran_switch;
+    ImageView leftlanguage_head;//左侧国旗
+    ImageView rightlanguage_head;//右侧国旗
+    ImageView img_tran_switch;//切换
 
     String leftLanguage;
     String rightLanguage;
 
-
+    /**
+     * 结果显示linear
+     */
+    LinearLayout lin_tran_result;
+    /**
+     * 翻译结果
+     */
+    TextView tv_tran_result;
   //  List<SelectBean> datas = new ArrayList<SelectBean>();
 
     ImageView tran_back;
@@ -133,6 +148,7 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
 
 
     MicroRecogitionManager mMicroRecogitionManager;
+    private Animation mAnimation = null;
 
 
     @Override
@@ -159,7 +175,7 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
             selectBean.setSelect(false);
             datas.add(selectBean);
         }*/
-        mKeybordHight = Integer.valueOf(SpUtils.getString(TranslateActivity.this, "keybord_hight", 0 + ""));
+        mKeybordHight = SpUtils.getInt(this,Constants.KEY_HIGHT,0);
         Intent intent = getIntent();
         String intent_type = intent.getStringExtra("intent_type");
         Log.e(TAG, "intent_type " + intent_type);
@@ -184,14 +200,14 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
         lin_tran_bottom.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, mKeybordHight));
         lin_tran = (LinearLayout) findViewById(R.id.lin_tran);
         img_tran_recro = (ImageView)findViewById(R.id.img_tran_recro);
-
-
+        img_tran_recro_bg = (ImageView)findViewById(R.id.img_tran_recro_bg);
+        lin_tran_result = (LinearLayout)findViewById(R.id.lin_tran_result);
         text_tran_left_language = (TextView)findViewById(R.id.text_tran_left_language);
         text_tran_right_language = (TextView)findViewById(R.id.text_tran_right_language);
         leftlanguage_head = (ImageView)findViewById(R.id.leftlanguage_head);
         rightlanguage_head = (ImageView)findViewById(R.id.rightlanguage_head);
         img_tran_switch = (ImageView)findViewById(R.id.img_tran_switch);
-
+        tv_tran_result = (TextView)findViewById(R.id.tv_tran_result);
         tran_back = (ImageView)findViewById(R.id.tran_back);
 
         Utils.perseLanguage(this,leftLanguage,leftlanguage_head,text_tran_left_language);
@@ -290,6 +306,7 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
     private void addListener() {
 
         mEditClearImageView.setOnClickListener(this);
+        mSearchBoxImageView.setOnClickListener(this);
         lin_tran_text.setOnClickListener(this);
         lin_tran_vocie.setOnClickListener(this);
         img_tran_recro.setOnClickListener(this);
@@ -319,6 +336,9 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
                 showVoice();
                 break;
             case R.id.img_tran_recro:
+                mAnimation = AnimationUtils.loadAnimation(this,R.anim.voice_bg_anim);
+                img_tran_recro_bg.startAnimation(mAnimation);
+                //mAnimation.start();
                 mMicroRecogitionManager.initSpeechRecognition(leftLanguage);
                 break;
             case R.id.leftlanguage_head:
@@ -344,7 +364,51 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
             case R.id.tran_back:
                 finish();
                 break;
+            case R.id.search_box_img:
+                String tranData = mSearchBoxEditText.getText().toString();
+                if(TextUtils.isEmpty(mSearchBoxEditText.getText().toString())){
+                    Toast.makeText(TranslateActivity.this,"请输入翻译语句",Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                requestTran(tranData);
+                break;
         }
+    }
+
+    private void requestTran(String tranData) {
+        OkGo.<String>post(Constants.BASEURL+Constants.TEXTTRANSLATE)
+                .params("text",tranData)
+                .params("from",leftLanguage)
+                .params("to",rightLanguage)
+                .retryCount(1)
+                .params("guestId",1)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        Log.e(TAG,response.body().toString());
+                        TranResultBean resultBean = GsonUtils.getInstance().GsonToBean(response.body().toString(),TranResultBean.class);
+                        if(resultBean.getStatus() == Constants.REQUEST_SUCCESS){
+                            Log.e(TAG,"请求成功");
+                            if(lin_tran_result.getVisibility() == View.GONE){
+                                lin_tran_result.setVisibility(View.VISIBLE);
+                            }
+                            String tranText = resultBean.getTranslateResult().getText();
+                            if(!TextUtils.isEmpty(tranText)){
+                                tv_tran_result.setText(tranText);
+                            }
+
+
+                        }else if(resultBean.getStatus() == Constants.REQUEST_FAIL){
+                            Log.e(TAG,"请求失败");
+                        }
+                    }
+
+                    @Override
+                    public void onError(Response<String> response) {
+                        super.onError(response);
+                        Log.e(TAG,"请求错误");
+                    }
+                });
     }
 
     @Override
@@ -365,16 +429,17 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
     public void onFinalResponseResult(String result) {
         Log.d(TAG,"结果是 ： "+result);
         mSearchBoxEditText.setText(result);
+        img_tran_recro_bg.clearAnimation();
     }
 
     @Override
     public void ononFinalResponseResultEmtity(String error) {
-
+        img_tran_recro_bg.clearAnimation();
     }
 
     @Override
     public void onError(String s) {
-
+        img_tran_recro_bg.clearAnimation();
     }
 
    /* @Override

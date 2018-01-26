@@ -29,7 +29,7 @@ public class CountDownUtils {
     /**
      * 倒计时时间
      */
-    private long mCountDownMillis = 60_000;
+    private int mCountDownMillis = 60;
     /**
      * 提示文字
      */
@@ -43,7 +43,7 @@ public class CountDownUtils {
     /**
      * 间隔时间差(两次发送handler)
      */
-    private long mIntervalMillis = 1_000;
+    private int mIntervalMillis = 1000;
 
     /**
      * 可用状态下字体颜色Id
@@ -64,7 +64,7 @@ public class CountDownUtils {
                 case MSG_WHAT_START:
                     if (mLastMillis > 0) {
                         setUsable(false);
-                        mLastMillis -= mIntervalMillis;
+                        mLastMillis = mLastMillis -  1;
                         if (mWeakReference.get() != null) {
                             mHandler.sendEmptyMessageDelayed(MSG_WHAT_START, mIntervalMillis);
                         }
@@ -81,12 +81,12 @@ public class CountDownUtils {
         mWeakReference = new WeakReference<>(textView);
     }
 
-    public CountDownUtils(TextView textView, long countDownMillis) {
+    public CountDownUtils(TextView textView, int countDownMillis) {
         mWeakReference = new WeakReference<>(textView);
         this.mCountDownMillis = countDownMillis;
     }
 
-    public CountDownUtils setCountDownMillis(long countDownMillis) {
+    public CountDownUtils setCountDownMillis(int countDownMillis) {
         this.mCountDownMillis = countDownMillis;
         return this;
     }
@@ -116,7 +116,7 @@ public class CountDownUtils {
                     mTextView.setClickable(usable);
                     mTextView.setTextColor(mTextView.getResources().getColor(unusableColorId));
                 }
-                String content = mLastMillis / 1000 + "s"  ;
+                String content = mLastMillis  + "s"  ;
                 mTextView.setText(content);
 
             }

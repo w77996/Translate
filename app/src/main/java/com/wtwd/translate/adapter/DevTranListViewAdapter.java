@@ -84,8 +84,8 @@ public class DevTranListViewAdapter extends BaseAdapter implements View.OnClickL
        /* } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }*/
-        viewHolder.tv_recorder_txt.setText(list.get(position).getmResultTxt());
-        viewHolder.tv_recv_txt.setText("fasfdafdfdsafasdddddddddddddddddddddddddddfdsafasdfasdfasdfasdfasdfdasfasdfasdfasdfasdfdasfasdfdasfdasfdasfdasfdasfdasfasdfasdfdasfasdfdasfdasfdsfddd");
+        viewHolder.tv_recorder_txt.setText(list.get(position).getmRecorderTxt());
+        viewHolder.tv_recv_txt.setText(list.get(position).getmResultTxt());
         viewHolder.img_chat_play.setTag(position);
         viewHolder.img_chat_play.setOnClickListener(this);
 

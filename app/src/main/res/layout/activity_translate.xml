@@ -184,10 +184,12 @@
                 card_view:cardElevation="2dp">
 
                 <LinearLayout
+                    android:id="@+id/lin_tran_result"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/x10"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="gone">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -321,15 +323,16 @@
                     android:layout_height="match_parent">
 
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:id="@+id/img_tran_recro_bg"
+                        android:layout_width="@dimen/x80"
+                        android:layout_height="@dimen/x80"
                         android:layout_centerInParent="true"
                         android:src="@drawable/tran_outside_micro" />
 
                     <ImageView
                         android:id="@+id/img_tran_recro"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="@dimen/x80"
+                        android:layout_height="@dimen/x80"
                         android:layout_centerInParent="true"
                         android:src="@drawable/tran_inside_micro" />
                 </RelativeLayout>

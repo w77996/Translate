@@ -68,7 +68,7 @@ public class SplashDevPairActivity extends Activity implements View.OnClickListe
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        tv_pair_state.setText("配对成功");
+                        tv_pair_state.setText(R.string.pair_success);
                         img_bind_circle.clearAnimation();
                     }
                 });
@@ -79,7 +79,7 @@ public class SplashDevPairActivity extends Activity implements View.OnClickListe
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        tv_pair_state.setText("配对失败");
+                        tv_pair_state.setText(R.string.pair_fail);
                         img_bind_circle.clearAnimation();
                     }
                 });
@@ -196,6 +196,7 @@ public class SplashDevPairActivity extends Activity implements View.OnClickListe
         super.onResume();
         Log.e(TAG,"mSppBluetoothManager.start()");
         //mSppBluetoothManager.start();
+
         mSppBluetoothReceivedManager.start();
 
     }
@@ -214,7 +215,7 @@ public class SplashDevPairActivity extends Activity implements View.OnClickListe
         if (circle_anim != null) {
             img_bind_circle.startAnimation(circle_anim);  //开始动画
         }
-        tv_pair_state.setText("配对中...");
+        tv_pair_state.setText(R.string.pairing);
         img_pair_state.setClickable(false);
     }
 
@@ -252,7 +253,7 @@ public class SplashDevPairActivity extends Activity implements View.OnClickListe
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    tv_pair_state.setText("配对成功");
+                    tv_pair_state.setText(getString(R.string.pair_success));
                     img_bind_circle.clearAnimation();
                 }
             });
@@ -273,7 +274,7 @@ public class SplashDevPairActivity extends Activity implements View.OnClickListe
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    tv_pair_state.setText("配对失败");
+                    tv_pair_state.setText(getString(R.string.pair_fail));
                     img_bind_circle.clearAnimation();
                 }
             });
@@ -283,7 +284,7 @@ public class SplashDevPairActivity extends Activity implements View.OnClickListe
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    tv_pair_state.setText("配对中...");
+                    tv_pair_state.setText(getString(R.string.pairing));
                     img_bind_circle.clearAnimation();
                 }
             });
@@ -301,7 +302,7 @@ public class SplashDevPairActivity extends Activity implements View.OnClickListe
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    tv_pair_state.setText("配对失败");
+                    tv_pair_state.setText(getString(R.string.pair_fail));
                     img_bind_circle.clearAnimation();
                 }
             });
@@ -344,9 +345,9 @@ public class SplashDevPairActivity extends Activity implements View.OnClickListe
     public void onConnectedBluetoothDevice(BluetoothDevice mDevice) {
         if(null == mDevice){
             Log.e(TAG,"mDevice 为空");
-            Toast.makeText(SplashDevPairActivity.this,"错误,未连接设备",Toast.LENGTH_SHORT).show();
+            Toast.makeText(SplashDevPairActivity.this, R.string.unconnect_dev,Toast.LENGTH_SHORT).show();
             img_bind_circle.clearAnimation();
-            tv_pair_state.setText("配对失败");
+            tv_pair_state.setText(getString(R.string.pair_fail));
             img_pair_state.setClickable(true);
         }else{
             Log.e(TAG,"蓝牙连接");

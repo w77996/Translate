@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/x20"
         android:layout_marginTop="@dimen/x20"
-        android:text="@string/open_connect_blue"
+        android:text="@string/open_blue_con_dev"
          />
 
     <View

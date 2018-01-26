@@ -1,6 +1,7 @@
 package com.wtwd.translate.utils;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
@@ -18,7 +19,16 @@ import java.util.Map;
 public class GsonUtils {
     private static Gson gson = null;
 
+
     private static GsonUtils gsonUtils = null;
+
+    static {
+        if (gson == null) {
+            gson = new GsonBuilder()
+                    .setDateFormat("yyyy-MM-dd HH:mm:ss")
+                    .create();
+        }
+    }
 
     public static GsonUtils getInstance() {
         if (gsonUtils == null) {

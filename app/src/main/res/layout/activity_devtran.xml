@@ -27,7 +27,7 @@
                 android:layout_centerInParent="true"
                 android:textSize="20sp"
                 android:textColor="@color/color_white"
-                android:text="实时翻译"/>
+                android:text="@string/dev_tran"/>
             <ImageView
                 android:id="@+id/dev_menu"
                 android:layout_width="wrap_content"

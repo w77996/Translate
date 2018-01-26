@@ -55,8 +55,8 @@ public class SplashLanguageActivity extends Activity implements View.OnClickList
 
 
     private void initView(){
-        final String[] countryText = {"中文[CHS]","英语[ENG]","法语[FRA]","德语[DEU]","韩语[KOR]","日语[JPN]","西班牙语[SPA]","葡萄牙语[POR]",
-                                "俄罗斯语[RUS]"};
+        final String[] countryText = {getString(R.string.label_china),getString(R.string.label_english),getString(R.string.label_fra),getString(R.string.label_deu),getString(R.string.label_kor),getString(R.string.label_jpn),getString(R.string.label_spa),getString(R.string.lael_por),
+                                getString(R.string.label_rus)};
         int[] countryImage = {R.drawable.flag_china,R.drawable.flag_eng,R.drawable.flag_fra,R.drawable.flag_deu,R.drawable.flag_kor,R.drawable.flag_jpa,
                                 R.drawable.flag_spa,R.drawable.flag_por,R.drawable.flag_rus};
         String [] languageType = {Constants.zh_CN,Constants.en_US,Constants.fr_FR,Constants.de_DE,Constants.ko_KR,Constants.ja_JP,Constants.es_ES,Constants.pt_PT,Constants.ru_RU};
