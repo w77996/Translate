@@ -96,6 +96,9 @@ public class DeviceTranActivity extends Activity implements AudioStateChange,Tra
 
     }
 
+    /**
+     * 检查蓝牙是否连接
+     */
     private void checkBlueConnect() {
         if(mSppBluetoothManager.getState() != SppBluetoothManager.STATE_CONNECTED){
             Toast.makeText(DeviceTranActivity.this,"请连接设备",Toast.LENGTH_SHORT).show();
@@ -106,6 +109,9 @@ public class DeviceTranActivity extends Activity implements AudioStateChange,Tra
         mDevMenu.setOnClickListener(this);
     }
 
+    /**
+     * 初始化界面
+     */
     private void initView() {
         mListViewDevTran = (ListView) findViewById(R.id.lv_dev_tran);
         mVoiceImage = (ImageView) findViewById(R.id.dev_voice);
@@ -121,18 +127,18 @@ public class DeviceTranActivity extends Activity implements AudioStateChange,Tra
         });
         mListViewDevTran.setAdapter(mDevTranListViewAdapter);
         // mVoiceFile = Utils.createFile(mVoiceFile, "VOICE_", ".3pg");
-        mVoiceImage.setOnTouchListener(new View.OnTouchListener() {
+       /* mVoiceImage.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 switch (event.getAction()) {
                     case MotionEvent.ACTION_DOWN:
                         Log.d(TAG, "按钮按下");
-                       /* File voiceFile;
+                       *//* File voiceFile;
                         if (Utils.existSDCard())
                             voiceFile = new File(Environment.getExternalStorageDirectory(), "/voice");
                         else voiceFile = Environment.getDataDirectory();
                         voiceFile = Utils.createFile(voiceFile, "voice_", ".3pg");
-                        // mVoiceFilePath = Environment.getExternalStorageState()+ File.separator + System.currentTimeMillis() + ".3pg";*/
+                        // mVoiceFilePath = Environment.getExternalStorageState()+ File.separator + System.currentTimeMillis() + ".3pg";*//*
                         // TODO: 2018/1/17 判断是否连接？
                         mVoiceFilePath = Utils.getVoiceFilePath();
                         Log.d(TAG, "文件名和路径 " + mVoiceFilePath);
@@ -145,7 +151,7 @@ public class DeviceTranActivity extends Activity implements AudioStateChange,Tra
                 }
                 return false;
             }
-        });
+        });*/
         /*mBTOpenDialog = new BTOpenDialog(this,R.layout.bt_open_dialog,new int[]{R.id.dialog_cancel, R.id.dialog_sure});
         mBTOpenDialog.setOnCenterItemClickListener(new BTOpenDialog.OnCenterItemClickListener() {
             @Override

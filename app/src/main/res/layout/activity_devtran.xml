@@ -64,12 +64,24 @@
             android:layout_height="@dimen/x50"
             android:gravity="center"
             android:layout_marginBottom="@dimen/x5">
-            <ImageView
-                android:id="@+id/dev_voice"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clickable="true"
-                android:src="@drawable/chat_voice"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:id="@+id/dev_voice"
+                    android:layout_width="@dimen/x50"
+                    android:layout_height="@dimen/x50"
+                    android:layout_centerInParent="true"
+                    android:clickable="true"
+                    android:src="@drawable/chat_voice"/>
+                <ImageView
+                    android:id="@+id/img_tran_recro_bg"
+                    android:layout_width="@dimen/x50"
+                    android:layout_height="@dimen/x50"
+                    android:layout_centerInParent="true"
+                    android:src="@drawable/tran_outside_micro" />
+            </RelativeLayout>
+
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

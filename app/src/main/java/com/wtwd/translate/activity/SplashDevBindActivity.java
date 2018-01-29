@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.wtwd.translate.MainActivity;
 import com.wtwd.translate.R;
 import com.wtwd.translate.utils.Constants;
+import com.wtwd.translate.utils.SpUtils;
 import com.wtwd.translate.utils.blue.SppBluetoothManager;
 import com.wtwd.translate.utils.permissions.PermissionsActivity;
 import com.wtwd.translate.utils.permissions.PermissionsChecker;
@@ -114,6 +115,7 @@ public class SplashDevBindActivity extends Activity implements View.OnClickListe
             case R.id.devbind_ignore:
                 Intent MainIntent = new Intent(SplashDevBindActivity.this,MainActivity.class);
                 startActivity(MainIntent);
+                SpUtils.putBoolean(SplashDevBindActivity.this,Constants.APP_FIRST_START,false);
                 finish();
                 break;
             case R.id.img_devbind_next:

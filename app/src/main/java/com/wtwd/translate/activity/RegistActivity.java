@@ -74,6 +74,7 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
     private static final int SEND_CODE_SUCCESS = 0x13;
     private static final int REGIST_UESR = 0x14;
     private static final int CODE_REDUCE =0x15;
+    private static final int SEND_CODE_ERROR = 0x16;
     private int agin_get_sms_verification_code_time = 60;
     private Handler mHandler = new Handler(){
         @Override
@@ -104,6 +105,11 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
                         tv_getcode.setText(R.string.text_agin_get);
                         tv_getcode.setClickable(true);
                     }
+                    break;
+                case SEND_CODE_ERROR:
+                    agin_get_sms_verification_code_time = 60;
+                    tv_getcode.setText(R.string.text_agin_get);
+                    tv_getcode.setClickable(true);
                     break;
             }
         }
@@ -188,6 +194,7 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
                     return;
                 }
                 tv_getcode.setClickable(false);
+                mHandler.sendEmptyMessage(CODE_REDUCE);
                 sendCode("86",username);
                 break;
         }
@@ -204,10 +211,11 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
                     // 请注意，此时只是完成了发送验证码的请求，验证码短信还需要几秒钟之后才送达
 
                     mHandler.sendEmptyMessage(SEND_CODE_SUCCESS);
-                    mHandler.sendEmptyMessage(CODE_REDUCE);
+
                 } else {
                     // TODO 处理错误的结果
                     Log.e(TAG,"验证码测试,发送失败");
+                    mHandler.sendEmptyMessage(SEND_CODE_ERROR);
                 }
             }
         });
@@ -229,7 +237,7 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
             public void afterEvent(int event, int result, Object data) {
                 if (result == SMSSDK.RESULT_COMPLETE) {
                     // TODO 处理验证成功的结果
-                    mHandler.sendEmptyMessage(REGIST_UESR);
+                   // mHandler.sendEmptyMessage(REGIST_UESR);
 
                 } else {
                     // TODO 处理错误的结果

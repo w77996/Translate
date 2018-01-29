@@ -38,12 +38,13 @@ public class Constants {
      */
     public static final String LEFT_LANGUAGE = "LEFT_LANGUAGE";//左侧语言
     public static final String RIGHT_LANGUAGE = "RIGHT_LANGUAGE";//右侧语言
-
+    /**
+     * 语言选择页
+     */
     public static final int LANGUAGE_CHANGE = 1111;//语言选择改变
     public static final String DETRECT = "detrect";
     public static final int  DETRECT_LEFT = 0;
     public static final int  DETRECT_RIGHT = 1;
-
 
     public static final int LANGUAGE_SELECT_NORMAL_TYPE = 1144;//语言选择界面（普通语言选择)
     public static final String LANGUAGE_SELECT_TYPE = "LANGUAGE_SELECT_TYPE";
@@ -102,7 +103,10 @@ public class Constants {
     public static final String el_GR = "el-GR";//el-GR	Greek (Greece)
     public static final String he_IL = "he-IL";//he-IL	Hebrew (Israel)
 
-    //服务器
+    /**
+     *  服务器
+     */
+
 
     public static final int REQUEST_SUCCESS = 1;
     public static final int REQUEST_FAIL = 0;
@@ -110,6 +114,8 @@ public class Constants {
 
     public static final int USER_ALREAD_REGIST = 2;//用户已注册
     public static final int USER_NO_REGIST = 4;//用户未注册
+
+    public static final String GUEST_ID = "GUEST_ID";//用户ID
 
 
 }

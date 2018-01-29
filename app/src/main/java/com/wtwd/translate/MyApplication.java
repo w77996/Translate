@@ -4,6 +4,9 @@ import android.app.Application;
 
 import com.lzy.okgo.OkGo;
 import com.mob.MobSDK;
+import com.wtwd.translate.bean.dao.DaoMaster;
+import com.wtwd.translate.db.DaoManager;
+import com.wtwd.translate.db.DaoUtils;
 import com.wtwd.translate.utils.blue.SppBluetoothManager;
 
 /**
@@ -19,7 +22,9 @@ public class MyApplication extends Application {
         SppBluetoothManager.getInstance(getApplicationContext()).bluetoothRegisterReceiver();
        /* SppBluetoothMessagerManager.getInstance(getApplicationContext()).bluetoothRegisterReceiver();*/
         MobSDK.init(this);
-
+       // DaoManager.getInstance().getDaoMaster();
+       // DaoMaster.
+        DaoUtils.init(this);
        // SppBluetoothManager.getInstance(getApplicationContext()).start();
     }
 

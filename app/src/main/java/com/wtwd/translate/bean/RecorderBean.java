@@ -148,4 +148,15 @@ public class RecorderBean implements Parcelable{
     public void setMFilePath(String mFilePath) {
         this.mFilePath = mFilePath;
     }
+
+    @Override
+    public String toString() {
+        return "RecorderBean{" +
+                "language_type='" + language_type + '\'' +
+                ", type=" + type +
+                ", mRecorderTxt='" + mRecorderTxt + '\'' +
+                ", mResultTxt='" + mResultTxt + '\'' +
+                ", mFilePath='" + mFilePath + '\'' +
+                '}';
+    }
 }

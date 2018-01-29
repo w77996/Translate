@@ -36,6 +36,7 @@ public class CodeLoginActivity extends BaseActivity implements View.OnClickListe
 
 
     private static final String TAG = "CodeLoginActivity";
+
     /**
      * 用户名
      */
@@ -69,6 +70,7 @@ public class CodeLoginActivity extends BaseActivity implements View.OnClickListe
     private static final int SEND_CODE_SUCCESS = 0x13;
     private static final int LOGIN_UESR = 0x14;
     private static final int CODE_REDUCE =0x15;
+    private static final int SEND_CODE_ERROR =0x16 ;
     private int agin_get_sms_verification_code_time = 60;
 
     private Handler mHandler = new Handler(){
@@ -101,6 +103,12 @@ public class CodeLoginActivity extends BaseActivity implements View.OnClickListe
                         tv_getcode.setText(R.string.text_agin_get);
                         tv_getcode.setClickable(true);
                     }
+                    break;
+                case SEND_CODE_ERROR:
+                    agin_get_sms_verification_code_time = 60;
+                    tv_getcode.setText(R.string.text_agin_get);
+                    tv_getcode.setClickable(true);
+                    Toast.makeText(CodeLoginActivity.this, "send code error", Toast.LENGTH_SHORT).show();
                     break;
             }
         }
@@ -170,11 +178,12 @@ public class CodeLoginActivity extends BaseActivity implements View.OnClickListe
                     // 请注意，此时只是完成了发送验证码的请求，验证码短信还需要几秒钟之后才送达
                    // Toast.makeText(CodeLoginActivity.this, R.string.tips_code_send_success, Toast.LENGTH_SHORT).show();
                     mHandler.sendEmptyMessage(SEND_CODE_SUCCESS);
-                    mHandler.sendEmptyMessage(CODE_REDUCE);
+
                 } else{
                     // TODO 处理错误的结果
                     //mHandler.sendEmptyMessage(Co);
                     Log.e(TAG,"验证码发送失败");
+                    mHandler.sendEmptyMessage(SEND_CODE_ERROR);
                 }
 
             }
@@ -245,16 +254,17 @@ public class CodeLoginActivity extends BaseActivity implements View.OnClickListe
         int id =v.getId();
         switch (id){
             case R.id.img_login:
-                code = ed_code.getText().toString().trim();
-                if (TextUtils.isEmpty(code)) {
-                    Toast.makeText(CodeLoginActivity.this, R.string.tips_input_code, Toast.LENGTH_SHORT).show();
-                    return;
-                }
                 username = ed_username.getText().toString().trim();
                 if(TextUtils.isEmpty(username)){
                     Toast.makeText(CodeLoginActivity.this, R.string.tips_intput_username, Toast.LENGTH_SHORT).show();
                     return;
                 }
+                code = ed_code.getText().toString().trim();
+                if (TextUtils.isEmpty(code)) {
+                    Toast.makeText(CodeLoginActivity.this, R.string.tips_input_code, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 submitCode("86",username,code);
                 break;
             case R.id.img_regist:
@@ -268,7 +278,7 @@ public class CodeLoginActivity extends BaseActivity implements View.OnClickListe
                 break;
             case R.id.tv_getcode:
                 username = ed_username.getText().toString().trim();
-                if(TextUtils.isEmpty(username)){
+                if(TextUtils.isEmpty(username)||username.length() < 11){
                     Toast.makeText(CodeLoginActivity.this, R.string.tips_input_username, Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -276,6 +286,7 @@ public class CodeLoginActivity extends BaseActivity implements View.OnClickListe
                     Toast.makeText(CodeLoginActivity.this, R.string.no_network, Toast.LENGTH_SHORT).show();
                     return;
                 }
+                mHandler.sendEmptyMessage(CODE_REDUCE);
                 tv_getcode.setClickable(false);
                 sendCode("86",username);
                 break;
@@ -287,5 +298,6 @@ public class CodeLoginActivity extends BaseActivity implements View.OnClickListe
         super.onDestroy();
         //用完回调要注销掉，否则可能会出现内存泄露
         SMSSDK.unregisterAllEventHandler();
+
     };
 }

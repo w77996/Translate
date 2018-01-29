@@ -15,6 +15,8 @@ import android.widget.Toast;
 
 import com.wtwd.translate.MainActivity;
 import com.wtwd.translate.R;
+import com.wtwd.translate.utils.Constants;
+import com.wtwd.translate.utils.SpUtils;
 import com.wtwd.translate.utils.blue.GetConnectedBluetoothDeviceFromSystem;
 import com.wtwd.translate.utils.blue.SppBluetoothManager;
 import com.wtwd.translate.utils.blue.SppBluetoothReceivedManager;
@@ -233,11 +235,14 @@ public class SplashDevPairActivity extends Activity implements View.OnClickListe
         switch (id){
             case R.id.devpair_ignore:
                 Intent mianIntent = new Intent(SplashDevPairActivity.this, MainActivity.class);
+                SpUtils.putBoolean(SplashDevPairActivity.this, Constants.APP_FIRST_START,false);
                 startActivity(mianIntent);
+                finish();
                 break;
             case R.id.img_devpair_next:
                 Intent intent = new Intent(SplashDevPairActivity.this,MainActivity.class);
                 startActivity(intent);
+                SpUtils.putBoolean(SplashDevPairActivity.this, Constants.APP_FIRST_START,false);
                 finish();
                 break;
         }

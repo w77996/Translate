@@ -96,7 +96,6 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:background="@null"
-                    android:inputType="textPassword"
                     android:paddingLeft="5dp"
                     android:hint="@string/regist_code_tips"
                     />
@@ -142,16 +141,16 @@
                     <ImageView
                         android:id="@+id/img_login"
                         android:layout_below="@+id/login_forget_pwd"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="@dimen/x120"
+                        android:layout_height="@dimen/x50"
                         android:src="@drawable/login_loginbtn"
                         android:layout_alignParentLeft="true"
                         android:layout_marginTop="@dimen/x10"/>
                     <ImageView
                         android:id="@+id/img_regist"
                         android:layout_below="@+id/login_pwd"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="@dimen/x120"
+                        android:layout_height="@dimen/x50"
                         android:layout_alignParentRight="true"
                         android:layout_marginTop="@dimen/x10"
                         android:src="@drawable/login_registbtn"/>

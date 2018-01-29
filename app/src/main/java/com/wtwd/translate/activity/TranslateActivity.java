@@ -376,12 +376,13 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
     }
 
     private void requestTran(String tranData) {
+        int guestId = SpUtils.getInt(TranslateActivity.this,Constants.GUEST_ID,1);
         OkGo.<String>post(Constants.BASEURL+Constants.TEXTTRANSLATE)
                 .params("text",tranData)
                 .params("from",leftLanguage)
                 .params("to",rightLanguage)
                 .retryCount(1)
-                .params("guestId",1)
+                .params("guestId",guestId)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
@@ -400,6 +401,8 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
 
                         }else if(resultBean.getStatus() == Constants.REQUEST_FAIL){
                             Log.e(TAG,"请求失败");
+                            Toast.makeText(TranslateActivity.this,R.string.request_error,Toast.LENGTH_SHORT).show();
+                            img_tran_recro_bg.clearAnimation();
                         }
                     }
 
@@ -407,6 +410,8 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
                     public void onError(Response<String> response) {
                         super.onError(response);
                         Log.e(TAG,"请求错误");
+                        Toast.makeText(TranslateActivity.this,R.string.request_error,Toast.LENGTH_SHORT).show();
+                        img_tran_recro_bg.clearAnimation();
                     }
                 });
     }
@@ -440,6 +445,7 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
     @Override
     public void onError(String s) {
         img_tran_recro_bg.clearAnimation();
+
     }
 
    /* @Override

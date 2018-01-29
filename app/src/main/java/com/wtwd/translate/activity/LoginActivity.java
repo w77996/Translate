@@ -57,6 +57,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        boolean isFirst = SpUtils.getBoolean(LoginActivity.this,Constants.APP_FIRST_START,true);
+        if(isFirst == true){
+
+        }else if(isFirst == false){
+            Intent intetnt = new Intent(this,MainActivity.class);
+            startActivity(intetnt);
+            finish();
+        }
         initView();
         addListener();
     }
@@ -139,11 +147,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
     private void loginUser() {
         String username = mLoginUsernameEdit.getText().toString();
         String pwd = mPwdEdit.getText().toString();
-        if(username == null || "".equals(username)){
-            Toast.makeText(LoginActivity.this, R.string.tips_input_username,Toast.LENGTH_SHORT).show();
+        if(username == null || "".equals(username) || username.length() <11){
+            Toast.makeText(LoginActivity.this, R.string.tips_input_sure_number,Toast.LENGTH_SHORT).show();
             return;
         }
-        if(pwd == null || "".equals(pwd)){
+        if(pwd == null || "".equals(pwd) ){
             Toast.makeText(LoginActivity.this, R.string.tips_input_pwd,Toast.LENGTH_SHORT).show();
             return;
         }
@@ -166,6 +174,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
 
                             Log.e(TAG,"登录成功");
                             boolean isFirstStart = SpUtils.getBoolean(getApplication(), Constants.APP_FIRST_START,true);
+                           // if()
+                            SpUtils.putInt(LoginActivity.this,Constants.GUEST_ID,resultBean.getGuest().getGuestId());
                             if(isFirstStart){
                                 Intent splashIntent = new Intent(LoginActivity.this,SplashLanguageActivity.class);
                                 startActivity(splashIntent);
@@ -176,6 +186,8 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                                 startActivity(intent);
                                 finish();
                             }
+                        }else if(resultBean.getStatus() == Constants.REQUEST_FAIL){
+                            Log.e(TAG,"请求错误");
                         }
                     }
 

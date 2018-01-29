@@ -3,11 +3,14 @@ package com.wtwd.translate.activity;
 import android.app.Activity;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
+import android.media.Image;
 import android.os.Bundle;
 import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -74,7 +77,11 @@ public class DevTranslateActivity extends Activity implements AudioStateChange,T
      * 对话框
      */
     private BTOpenDialog mBTOpenDialog;
-
+    /**
+     * 语音动画背景
+     */
+    private ImageView img_tran_recro_bg;
+    private Animation mAnimation = null;//播放动画
 
     TranProtocalAnalysis mTranProtocalAnalysis;
     TranProtocalReceivedAnalysis mTranProtocalReceivedAnalysis;
@@ -240,6 +247,9 @@ public class DevTranslateActivity extends Activity implements AudioStateChange,T
 
     }
 
+    /**
+     * 检查蓝牙是否连接
+     */
     private void checkBlueConnect() {
         if(mSppBluetoothManager.getState() != SppBluetoothManager.STATE_CONNECTED || mSppBluetoothReceivedManager.getState() != SppBluetoothReceivedManager.STATE_CONNECTED|| !mSppBluetoothManager.enableBluetooth()){
 
@@ -263,6 +273,9 @@ public class DevTranslateActivity extends Activity implements AudioStateChange,T
         mVoiceImage.setOnClickListener(this);
     }
 
+    /**
+     * 初始化界面控件
+     */
     private void initView() {
         mListViewDevTran = (ListView) findViewById(R.id.lv_dev_tran);
         mVoiceImage = (ImageView) findViewById(R.id.dev_voice);
@@ -281,6 +294,7 @@ public class DevTranslateActivity extends Activity implements AudioStateChange,T
 
             }
         });
+        img_tran_recro_bg = (ImageView)findViewById(R.id.img_tran_recro_bg);
         mListViewDevTran.setAdapter(mDevTranListViewAdapter);
         leftLanguage = SpUtils.getString(this,Constants.LEFT_LANGUAGE,Constants.zh_CN);
         rightLanguage = SpUtils.getString(this,Constants.RIGHT_LANGUAGE,Constants.en_US);
@@ -444,6 +458,10 @@ public class DevTranslateActivity extends Activity implements AudioStateChange,T
                // mAudioMediaPlayManager.startRecorderUsePhone();
                 mMicroRecogitionManager.initSpeechRecognition(rightLanguage);
                 break;
+            case R.id.img_tran_recro_bg:
+                mAnimation = AnimationUtils.loadAnimation(this,R.anim.voice_bg_anim);
+                img_tran_recro_bg.startAnimation(mAnimation);
+                break;
         }
     }
 
@@ -486,7 +504,7 @@ public class DevTranslateActivity extends Activity implements AudioStateChange,T
                 Toast.makeText(this,R.string.record_fail,Toast.LENGTH_SHORT).show();
                 return;
             }
-
+             img_tran_recro_bg.clearAnimation();
             //RecorderBean recorderBean = new RecorderBean();
             if(isDevRecrod == true){
                 // TODO: 2018/1/24 1.文字传给服务器2.返回结果显示在界面上
@@ -509,6 +527,7 @@ public class DevTranslateActivity extends Activity implements AudioStateChange,T
         Toast.makeText(this,R.string.record_fail,Toast.LENGTH_SHORT).show();
         isDevRecrod = false;
         isPhoneRecrod = false;
+        img_tran_recro_bg.clearAnimation();
            // return;
         //}
     }
@@ -518,6 +537,7 @@ public class DevTranslateActivity extends Activity implements AudioStateChange,T
         Toast.makeText(this,R.string.record_fail,Toast.LENGTH_SHORT).show();
         isDevRecrod = false;
         isPhoneRecrod = false;
+        img_tran_recro_bg.clearAnimation();
     }
    /* @Override
     public void onMicroStartRecoderUseBluetoothEar(){
@@ -525,12 +545,13 @@ public class DevTranslateActivity extends Activity implements AudioStateChange,T
 
     }*/
    private void requestTran(String trandata,String from ,String to){
+       int guestId = SpUtils.getInt(DevTranslateActivity.this,Constants.GUEST_ID,1);
        OkGo.<String>post(Constants.BASEURL+Constants.TEXTTRANSLATE)
                .tag(this)
                .params("text",trandata)
                .params("from",from)
                .params("to",to)
-               .params("guestId",1)
+               .params("guestId",guestId)
                .execute(new StringCallback() {
                    @Override
                    public void onSuccess(Response<String> response) {
@@ -568,6 +589,7 @@ public class DevTranslateActivity extends Activity implements AudioStateChange,T
                            }
                        }else if(resultBean.getStatus() == Constants.REQUEST_FAIL){
                            Log.e(TAG,"请求失败");
+                          // img_tran_recro_bg.clearAnimation();
                        }
                    }
 
@@ -576,6 +598,7 @@ public class DevTranslateActivity extends Activity implements AudioStateChange,T
                        super.onError(response);
                        isDevRecrod = false;
                        isPhoneRecrod = false;
+                       //img_tran_recro_bg.clearAnimation();
                    }
                });
    }

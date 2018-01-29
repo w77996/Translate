@@ -12,6 +12,7 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -224,12 +225,30 @@ public class ChatActivity extends Activity implements View.OnClickListener,Audio
             public void click(View v) {
                int pos =  (Integer) v.getTag();
                Log.d(TAG,pos+" 点击按钮位置");
-               mAudioMediaPlayManager.startPlayingUsePhone(mRecorderList.get(pos).getmFilePath());
+                if(!mRecorderList.get(pos).getmFilePath().endsWith(".pcm")){
+                    Log.e(TAG,"语音合成出错！！！！！！");
+                    return;
+                }else{
+                    mAudioMediaPlayManager.startPlayingUsePhone(mRecorderList.get(pos).getmFilePath());
+                }
+              // mAudioMediaPlayManager.startPlayingUsePhone(mRecorderList.get(pos).getmFilePath());
                 //SpeechUtils.getInstance(ChatActivity.this,Utils.setLocalLanguag(mRecorderList.get(pos).getLanguage_type())).speakText(mRecorderList.get(pos).getmResultTxt());
             }
         });
-        mListViewChat.setAdapter(mAdapter);
 
+        mListViewChat.setAdapter(mAdapter);
+        mListViewChat.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+
+                DaoUtils.getRecorderBeanDaoManager().deleteObject(mRecorderList.get(position));
+                mRecorderList.remove(position);
+                mAdapter.notifyDataSetChanged();
+                Log.e(TAG,"删除对象");
+                return false;
+            }
+        });
       //  mLeftVoiceImg.setOnClickListener(this);
      //   mRightVoiceImg.setOnClickListener(this);
         //mDownImg.setOnClickListener(this);
@@ -242,7 +261,6 @@ public class ChatActivity extends Activity implements View.OnClickListener,Audio
         lin_right.setOnClickListener(this);
         leftlanguage_head.setOnClickListener(this);
         rightlanguage_head.setOnClickListener(this);
-
 
     }
 
@@ -610,13 +628,14 @@ public class ChatActivity extends Activity implements View.OnClickListener,Audio
     }
 
     private void requestTran(String trandata,String from ,String to){
+        int guestId = SpUtils.getInt(ChatActivity.this,Constants.GUEST_ID,1);
         OkGo.<String>post(Constants.BASEURL+Constants.TEXTTRANSLATE)
                 .tag(this)
                 .params("text",trandata)
                 .params("from",from)
                 .params("to",to)
                 .retryCount(0)
-                .params("guestId",1)
+                .params("guestId",guestId)
                 .execute(new StringCallback() {
                     @Override
                     public void onSuccess(Response<String> response) {
@@ -630,6 +649,7 @@ public class ChatActivity extends Activity implements View.OnClickListener,Audio
                             String tranAudio = resultBean.getTranslateResult().getAudio();
                             if(!TextUtils.isEmpty(tranText)&& !TextUtils.isEmpty(tranAudio)){
                                 Log.e(TAG,tranText + " "+tranAudio);
+
                                 if(rightIsStartVoice){
                                     rightRecorderBean.setmResultTxt(tranText);
                                     rightRecorderBean.setmFilePath(resultBean.getTranslateResult().getAudio());
@@ -654,10 +674,21 @@ public class ChatActivity extends Activity implements View.OnClickListener,Audio
                                 }else{
                                     Log.e(TAG,"list 为0");
                                 }
+                                if(!tranAudio.endsWith(".pcm")){
+                                    Log.e(TAG,"语音合成出错！！！！！！");
+                                    return;
+                                }else{
+                                    mAudioMediaPlayManager.startPlayingUsePhone(tranAudio);
+                                }
                                //mAudioMediaPlayManager.startPlayingUsePhone(tranAudio);
                             }
                         }else if(resultBean.getStatus() == Constants.REQUEST_FAIL){
                             Log.e(TAG,"请求失败");
+                            rightIsStartVoice = false;
+                            leftIsStartVoice = false;
+                            lin_left.setBackground(ChatActivity.this.getDrawable(R.drawable.chat_left_btn_unselect));
+                            lin_right.setBackground(ChatActivity.this.getDrawable(R.drawable.chat_right_btn_unselect));
+                            animationDrawable.stop();
                         }
                     }
 
@@ -666,6 +697,7 @@ public class ChatActivity extends Activity implements View.OnClickListener,Audio
                         super.onError(response);
                         leftIsStartVoice = false;
                         rightIsStartVoice = false;
+
                         animationDrawable.stop();
                     }
                 });
