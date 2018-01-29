@@ -5,7 +5,10 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
 
+import com.wtwd.translate.bean.RecorderBean;
+import com.wtwd.translate.bean.TranResultBean;
 import com.wtwd.translate.bean.dao.DaoMaster;
+import com.wtwd.translate.bean.dao.RecorderBeanDao;
 import com.wtwd.translate.bean.dao.UserDao;
 
 import org.greenrobot.greendao.database.Database;
@@ -29,7 +32,7 @@ public class MyOpenHelper extends DaoMaster.OpenHelper {
     public void onUpgrade(Database db, int oldVersion, int newVersion) {
         if (oldVersion < newVersion) {
             //后面一个参数可以写多个参数,原方法(void migrate(Database db, Class<? extends AbstractDao<?, ?>>... daoClasses))
-            MigrationHelper.getInstance().migrate(db, UserDao.class);
+            MigrationHelper.getInstance().migrate(db, UserDao.class, RecorderBeanDao.class);
 
         }
     }

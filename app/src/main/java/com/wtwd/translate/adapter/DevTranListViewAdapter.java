@@ -57,8 +57,8 @@ public class DevTranListViewAdapter extends BaseAdapter implements View.OnClickL
         int type = list.get(position).getType();
         ViewHolder viewHolder;
        /* if (convertView == null)
-        {*/
-
+        {
+*/
 
             viewHolder = new ViewHolder();
             if(type == Constants.ITEM_RIGHT){
@@ -81,7 +81,7 @@ public class DevTranListViewAdapter extends BaseAdapter implements View.OnClickL
                 convertView.setTag(viewHolder);
             }
 
-       /* } else {
+      /*  } else {
             viewHolder = (ViewHolder) convertView.getTag();
         }*/
         viewHolder.tv_recorder_txt.setText(list.get(position).getmRecorderTxt());

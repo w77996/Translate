@@ -7,6 +7,7 @@ import android.graphics.drawable.AnimationDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
@@ -30,6 +31,7 @@ import com.microsoft.cognitiveservices.speechrecognition.SpeechRecognitionMode;
 import com.microsoft.cognitiveservices.speechrecognition.SpeechRecognitionServiceFactory;
 import com.wtwd.translate.R;
 import com.wtwd.translate.adapter.DevTranListViewAdapter;
+import com.wtwd.translate.bean.Recorder;
 import com.wtwd.translate.bean.RecorderBean;
 import com.wtwd.translate.bean.TranResultBean;
 import com.wtwd.translate.db.DaoUtils;
@@ -173,7 +175,7 @@ public class ChatActivity extends Activity implements View.OnClickListener,Audio
     }
 
     private void initData() {
-        mRecorderList = new ArrayList<>();
+
         //获取已选择的默认语言
         leftLanguage = SpUtils.getString(ChatActivity.this, Constants.LEFT_LANGUAGE,Constants.zh_CN);
         rightLanguage = SpUtils.getString(ChatActivity.this,Constants.RIGHT_LANGUAGE,Constants.en_US);
@@ -193,8 +195,14 @@ public class ChatActivity extends Activity implements View.OnClickListener,Audio
         mRightText = (TextView)findViewById(R.id.text_chat_right_language);
         mVoice = (ImageView)findViewById(R.id.img_chat_voice);
         mVoice.setImageResource(R.drawable.voice_tran_animation);
+        mRecorderList = new ArrayList<>();
+        mRecorderList.addAll(DaoUtils.getRecorderBeanDaoManager().QueryAll(RecorderBean.class));
+        if(mRecorderList.size() <= 0 || mRecorderList == null ){
+            Log.e(TAG,mRecorderList+" 为空");
 
-
+        }else{
+            Log.e(TAG,mRecorderList+"不为空");
+        }
         img_chat_switch = (ImageView)findViewById(R.id.img_chat_switch);
         chat_left_img =(ImageView)findViewById(R.id.chat_left_img);
         chat_right_img = (ImageView)findViewById(R.id.chat_right_img);
@@ -607,6 +615,7 @@ public class ChatActivity extends Activity implements View.OnClickListener,Audio
                 .params("text",trandata)
                 .params("from",from)
                 .params("to",to)
+                .retryCount(0)
                 .params("guestId",1)
                 .execute(new StringCallback() {
                     @Override
@@ -614,6 +623,7 @@ public class ChatActivity extends Activity implements View.OnClickListener,Audio
                         Log.e(TAG,response.body().toString());
                         TranResultBean resultBean = GsonUtils.getInstance().GsonToBean(response.body().toString(),TranResultBean.class);
                         if(resultBean.getStatus() == Constants.REQUEST_SUCCESS){
+                            Log.e(TAG,""+(Looper.getMainLooper() == Looper.myLooper()));
                             Log.e(TAG,"请求成功");
 
                             String tranText = resultBean.getTranslateResult().getText();
@@ -625,15 +635,26 @@ public class ChatActivity extends Activity implements View.OnClickListener,Audio
                                     rightRecorderBean.setmFilePath(resultBean.getTranslateResult().getAudio());
                                     mRecorderList.add(rightRecorderBean);
                                     rightIsStartVoice = false;
+                                    DaoUtils.getRecorderBeanDaoManager().insertObject(rightRecorderBean);
                                 }else if(leftIsStartVoice){
                                     leftRecorderBean.setmResultTxt(tranText);
                                     leftRecorderBean.setmFilePath(resultBean.getTranslateResult().getAudio());
                                     mRecorderList.add(leftRecorderBean);
                                     leftIsStartVoice = false;
+                                    DaoUtils.getRecorderBeanDaoManager().insertObject(leftRecorderBean);
                                 }
                                 mAdapter.notifyDataSetChanged();
                                 mListViewChat.setSelection(mRecorderList.size()-1);
-                               mAudioMediaPlayManager.startPlayingUsePhone(tranAudio);
+                                List<RecorderBean> list = DaoUtils.getRecorderBeanDaoManager().QueryAll(RecorderBean.class);
+                                if(list.size() > 0){
+                                    //list.forEach(RecorderBean.class);
+                                    for (int i = 0;i <list.size();i++){
+                                        Log.e(TAG,list.get(i).toString());
+                                    }
+                                }else{
+                                    Log.e(TAG,"list 为0");
+                                }
+                               //mAudioMediaPlayManager.startPlayingUsePhone(tranAudio);
                             }
                         }else if(resultBean.getStatus() == Constants.REQUEST_FAIL){
                             Log.e(TAG,"请求失败");
@@ -645,6 +666,7 @@ public class ChatActivity extends Activity implements View.OnClickListener,Audio
                         super.onError(response);
                         leftIsStartVoice = false;
                         rightIsStartVoice = false;
+                        animationDrawable.stop();
                     }
                 });
     }
@@ -662,6 +684,9 @@ public class ChatActivity extends Activity implements View.OnClickListener,Audio
         lin_right.setBackground(this.getDrawable(R.drawable.chat_right_btn_unselect));
         lin_left.setClickable(true);
         lin_right.setClickable(true);
+        animationDrawable.stop();
+        leftIsStartVoice = false;
+        rightIsStartVoice = false;
         Toast.makeText(ChatActivity.this,"录音失败",Toast.LENGTH_SHORT).show();
     }
 
