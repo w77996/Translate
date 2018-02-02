@@ -12,13 +12,13 @@
             android:layout_height="match_parent">
             <ImageView
                 android:id="@+id/dev_back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/x30"
+                android:layout_height="@dimen/x30"
                 android:textColor="@color/color_white"
                 android:layout_alignParentLeft="true"
-                android:layout_marginLeft="@dimen/x10"
                 android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
+                android:scaleType="center"
                 android:src="@drawable/chat_back"/>
             <TextView
                 android:id="@+id/main_title_text"
@@ -61,9 +61,10 @@
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/x50"
+            android:layout_height="@dimen/x150"
             android:gravity="center"
-            android:layout_marginBottom="@dimen/x5">
+            android:background="@color/app_background"
+            >
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -80,6 +81,25 @@
                     android:layout_height="@dimen/x50"
                     android:layout_centerInParent="true"
                     android:src="@drawable/tran_outside_micro" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/dev_voice"
+                    android:layout_marginTop="@dimen/x5"
+                    android:text="请按住按钮进行语音输入"
+                    android:gravity="center"/>
+
+               <!-- <Button
+                    android:id="@+id/start"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    />
+                <Button
+                    android:id="@+id/stop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/start"
+                    />-->
             </RelativeLayout>
 
         </LinearLayout>

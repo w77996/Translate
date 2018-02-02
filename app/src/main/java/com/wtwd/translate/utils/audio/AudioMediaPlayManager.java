@@ -101,10 +101,6 @@ public class AudioMediaPlayManager {
             Log.e(TAG, "prepare() failed");
         }*/
 
-        if (!mAudioManager.isBluetoothScoAvailableOffCall()) {
-            Log.e(TAG, "系统不支持蓝牙录音");
-            return;
-        }
 //        mAudioManager.stopBluetoothSco();
         //蓝牙录音的关键，启动SCO连接，耳机话筒才起作用
         mAudioManager.startBluetoothSco();
@@ -117,7 +113,7 @@ public class AudioMediaPlayManager {
                 Log.e(TAG, "state : " + state);
                 if (AudioManager.SCO_AUDIO_STATE_CONNECTED == state) {
                     mAudioManager.setBluetoothScoOn(true);  //打开SCO
-                  //  mMediaRecorder.start();//开始录音
+                   // mMediaRecorder.start();//开始录音
 
                     mAudioStateChange.onStartRecoderUseBluetoothEar();
 
@@ -315,6 +311,37 @@ public class AudioMediaPlayManager {
     /**
      * 使用手机录音
      */
+    public void startRecorderUsePhone() {
+        //this.mFilePath = mFilePath;
+        //创建MediaRecorder对象
+        //mMediaRecorder = new MediaRecorder();
+        try {
+
+            //配置mMediaRecorder相应参数
+            //从麦克风采集声音数据
+           /* mMediaRecorder.setAudioSource(MediaRecorder.AudioSource.MIC);
+            //设置保存文件格式为MP4
+            mMediaRecorder.setOutputFormat(MediaRecorder.OutputFormat.MPEG_4);
+            //设置采样频率,44100是所有安卓设备都支持的频率,频率越高，音质越好，当然文件越大
+            mMediaRecorder.setAudioSamplingRate(44100);
+            //设置声音数据编码格式,音频通用格式是AAC
+            mMediaRecorder.setAudioEncoder(MediaRecorder.AudioEncoder.AAC);
+            //设置编码频率
+            mMediaRecorder.setAudioEncodingBitRate(96000);
+            //设置录音保存的文件
+            mMediaRecorder.setOutputFile(mFilePath);
+            //开始录音
+            mMediaRecorder.prepare();
+            mMediaRecorder.start();*/
+
+            mAudioStateChange.onStartRecoderUsePhone();
+            //记录开始录音时间
+//            startTime = System.currentTimeMillis();
+        } catch (Exception e) {
+            e.printStackTrace();
+//            recordFail();
+        }
+    }
     public void startRecorderUsePhone(String mFilePath) {
         //this.mFilePath = mFilePath;
         //创建MediaRecorder对象
@@ -346,7 +373,6 @@ public class AudioMediaPlayManager {
 //            recordFail();
         }
     }
-
     /**
      * 停止手机录音
      */

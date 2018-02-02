@@ -397,13 +397,14 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
                             if(!TextUtils.isEmpty(tranText)){
                                 tv_tran_result.setText(tranText);
                             }
-
-
                         }else if(resultBean.getStatus() == Constants.REQUEST_FAIL){
                             Log.e(TAG,"请求失败");
                             Toast.makeText(TranslateActivity.this,R.string.request_error,Toast.LENGTH_SHORT).show();
-                            img_tran_recro_bg.clearAnimation();
-                        }
+
+                        }/*else if(resultBean.getStatus() == Constants.TRAN_ERROR){
+                            Toast.makeText(TranslateActivity.this,R.string.tran_error,Toast.LENGTH_SHORT).show();
+                        }*/
+                        //img_tran_recro_bg.clearAnimation();
                     }
 
                     @Override
@@ -411,7 +412,7 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
                         super.onError(response);
                         Log.e(TAG,"请求错误");
                         Toast.makeText(TranslateActivity.this,R.string.request_error,Toast.LENGTH_SHORT).show();
-                        img_tran_recro_bg.clearAnimation();
+                       // img_tran_recro_bg.clearAnimation();
                     }
                 });
     }
@@ -434,6 +435,7 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
     public void onFinalResponseResult(String result) {
         Log.d(TAG,"结果是 ： "+result);
         mSearchBoxEditText.setText(result);
+        requestTran(result);
         img_tran_recro_bg.clearAnimation();
     }
 
@@ -465,6 +467,16 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
             if(mIntentType == 0){
                 showKeyBord();
             }
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if(null != mMicroRecogitionManager){
+            Log.e(TAG,"        if(this.mMicroRecogitionManager){\n");
+        }else{
+            Log.e(TAG,"        if(null == this.mMicroRecogitionManager){\n");
         }
     }
 }

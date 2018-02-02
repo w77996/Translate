@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.media.Image;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -16,6 +18,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.FileCallback;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.wtwd.translate.R;
@@ -83,6 +86,10 @@ public class DevTranslateActivity extends Activity implements AudioStateChange,T
     private ImageView img_tran_recro_bg;
     private Animation mAnimation = null;//播放动画
 
+
+
+    ImageView dev_back;
+
     TranProtocalAnalysis mTranProtocalAnalysis;
     TranProtocalReceivedAnalysis mTranProtocalReceivedAnalysis;
     List<RecorderBean> mRecorderList;//语音list
@@ -105,6 +112,20 @@ public class DevTranslateActivity extends Activity implements AudioStateChange,T
 
     private boolean isCreate = false;
 
+    private static final int   START_BLUE_RECORDER = 0x01;
+    private Handler mHandler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what){
+                case START_BLUE_RECORDER:
+                    Log.e(TAG,"开始蓝牙录音");
+                    // sendCode("86", ed_username.getText().toString());
+                    mMicroRecogitionManager.initSpeechRecognition(leftLanguage);
+                    break;
+            }
+        }
+    };
 
     @Override
     protected void onResume() {
@@ -188,7 +209,8 @@ public class DevTranslateActivity extends Activity implements AudioStateChange,T
                     //blueVoiceFile = Utils.getVoiceFilePath();
                     isDevRecrod = true;
                     //mAudioMediaPlayManager.startRecorderUseBluetoothEar(mFileName);
-                     mMicroRecogitionManager.initSpeechRecognition(leftLanguage);
+                    mAudioMediaPlayManager.startRecorderUseBluetoothEar();
+
                      leftRecorderBean=new RecorderBean();
                      leftRecorderBean.setType(Constants.ITEM_LEFT);
                      leftRecorderBean.setLanguage_type(leftLanguage);
@@ -203,8 +225,9 @@ public class DevTranslateActivity extends Activity implements AudioStateChange,T
                    // blueVoiceFile = Utils.getVoiceFilePath();
                     isDevRecrod = true;
                    // leftRecorderBean.setmFilePath(blueVoiceFile);
+                    mAudioMediaPlayManager.startRecorderUseBluetoothEar();
                     //mAudioMediaPlayManager.startRecorderUseBluetoothEar(mFileName);
-                     mMicroRecogitionManager.initSpeechRecognition(leftLanguage);
+                   //  mMicroRecogitionManager.initSpeechRecognition(leftLanguage);
                     leftRecorderBean=new RecorderBean();
                     leftRecorderBean.setType(Constants.ITEM_LEFT);
                     leftRecorderBean.setLanguage_type(leftLanguage);
@@ -271,6 +294,22 @@ public class DevTranslateActivity extends Activity implements AudioStateChange,T
     private void addListener() {
         mDevMenu.setOnClickListener(this);
         mVoiceImage.setOnClickListener(this);
+        dev_back.setOnClickListener(this);
+
+       /* findViewById(R.id.start).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                *//*Utils.createFile()*//*
+                mAudioMediaPlayManager.startRecorderUseBluetoothEar();
+                mMicroRecogitionManager.initSpeechRecognition(leftLanguage);
+            }
+        });
+        findViewById(R.id.stop).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mAudioMediaPlayManager.stopPlayingUseBluetoothEar();
+            }
+        });*/
     }
 
     /**
@@ -296,6 +335,7 @@ public class DevTranslateActivity extends Activity implements AudioStateChange,T
         });
         img_tran_recro_bg = (ImageView)findViewById(R.id.img_tran_recro_bg);
         mListViewDevTran.setAdapter(mDevTranListViewAdapter);
+        dev_back = (ImageView)findViewById(R.id.dev_back);
         leftLanguage = SpUtils.getString(this,Constants.LEFT_LANGUAGE,Constants.zh_CN);
         rightLanguage = SpUtils.getString(this,Constants.RIGHT_LANGUAGE,Constants.en_US);
         // mVoiceFile = Utils.createFile(mVoiceFile, "VOICE_", ".3pg");
@@ -346,6 +386,7 @@ public class DevTranslateActivity extends Activity implements AudioStateChange,T
     public void onStartRecoderUseBluetoothEar() {
        // mMicroRecogitionManager.initSpeechRecognition(leftLanguage);
         Log.e(TAG, "onStartRecoderUseBluetoothEar");
+        mHandler.sendEmptyMessage(START_BLUE_RECORDER);
        /* RecorderBean recorderBean = new RecorderBean();
         recorderBean.setmFilePath(mVoiceFilePath);
         recorderBean.setType(Constants.ITEM_RIGHT);
@@ -451,6 +492,8 @@ public class DevTranslateActivity extends Activity implements AudioStateChange,T
                     Toast.makeText(DevTranslateActivity.this, R.string.dev_isrecoder,Toast.LENGTH_SHORT).show();
                     return ;
                 }
+                mAnimation = AnimationUtils.loadAnimation(this,R.anim.voice_bg_anim);
+                img_tran_recro_bg.startAnimation(mAnimation);
                 isPhoneRecrod = true;
                 rightRecorderBean = new RecorderBean();
                 rightRecorderBean.setType(Constants.ITEM_RIGHT);
@@ -459,8 +502,11 @@ public class DevTranslateActivity extends Activity implements AudioStateChange,T
                 mMicroRecogitionManager.initSpeechRecognition(rightLanguage);
                 break;
             case R.id.img_tran_recro_bg:
-                mAnimation = AnimationUtils.loadAnimation(this,R.anim.voice_bg_anim);
-                img_tran_recro_bg.startAnimation(mAnimation);
+               /* mAnimation = AnimationUtils.loadAnimation(this,R.anim.voice_bg_anim);
+                img_tran_recro_bg.startAnimation(mAnimation);*/
+                break;
+            case R.id.dev_back:
+                finish();
                 break;
         }
     }
@@ -510,6 +556,7 @@ public class DevTranslateActivity extends Activity implements AudioStateChange,T
                 // TODO: 2018/1/24 1.文字传给服务器2.返回结果显示在界面上
                 leftRecorderBean.setmRecorderTxt(result);
                 leftRecorderBean.setType(Constants.ITEM_LEFT);
+                mAudioMediaPlayManager.stopRecorderUseBluetoothEar();
                 requestTran(result,leftLanguage,rightLanguage);
             }else if(isPhoneRecrod == true){
                 rightRecorderBean.setmRecorderTxt(result);
@@ -525,6 +572,11 @@ public class DevTranslateActivity extends Activity implements AudioStateChange,T
     public void ononFinalResponseResultEmtity(String error) {
         //if(result == null || "".equals(result)){
         Toast.makeText(this,R.string.record_fail,Toast.LENGTH_SHORT).show();
+
+        if(isDevRecrod){
+            mAudioMediaPlayManager.stopRecorderUseBluetoothEar();
+        }
+
         isDevRecrod = false;
         isPhoneRecrod = false;
         img_tran_recro_bg.clearAnimation();
@@ -535,6 +587,9 @@ public class DevTranslateActivity extends Activity implements AudioStateChange,T
     @Override
     public void onError(String s) {
         Toast.makeText(this,R.string.record_fail,Toast.LENGTH_SHORT).show();
+        if(isDevRecrod){
+            mAudioMediaPlayManager.stopRecorderUseBluetoothEar();
+        }
         isDevRecrod = false;
         isPhoneRecrod = false;
         img_tran_recro_bg.clearAnimation();
@@ -552,6 +607,7 @@ public class DevTranslateActivity extends Activity implements AudioStateChange,T
                .params("from",from)
                .params("to",to)
                .params("guestId",guestId)
+               .retryCount(0)
                .execute(new StringCallback() {
                    @Override
                    public void onSuccess(Response<String> response) {
@@ -559,37 +615,40 @@ public class DevTranslateActivity extends Activity implements AudioStateChange,T
                        TranResultBean resultBean = GsonUtils.getInstance().GsonToBean(response.body().toString(),TranResultBean.class);
                        if(resultBean.getStatus() == Constants.REQUEST_SUCCESS){
                            Log.e(TAG,"请求成功");
-
+                            String send ="";
                            String tranText = resultBean.getTranslateResult().getText();
                            String tranAudio = resultBean.getTranslateResult().getAudio();
                            if(!TextUtils.isEmpty(tranText)&& !TextUtils.isEmpty(tranAudio)){
                                Log.e(TAG,tranText + " "+tranAudio);
                                if(isDevRecrod){
                                    leftRecorderBean.setmResultTxt(tranText);
-                                   leftRecorderBean.setmFilePath(resultBean.getTranslateResult().getAudio());
-                                   mRecorderList.add(leftRecorderBean);
-                                   isDevRecrod = false;
+                                  // leftRecorderBean.setmFilePath(resultBean.getTranslateResult().getAudio());
+                                  // mRecorderList.add(leftRecorderBean);
+                                   //isDevRecrod = false;
+                                   // send = BluetoothSerialString.getTranslationResultString(leftLanguage,rightLanguage,leftRecorderBean.getmResultTxt(),tranText,true);
                                }else if(isPhoneRecrod){
                                    rightRecorderBean.setmResultTxt(tranText);
-                                   rightRecorderBean.setmFilePath(resultBean.getTranslateResult().getAudio());
-                                   mRecorderList.add(rightRecorderBean);
-                                   isPhoneRecrod = false;
+                                  // rightRecorderBean.setmFilePath(resultBean.getTranslateResult().getAudio());
+                                   //mRecorderList.add(rightRecorderBean);
+                                  // isPhoneRecrod = false;
+                                   send = BluetoothSerialString.getTranslationResultString(leftLanguage,rightLanguage,rightRecorderBean.getmResultTxt(),tranText,true);
                                }
                               // mRecorderList.add(rightRecorderBean);
-                               mDevTranListViewAdapter.notifyDataSetChanged();
-                               mListViewDevTran.setSelection(mRecorderList.size()-1);
-                               if(isPhoneRecrod){
+                               /*if(isPhoneRecrod){
                                    mAudioMediaPlayManager.startPlayingUseBluetoothEar(tranAudio);
                                }else if(isDevRecrod){
                                    mAudioMediaPlayManager.startPlayingUsePhone(tranAudio);
-                               }
+                               }*/
 
-                               isDevRecrod = false;
-                               isPhoneRecrod = false;
+                                mTranProtocalAnalysis.writeToDevice(send);
+                                requestAudio(tranAudio);
+                              /* isDevRecrod = false;
+                               isPhoneRecrod = false;*/
                            }
                        }else if(resultBean.getStatus() == Constants.REQUEST_FAIL){
                            Log.e(TAG,"请求失败");
                           // img_tran_recro_bg.clearAnimation();
+                           Toast.makeText(DevTranslateActivity.this,R.string.tran_error,Toast.LENGTH_SHORT).show();
                        }
                    }
 
@@ -602,7 +661,63 @@ public class DevTranslateActivity extends Activity implements AudioStateChange,T
                    }
                });
    }
+    /**
+     * 请求录音并播放
+     *
+     * @param tranAudio
+     */
+    private void requestAudio(String tranAudio) {
+        OkGo.<File>get(tranAudio)
+                .retryCount(0)
+                .execute(new FileCallback() {
+                    @Override
+                    public void onSuccess(Response<File> response) {
+                        if (response.body().isFile()) {
+                            Log.e(TAG, "file");
+                            // InputStream inputStream = new FileInputStream(response.body());
+                            final File file = response.body().getAbsoluteFile();
+                            Log.e(TAG, file.getAbsolutePath());
+                            if (isPhoneRecrod) {
+                                // rightRecorderBean.setmFilePath(resultBean.getTranslateResult().getAudio());
+                                rightRecorderBean.setmFilePath(file.getAbsolutePath());
+                                mRecorderList.add(rightRecorderBean);
 
+                                //DaoUtils.getRecorderBeanDaoManager().insertObject(rightRecorderBean);
+                            } else if (isDevRecrod) {
+                                // leftRecorderBean.setmFilePath(resultBean.getTranslateResult().getAudio());
+                                leftRecorderBean.setmFilePath(file.getAbsolutePath());
+                                mRecorderList.add(leftRecorderBean);
+
+                                // DaoUtils.getRecorderBeanDaoManager().insertObject(leftRecorderBean);
+                            }
+                            mDevTranListViewAdapter.notifyDataSetChanged();
+                            mListViewDevTran.setSelection(mRecorderList.size() - 1);
+
+                               /* new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        mAudioMediaPlayManager.startPlayingUsePhone(file.getAbsolutePath());
+                                    }
+                                }).start();*/
+                            //Log.e(TAG,mRecorderList.get(pos).getmFilePath());
+                            if(isDevRecrod){
+                                mAudioMediaPlayManager.startPlayingUsePhone(file.getAbsolutePath());
+                            }else if(isPhoneRecrod){
+                                mAudioMediaPlayManager.startPlayingUseBluetoothEar(file.getAbsolutePath());
+                            }
+                            isPhoneRecrod = false;
+                            isDevRecrod = false;
+                        }
+                    }
+
+                    @Override
+                    public void onError(Response<File> response) {
+                        super.onError(response);
+                        isPhoneRecrod = false;
+                        isDevRecrod = false;
+                    }
+                });
+    }
     @Override
     protected void onDestroy() {
         super.onDestroy();

@@ -1,198 +1,396 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/app_background"
     android:focusable="true"
-    android:focusableInTouchMode="true">
+    android:focusableInTouchMode="true"
+    android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/main_title"
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="@dimen/x45"
-        android:background="@color/main_title_color">
+        android:background="@color/main_title_color"
+        android:orientation="vertical">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <TextView
                 android:id="@+id/main_title_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:textSize="20sp"
+                android:text="@string/tran_mathine"
                 android:textColor="@color/color_white"
-                android:text="@string/tran_mathine"/>
+                android:textSize="20sp" />
+
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/setting"
                 android:layout_alignParentRight="true"
+                android:layout_centerHorizontal="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="@dimen/x5"
-                android:layout_centerHorizontal="true"/>
+                android:src="@drawable/setting" />
         </RelativeLayout>
-
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:background="@drawable/tran_search_bg"
         >
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <ImageView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
-                android:scaleType="center"
-                android:background="@drawable/tran_search_bg"/>
+                android:scaleType="center" />
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
                 android:layout_centerInParent="true"
-                android:orientation="horizontal"
-               >
-                <ImageView
-                    android:id="@+id/img_search"
-                    android:layout_width="@dimen/x250"
-                    android:src="@drawable/img_search_box"
-                    android:layout_height="@dimen/x40" />
-                <ImageView
-                    android:id="@+id/img_start"
-                    android:layout_width="@dimen/x50"
-                    android:layout_toRightOf="@+id/img_search"
-                    android:src="@drawable/img_start"
-                    android:layout_height="@dimen/x40" />
+                android:layout_centerVertical="true"
+                android:orientation="horizontal">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:id="@+id/img_search"
+                        android:layout_width="@dimen/x250"
+                        android:layout_height="@dimen/x40"
+                        android:src="@drawable/main_search" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="@dimen/x10"
+                        android:text="在此输入单词或句子" />
+
+                    <ImageView
+                        android:id="@+id/img_start"
+                        android:layout_width="@dimen/x50"
+                        android:layout_height="@dimen/x40"
+                        android:layout_toRightOf="@+id/img_search"
+                        android:src="@drawable/img_start" />
+                </RelativeLayout>
+
             </LinearLayout>
 
         </RelativeLayout>
     </LinearLayout>
 
-    <LinearLayout
+  <!--  <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center|center_vertical|center_horizontal"
         android:layout_marginLeft="@dimen/x10"
         android:layout_marginRight="@dimen/x10"
-        android:layout_marginTop="@dimen/x15"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:visibility="gone"
+        >
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginBottom="50dp">
 
             <LinearLayout
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:gravity="center|center_horizontal|center_vertical"
-                android:orientation="vertical">
+                android:layout_centerHorizontal="true"
+                android:layout_centerInParent="true"
+                android:layout_centerVertical="true">
 
-                <RelativeLayout
-                    android:layout_width="@dimen/x180"
-                    android:layout_height="@dimen/x70"
-                    android:layout_marginBottom="@dimen/x5"
-                    android:background="@drawable/main_photo">
-
-                    <Button
-                        android:id="@+id/btn_photo_tran"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@android:color/transparent" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/md_white_color_code"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="@dimen/x8"
-                        android:layout_marginBottom="@dimen/x5"
-                        android:layout_alignParentBottom="true"
-                        android:textSize="15sp"
-                        android:text="@string/photo_tran"/>
-                </RelativeLayout>
-
-                <RelativeLayout
-                    android:layout_width="@dimen/x180"
-                    android:layout_height="@dimen/x70"
-                    android:layout_marginBottom="@dimen/x5"
-                    android:background="@drawable/main_chat"
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
                     android:orientation="vertical">
 
-                    <Button
-                        android:id="@+id/btn_chat_tran"
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@android:color/transparent"
-                        />
+                        android:layout_marginBottom="@dimen/x5"
+                        android:background="@drawable/photo_main">
+
+                        <ImageView
+                            android:id="@+id/btn_photo_tran"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textColor="@color/md_white_color_code"
-                            android:layout_alignParentRight="true"
-                            android:layout_marginRight="@dimen/x8"
-                            android:layout_marginBottom="@dimen/x5"
                             android:layout_alignParentBottom="true"
-                            android:textSize="15sp"
-                            android:text="@string/chat"/>
+                            android:layout_alignParentRight="true"
+                            android:layout_marginBottom="@dimen/x5"
+                            android:layout_marginRight="@dimen/x8"
+                            android:text="@string/photo_tran"
+                            android:textColor="@color/md_white_color_code"
+                            android:textSize="15sp" />
 
-                </RelativeLayout>
 
-                <RelativeLayout
-                    android:layout_width="@dimen/x180"
-                    android:layout_height="@dimen/x70"
-                    android:layout_marginBottom="@dimen/x5"
-                    android:background="@drawable/main_voice_chat">
+                    </RelativeLayout>
 
-                    <Button
-                        android:id="@+id/btn_voice_tran"
+                    <RelativeLayout
+                        android:layout_width="@dimen/x150"
+                        android:layout_height="@dimen/x120"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/btn_chat_tran"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:scaleType="center"
+                            android:src="@drawable/chat_main" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentBottom="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_marginBottom="@dimen/x5"
+                            android:layout_marginRight="@dimen/x8"
+                            android:text="@string/chat"
+                            android:textColor="@color/md_white_color_code"
+                            android:textSize="15sp" />
+
+                    </RelativeLayout>
+
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/x10"
+                    android:layout_weight="1">
+
+                    <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:background="@android:color/transparent" />
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textColor="@color/md_white_color_code"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="@dimen/x8"
-                        android:layout_marginBottom="@dimen/x5"
-                        android:layout_alignParentBottom="true"
-                        android:textSize="15sp"
-                        android:text="@string/voice_tran"/>
-                </RelativeLayout>
-            </LinearLayout>
+                        android:gravity="center"
+                        android:orientation="vertical">
 
+
+                        <RelativeLayout
+                            android:layout_width="@dimen/x130"
+                            android:layout_height="@dimen/x100"
+                            android:layout_marginBottom="@dimen/x5">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentBottom="true"
+                                android:layout_alignParentRight="true"
+                                android:layout_marginBottom="@dimen/x5"
+                                android:layout_marginRight="@dimen/x8"
+                                android:text="@string/voice_tran"
+                                android:textColor="@color/md_white_color_code"
+                                android:textSize="15sp" />
+
+                            <ImageView
+                                android:id="@+id/btn_voice_tran"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentStart="true"
+                                android:layout_alignParentTop="true"
+                                android:scaleType="center"
+                                android:src="@drawable/voice_main" />
+                        </RelativeLayout>
+
+                        <RelativeLayout
+                            android:layout_width="@dimen/x150"
+                            android:layout_height="@dimen/x120">
+
+                            <ImageView
+                                android:id="@+id/btn_dev_tran"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:scaleType="center"
+                                android:src="@drawable/dev_main" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_alignParentBottom="true"
+                                android:layout_alignParentRight="true"
+                                android:layout_marginBottom="@dimen/x5"
+                                android:layout_marginRight="@dimen/x8"
+                                android:text="@string/dev_tran"
+                                android:textColor="@color/md_white_color_code"
+                                android:textSize="15sp" />
+                        </RelativeLayout>
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </RelativeLayout>
+    </LinearLayout>
+-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginBottom="@dimen/x45"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="horizontal"
+            >
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="@dimen/x10"
-                android:layout_weight="2">
+                android:layout_weight="1"
 
-                <RelativeLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/x220"
-                    android:background="@drawable/main_dev_tran">
-
-                    <Button
-                        android:id="@+id/btn_dev_tran"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:background="@android:color/transparent" />
+                >
+                <LinearLayout
+                    android:id="@+id/btn_dev_tran"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/dev_main"
+                    android:layout_marginTop="@dimen/x12"
+                    android:layout_marginLeft="@dimen/x12"
+                    android:layout_marginBottom="@dimen/x6"
+                    android:layout_marginRight="@dimen/x6"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    >
+                    <ImageView
+                        android:layout_width="@dimen/x40"
+                        android:layout_height="@dimen/x38"
+                        android:src="@drawable/dev_main_img"/>
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textColor="@color/md_white_color_code"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="@dimen/x8"
-                        android:layout_marginBottom="@dimen/x5"
-                        android:layout_alignParentBottom="true"
-                        android:textSize="15sp"
-                        android:text="@string/dev_tran"/>
-                </RelativeLayout>
+                        android:layout_marginTop="@dimen/x8"
+                        android:textColor="@color/color_white"
+                        android:text="@string/dev_tran"
+                        />
+
+                </LinearLayout>
 
             </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                >
+                <LinearLayout
+                    android:id="@+id/btn_photo_tran"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/photo_main"
+                    android:layout_marginTop="@dimen/x12"
+                    android:layout_marginRight="@dimen/x12"
+                    android:layout_marginBottom="@dimen/x6"
+                    android:layout_marginLeft="@dimen/x6"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    >
+                    <ImageView
+                        android:layout_width="@dimen/x40"
+                        android:layout_height="@dimen/x38"
+                        android:src="@drawable/photo_main_img"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/x8"
+                        android:textColor="@color/color_white"
+                        android:text="@string/photo_tran"
+                        />
+                </LinearLayout>
+            </LinearLayout>
+
         </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            >
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                >
+                <LinearLayout
+                    android:id="@+id/btn_chat_tran"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/chat_main"
+                    android:layout_marginTop="@dimen/x6"
+                    android:layout_marginLeft="@dimen/x12"
+                    android:layout_marginBottom="@dimen/x12"
+                    android:layout_marginRight="@dimen/x6"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    >
+                    <ImageView
+                        android:layout_width="@dimen/x40"
+                        android:layout_height="@dimen/x38"
+                        android:src="@drawable/chat_main_img"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/x8"
+                        android:textColor="@color/color_white"
+                        android:text="@string/chat"
+                        />
+
+                </LinearLayout>
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                >
+
+                <LinearLayout
+                    android:id="@+id/btn_voice_tran"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/voice_main"
+                    android:layout_marginTop="@dimen/x6"
+                    android:layout_marginRight="@dimen/x12"
+                    android:layout_marginBottom="@dimen/x12"
+                    android:layout_marginLeft="@dimen/x6"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    >
+                    <ImageView
+                        android:layout_width="@dimen/x40"
+                        android:layout_height="@dimen/x38"
+                        android:src="@drawable/voice_main_img"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/x8"
+                        android:textColor="@color/color_white"
+                        android:text="@string/voice_tran"
+                        />
+
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
     </LinearLayout>
 </LinearLayout>

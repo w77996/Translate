@@ -1,10 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
+    android:background="@color/app_background"
     android:layout_height="match_parent">
+    <LinearLayout
+        android:id="@+id/main_title"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/x45"
+        android:background="@color/main_title_color">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/main_title_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:textSize="20sp"
+                android:textColor="@color/color_white"
+                android:text="@string/travel"/>
 
+        </RelativeLayout>
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="travel"/>
+    </LinearLayout>
 </LinearLayout>

@@ -343,18 +343,30 @@ public class SppBluetoothManager {
                     int blueState = intent.getIntExtra(BluetoothAdapter.EXTRA_STATE, 0);
                     switch(blueState){
                         case BluetoothAdapter.STATE_TURNING_ON:
-                            mBluetoothListener.notifyChangeOpenstate(BluetoothAdapter.STATE_TURNING_ON);
+                            if(null != mBluetoothListener){
+                                mBluetoothListener.notifyChangeOpenstate(BluetoothAdapter.STATE_TURNING_ON);
+                            }
+
                             break;
                         case BluetoothAdapter.STATE_ON:
                             //开始扫描
                             //scanLeDevice(true);
-                            mBluetoothListener.notifyChangeOpenstate(BluetoothAdapter.STATE_ON);
+                            if(null != mBluetoothListener){
+                                mBluetoothListener.notifyChangeOpenstate(BluetoothAdapter.STATE_ON);
+                            }
+
                             break;
                         case BluetoothAdapter.STATE_TURNING_OFF:
-                            mBluetoothListener.notifyChangeOpenstate(BluetoothAdapter.STATE_TURNING_OFF);
+                            if(null != mBluetoothListener){
+                                mBluetoothListener.notifyChangeOpenstate(BluetoothAdapter.STATE_TURNING_OFF);
+                            }
+
                             break;
                         case BluetoothAdapter.STATE_OFF:
-                            mBluetoothListener.notifyChangeOpenstate(BluetoothAdapter.STATE_OFF);
+                            if(null != mBluetoothListener){
+                                mBluetoothListener.notifyChangeOpenstate(BluetoothAdapter.STATE_OFF);
+                            }
+
                             break;
 
                     }
@@ -362,10 +374,10 @@ public class SppBluetoothManager {
                 case BluetoothDevice.ACTION_FOUND:
                     BluetoothDevice mFoundDevice = intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
                     // TODO: 2018/1/16 0016 将device传递到界面
-                    mBluetoothListener.foundBluetoothDevice(mFoundDevice);
+                   // mBluetoothListener.foundBluetoothDevice(mFoundDevice);
                     break;
                 case BluetoothAdapter.ACTION_DISCOVERY_FINISHED:
-                    mBluetoothListener.scanBluetoothFinish();
+                 //   mBluetoothListener.scanBluetoothFinish();
                     break;
             }
         }
@@ -377,8 +389,8 @@ public class SppBluetoothManager {
      */
     public void bluetoothRegisterReceiver() {
         IntentFilter mBluetoothFilter = new IntentFilter();
-        mBluetoothFilter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
-        mBluetoothFilter.addAction(BluetoothDevice.ACTION_FOUND);
+        //mBluetoothFilter.addAction(BluetoothAdapter.ACTION_DISCOVERY_FINISHED);
+       // mBluetoothFilter.addAction(BluetoothDevice.ACTION_FOUND);
         mBluetoothFilter.addAction(BluetoothAdapter.ACTION_STATE_CHANGED);
         mContext.registerReceiver(mBluetoothStatusReceive, mBluetoothFilter);
     }
@@ -644,18 +656,18 @@ public class SppBluetoothManager {
 
         public void run() {
             Log.i(TAG, "BEGIN mConnectedThread");
-            byte[] buffer = new byte[1024];
-            int bytes;
+           // byte[] buffer = new byte[1024];
+           // int bytes;
 
             // Keep listening to the InputStream while connected
-            while (mState == STATE_CONNECTED) {
+          /*  while (mState == STATE_CONNECTED) {
                 try {
                     // Read from the InputStream
 //                    bytes = mmInStream.read(buffer);
 //                    Log.e(TAG, "bytes : " + bytes);
 
-                    byte[] result = new byte[20];
-                    System.arraycopy(buffer,0,result,0,result.length);
+//                    byte[] result = new byte[20];
+//                    System.arraycopy(buffer,0,result,0,result.length);
 
                   //  mMessageListener.readByteFromOtherDevice(result);
                     // Send the obtained bytes to the UI Activity
@@ -666,7 +678,7 @@ public class SppBluetoothManager {
                     connectionLost();
                     break;
                 }
-            }
+            }*/
         }
 
         /**

@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/app_background"
     tools:context="com.wtwd.translate.activity.DealImageActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="45dp"
-        android:background="@color/main_title_color"
+        android:layout_height="@dimen/x45"
+        android:background="@color/color_white"
         android:orientation="vertical">
 
         <RelativeLayout
@@ -21,21 +21,22 @@
 
             <ImageView
                 android:id="@+id/img_deal_back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/x30"
+                android:layout_height="@dimen/x30"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/x10"
-                android:background="@drawable/chat_back" />
+                android:scaleType="center"
+                android:src="@drawable/photo_back" />
 
 
             <ImageView
                 android:id="@+id/img_deal_switch"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/x22"
+                android:layout_height="@dimen/x17"
                 android:layout_centerInParent="true"
-                android:layout_marginLeft="@dimen/x5"
-                android:layout_marginRight="@dimen/x5"
-                android:src="@drawable/chat_switch" />
+                android:layout_marginLeft="@dimen/x8"
+                android:layout_marginRight="@dimen/x8"
+                android:src="@drawable/photo_switch"
+                android:padding="@dimen/x2"/>
 
             <TextView
                 android:id="@+id/text_deal_left_language"
@@ -44,7 +45,7 @@
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@id/img_deal_switch"
                 android:text="中文"
-                android:textColor="@color/color_white"
+                android:textColor="@color/md_black_color_code"
                 android:textSize="16sp" />
 
             <ImageView
@@ -63,7 +64,7 @@
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@id/img_deal_switch"
                 android:text="英文"
-                android:textColor="@color/color_white"
+                android:textColor="@color/md_black_color_code"
                 android:textSize="16sp" />
 
             <ImageView

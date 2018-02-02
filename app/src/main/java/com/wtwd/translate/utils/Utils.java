@@ -164,39 +164,39 @@ public class Utils {
         switch (type) {
             case Constants.zh_CN:
                 imageView.setImageDrawable(context.getDrawable(R.drawable.flag_china));
-                textView.setText("中文");
+                textView.setText("CHS");
                 break;
             case Constants.en_US:
                 imageView.setImageDrawable(context.getDrawable(R.drawable.flag_eng));
-                textView.setText("英语");
+                textView.setText("ENG");
                 break;
             case Constants.fr_FR:
                 imageView.setImageDrawable(context.getDrawable(R.drawable.flag_fra));
-                textView.setText("法语");
+                textView.setText("FRA");
                 break;
             case Constants.de_DE:
                 imageView.setImageDrawable(context.getDrawable(R.drawable.flag_deu));
-                textView.setText("德语");
+                textView.setText("DEU");
                 break;
             case Constants.ko_KR:
                 imageView.setImageDrawable(context.getDrawable(R.drawable.flag_kor));
-                textView.setText("韩语");
+                textView.setText("KOR");
                 break;
             case Constants.ja_JP:
                 imageView.setImageDrawable(context.getDrawable(R.drawable.flag_jpa));
-                textView.setText("日语");
+                textView.setText("JPN");
                 break;
             case Constants.es_ES:
                 imageView.setImageDrawable(context.getDrawable(R.drawable.flag_spa));
-                textView.setText("西班牙语");
+                textView.setText("SPA");
                 break;
             case Constants.pt_PT:
                 imageView.setImageDrawable(context.getDrawable(R.drawable.flag_por));
-                textView.setText("葡萄牙语");
+                textView.setText("PRO");
                 break;
             case Constants.ru_RU:
                 imageView.setImageDrawable(context.getDrawable(R.drawable.language_rus));
-                textView.setText("俄罗斯语");
+                textView.setText("RUS");
                 break;
         }
 

@@ -97,7 +97,7 @@ public class DealImageActivity extends BaseActivity implements View.OnClickListe
      * 初始化界面视图
      */
     private void initView() {
-        Utils.setWindowStatusBarColor(this, R.color.main_title_color);
+        Utils.setWindowStatusBarColor(this, R.color.md_grey_600_color_code);
 
         img_deal_display = (ClipImageView) findViewById(R.id.img_deal_display);
         btn_deal_capture = (Button) findViewById(R.id.btn_deal_capture);

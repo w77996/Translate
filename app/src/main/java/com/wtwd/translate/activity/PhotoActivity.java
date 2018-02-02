@@ -105,7 +105,7 @@ public class PhotoActivity extends Activity implements SurfaceHolder.Callback, V
     ImageView leftlanguage_head;
     ImageView rightlanguage_head;
 
-
+    ImageView back;
     ImageView img_photo_switch;
     /**
      * 互译的语言
@@ -143,7 +143,7 @@ public class PhotoActivity extends Activity implements SurfaceHolder.Callback, V
      * 初始化界面
      */
     private void initView() {
-        Utils.setWindowStatusBarColor(this, R.color.main_title_color);
+        Utils.setWindowStatusBarColor(this, R.color.md_grey_600_color_code);
 
         surface_photo = (SurfaceView) findViewById(R.id.surface_photo);
         img_photo_camera = (ImageView) findViewById(R.id.img_photo_camera);
@@ -153,7 +153,7 @@ public class PhotoActivity extends Activity implements SurfaceHolder.Callback, V
        // text_photo_take_word = (TextView) findViewById(R.id.text_photo_take_word);
        // lin_photo_tran = (LinearLayout) findViewById(R.id.lin_photo_tran);
        // text_photo_tran = (TextView) findViewById(R.id.text_photo_tran);
-
+        back = (ImageView)findViewById(R.id.back);
         img_photo_switch = (ImageView)findViewById(R.id.img_photo_switch);
 
         text_photo_left_language = (TextView)findViewById(R.id.text_photo_left_language);
@@ -180,7 +180,7 @@ public class PhotoActivity extends Activity implements SurfaceHolder.Callback, V
         img_photo_picture.setOnClickListener(this);
         img_photo_flash_light.setOnClickListener(this);
         img_photo_switch.setOnClickListener(this);
-
+        back.setOnClickListener(this);
         leftlanguage_head.setOnClickListener(this);
         rightlanguage_head.setOnClickListener(this);
 //        lin_photo_tran.setOnClickListener(this);
@@ -399,7 +399,9 @@ public class PhotoActivity extends Activity implements SurfaceHolder.Callback, V
                 selectPicFromLocal();
 
                 break;
-
+            case R.id.back:
+                finish();
+                break;
            /* case R.id.lin_photo_take_word:
                 *//**选择拍照取词*//*
                 selectedPhoto(TAKE_WORD);

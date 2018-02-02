@@ -13,10 +13,10 @@
             android:layout_height="match_parent">
             <ImageView
                 android:id="@+id/language_select_back"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/x30"
+                android:layout_height="@dimen/x30"
                 android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/x10"
+                android:scaleType="center"
                 android:src="@drawable/chat_back"/>
             <TextView
                 android:id="@+id/main_title_text"
@@ -61,8 +61,9 @@
                 android:layout_height="wrap_content"
                 android:gravity="center">
                 <TextView
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center"
                     android:text="@string/open_blue_con_dev"/>
             </LinearLayout>
 

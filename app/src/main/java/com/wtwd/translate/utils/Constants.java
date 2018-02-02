@@ -7,6 +7,7 @@ package com.wtwd.translate.utils;
 public class Constants {
 
 
+   // public static final String BASEURL = "http://192.168.13.231:8080/open/";
     public static final String BASEURL = "http://192.168.13.34:8080/open/";
     public static final String RIGTSTURL = "registUser.action";//注册用户
     public static final String LOGINURL = "loginUser.action";//用户登陆
@@ -108,8 +109,9 @@ public class Constants {
      */
 
 
-    public static final int REQUEST_SUCCESS = 1;
-    public static final int REQUEST_FAIL = 0;
+    public static final int REQUEST_SUCCESS = 1;//请求成功
+    public static final int REQUEST_FAIL = 0;//请求失败
+    public static final int TRAN_ERROR = 2;//翻译失败
 
 
     public static final int USER_ALREAD_REGIST = 2;//用户已注册

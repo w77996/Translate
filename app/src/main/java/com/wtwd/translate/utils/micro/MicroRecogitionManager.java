@@ -85,7 +85,7 @@ public class MicroRecogitionManager implements ISpeechRecognitionServerEvents {
      * @param mLanguageType
      */
     public void initSpeechRecognition(String mLanguageType){
-        this.micClient = SpeechRecognitionServiceFactory.createMicrophoneClient((Activity) mContext, SpeechRecognitionMode.ShortPhrase , mLanguageType, this, "c96c2a771c6e4548a24e269884889478");
+        this.micClient = SpeechRecognitionServiceFactory.createMicrophoneClient((Activity) mContext, SpeechRecognitionMode.ShortPhrase , mLanguageType, this, "6d5a91fa9c614a33a681731279f2450c");
         this.micClient.setAuthenticationUri("");
         this.micClient.startMicAndRecognition();
     }
@@ -99,7 +99,7 @@ public class MicroRecogitionManager implements ISpeechRecognitionServerEvents {
                 SpeechRecognitionMode.ShortPhrase,
                 mLanguageType,
                 this,
-                "c96c2a771c6e4548a24e269884889478");
+                "6d5a91fa9c614a33a681731279f2450c");
         this.dataClient.setAuthenticationUri("");
         SendAudioHelper(mFilepath);
         //this.micClient.startMicAndRecognition();
@@ -201,7 +201,7 @@ public class MicroRecogitionManager implements ISpeechRecognitionServerEvents {
 
     @Override
     public void onError(int i, String s) {
-        Log.e(TAG,"微软语音合成错误 ： "+s);
+        Log.e(TAG,"微软语音合成错误 ： "+s.toString()+" "+ i);
         mMicroRecogitionManagerCallBack.onError(s);
     }
 

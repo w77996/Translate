@@ -9,16 +9,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.wtwd.translate.R;
 import com.wtwd.translate.activity.ChatActivity;
 import com.wtwd.translate.activity.DevTranslateActivity;
 import com.wtwd.translate.activity.PhotoActivity;
 import com.wtwd.translate.activity.TranslateActivity;
-import com.wtwd.translate.activity.VoiceActivity;
 import com.wtwd.translate.utils.Constants;
 
 /**
@@ -30,13 +28,13 @@ public class TranslateFragment extends Fragment implements View.OnClickListener{
 
     private static final String TAG = "TranslateFragment";
     /**设备翻译**/
-    Button mDevTranButton;
+    LinearLayout mDevTranButton;
     /**相机翻译**/
-    Button mPhotoTranButton;
+    LinearLayout mPhotoTranButton;
     /**双人翻译**/
-    Button mChatTranButton;
+    LinearLayout mChatTranButton;
     /**相机翻译**/
-    Button mVoiceTranButton;
+    LinearLayout mVoiceTranButton;
     ImageView mSearchImageView;
     ImageView mStartImageView;
     public static  TranslateFragment mInstance;
@@ -80,10 +78,10 @@ public class TranslateFragment extends Fragment implements View.OnClickListener{
 
     private void initView(View view) {
 
-        mDevTranButton = (Button)view.findViewById(R.id.btn_dev_tran);
-        mPhotoTranButton = (Button) view.findViewById(R.id.btn_photo_tran);
-        mChatTranButton= (Button) view.findViewById(R.id.btn_chat_tran);
-        mVoiceTranButton= (Button) view.findViewById(R.id.btn_voice_tran);
+        mDevTranButton = (LinearLayout)view.findViewById(R.id.btn_dev_tran);
+        mPhotoTranButton = (LinearLayout) view.findViewById(R.id.btn_photo_tran);
+        mChatTranButton= (LinearLayout) view.findViewById(R.id.btn_chat_tran);
+        mVoiceTranButton= (LinearLayout) view.findViewById(R.id.btn_voice_tran);
         mStartImageView = (ImageView)view.findViewById(R.id.img_start);
         mSearchImageView= (ImageView) view.findViewById(R.id.img_search);
 
