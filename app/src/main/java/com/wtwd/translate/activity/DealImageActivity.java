@@ -222,6 +222,10 @@ public class DealImageActivity extends BaseActivity implements View.OnClickListe
                 rightLanguage = SpUtils.getString(DealImageActivity.this,Constants.RIGHT_LANGUAGE,Constants.en_US);
                 SpUtils.putString(DealImageActivity.this,Constants.LEFT_LANGUAGE,rightLanguage);
                 SpUtils.putString(DealImageActivity.this,Constants.RIGHT_LANGUAGE,leftLanguage);
+
+                leftLanguage = SpUtils.getString(DealImageActivity.this, Constants.LEFT_LANGUAGE, Constants.zh_CN);
+                rightLanguage = SpUtils.getString(DealImageActivity.this, Constants.RIGHT_LANGUAGE, Constants.en_US);
+
                 Utils.perseLanguage(DealImageActivity.this, leftLanguage,leftlanguage_head,text_deal_left_language);
                 Utils.perseLanguage(DealImageActivity.this,rightLanguage,rightlanguage_head,text_deal_right_language);
                 break;

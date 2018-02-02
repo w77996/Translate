@@ -44,6 +44,7 @@ import com.wtwd.translate.utils.SpeechUtils;
 import com.wtwd.translate.utils.Utils;
 import com.wtwd.translate.utils.audio.AudioMediaPlayManager;
 import com.wtwd.translate.utils.audio.AudioStateChange;
+import com.wtwd.translate.utils.micro.MicroRecogitionManager;
 import com.wtwd.translate.utils.permissions.PermissionsActivity;
 import com.wtwd.translate.utils.permissions.PermissionsChecker;
 
@@ -60,7 +61,7 @@ import java.util.concurrent.TimeUnit;
  * time:2017/12/27
  * Created by w77996
  */
-public class ChatActivity extends Activity implements View.OnClickListener, AudioStateChange, ISpeechRecognitionServerEvents {
+public class ChatActivity extends Activity implements View.OnClickListener, AudioStateChange, MicroRecogitionManager.MicroRecogitionManagerCallBack {
 
     public final static String TAG = "ChatActivity";
     /**
@@ -151,23 +152,108 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
     /**
      * 微软语音状态
      */
-    FinalResponseStatus isReceivedResponse = FinalResponseStatus.NotReceived;
+  //  FinalResponseStatus isReceivedResponse = FinalResponseStatus.NotReceived;
     private RecorderBean rightRecorderBean;
     private RecorderBean leftRecorderBean;
 
-    public SpeechRecognitionMode getMode() {
+  /*  public SpeechRecognitionMode getMode() {
         return SpeechRecognitionMode.ShortPhrase;
+    }*/
+    /****自定义微软接口*****/
+    @Override
+    public void onFinalResponseResult(String result) {
+        animationDrawable.stop();
+        //mVoice.setBackground(getResources().getDrawable(R.drawable.voice_img3));
+        mVoice.setImageResource(R.drawable.chat_voice);
+       /* if (recognitionResult.Results.length <= 0) {
+
+            return;
+        }*/
+        //String userRecoderTxt = recognitionResult.Results[0].DisplayText;
+        //更新界面
+        lin_right.setClickable(true);
+        lin_left.setClickable(true);
+        if (rightIsStartVoice) {
+
+
+
+            lin_right.setBackground(this.getDrawable(R.drawable.chat_right_btn_unselect));
+
+            // TODO: 2018/1/17  停止录音后更新界面处理
+            rightRecorderBean = new RecorderBean();
+            rightRecorderBean.setLanguage_type(rightLanguage);
+            //rightRecorderBean.setmFilePath(mVoiceFilePath);
+
+            rightRecorderBean.setmRecorderTxt(result);
+            rightRecorderBean.setType(Constants.ITEM_RIGHT);
+            requestTran(result, rightLanguage, leftLanguage);
+            //mListViewChat.s
+        } else if (leftIsStartVoice) {
+            lin_left.setBackground(this.getDrawable(R.drawable.chat_left_btn_unselect));
+
+            // TODO: 2018/1/17  停止录音后更新界面处理
+            leftRecorderBean = new RecorderBean();
+            leftRecorderBean.setLanguage_type(leftLanguage);
+            //leftRecorderBean.setmFilePath(mVoiceFilePath);
+            //initSpeechRecognition(mVoiceFilePath);
+
+            leftRecorderBean.setmRecorderTxt(result);
+            leftRecorderBean.setType(Constants.ITEM_LEFT);
+            requestTran(result, leftLanguage, rightLanguage);
+
+        }
+       lin_left.setBackground(ChatActivity.this.getDrawable(R.drawable.chat_left_btn_unselect));
+        lin_right.setBackground(ChatActivity.this.getDrawable(R.drawable.chat_right_btn_unselect));
+        animationDrawable.stop();
     }
 
-    public enum FinalResponseStatus {NotReceived, OK, Timeout}
+    @Override
+    public void ononFinalResponseResultEmtity(String error) {
+        Log.e(TAG, "recognitionResult 长度为0识别失败");
+        lin_right.setBackground(this.getDrawable(R.drawable.chat_right_btn_unselect));
+        lin_left.setBackground(this.getDrawable(R.drawable.chat_left_btn_unselect));
+        lin_left.setClickable(true);
+        lin_right.setClickable(true);
+        animationDrawable.stop();
+        leftIsStartVoice = false;
+        rightIsStartVoice = false;
+        Toast.makeText(this, R.string.record_fail, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onError(String s) {
+        Log.e(TAG, "微软语音合成错误 ： " + s.toString());
+        lin_left.setBackground(this.getDrawable(R.drawable.chat_left_btn_unselect));
+        lin_right.setBackground(this.getDrawable(R.drawable.chat_right_btn_unselect));
+        lin_left.setClickable(true);
+        lin_right.setClickable(true);
+        mVoice.setImageResource(R.drawable.chat_voice);
+
+        animationDrawable.stop();
+        leftIsStartVoice = false;
+        rightIsStartVoice = false;
+        Toast.makeText(ChatActivity.this, "录音失败", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void startInitSpeechRecognition() {
+
+    }
+
+    @Override
+    public void getOnAudioEvent(boolean b) {
+
+    }
+
+    // public enum FinalResponseStatus {NotReceived, OK, Timeout}
 
     /**
      * 微软语音接口
      */
-    DataRecognitionClient dataClient = null;
-    MicrophoneRecognitionClient micClient = null;
+   /* DataRecognitionClient dataClient = null;
+    MicrophoneRecognitionClient micClient = null;*/
 
-
+    MicroRecogitionManager mMicroRecogitionManager;
     private static final int PERMISSIONS_REQUEST_CODE = 0111; // 请求码
 
     private PermissionsChecker mPermissionsChecker; // 权限检测器
@@ -185,6 +271,9 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
         setContentView(R.layout.activity_chat);
         mAudioMediaPlayManager = AudioMediaPlayManager.getAudioMediaPlayManager(this);
         mAudioMediaPlayManager.setAudioStateChange(this);
+        mMicroRecogitionManager =MicroRecogitionManager.getMicroRecogitionManager(this);
+        mMicroRecogitionManager.setmicroRecogitionManagerCallBack(this);
+
         initData();
         initView();
     }
@@ -234,13 +323,8 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
             chat_right_txt.setText("Hold to talk");
         }
         mRecorderList = new ArrayList<>();
-        //mRecorderList.addAll(DaoUtils.getRecorderBeanDaoManager().QueryAll(RecorderBean.class));
-       /* if(mRecorderList.size() <= 0 || mRecorderList == null ){
-            Log.e(TAG,mRecorderList+" 为空");
+        mRecorderList.addAll(DaoUtils.getRecorderBeanDaoManager().QueryAll(RecorderBean.class));
 
-        }else{
-            Log.e(TAG,mRecorderList+"不为空");
-        }*/
         img_chat_switch = (ImageView) findViewById(R.id.img_chat_switch);
         chat_left_img = (ImageView) findViewById(R.id.chat_left_img);
         chat_right_img = (ImageView) findViewById(R.id.chat_right_img);
@@ -279,7 +363,13 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
         });
 
         mListViewChat.setAdapter(mAdapter);
-      /*  mListViewChat.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        if(mRecorderList.size() <= 0 || mRecorderList == null ){
+            Log.e(TAG,mRecorderList+" 为空");
+        }else{
+            Log.e(TAG,mRecorderList+"不为空");
+            mListViewChat.setSelection(mRecorderList.size() - 1);
+        }
+      /* mListViewChat.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
 
@@ -347,9 +437,10 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
                     //Log.d(TAG, "左侧录音 " );
                     //mAudioMediaPlayManager.startRecorderUsePhone();;
                     //  mAudioMediaPlayManager.startRecorderUsePhone(mVoiceFilePath);
-                    initSpeechRecognition(leftLanguage);
+                    mMicroRecogitionManager.initSpeechRecognition(leftLanguage);
                     leftIsStartVoice = true;
                     lin_right.setClickable(false);
+                    lin_left.setClickable(false);
                 }
 
                 break;
@@ -389,8 +480,9 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
                    // mVoiceFilePath = Utils.getVoiceFilePath();
                    // Log.d(TAG, "右侧录音路径 " + mVoiceFilePath);
                     //mAudioMediaPlayManager.startRecorderUsePhone(mVoiceFilePath);
-                    initSpeechRecognition(rightLanguage);
+                   mMicroRecogitionManager.initSpeechRecognition(rightLanguage);
                     rightIsStartVoice = true;
+                    lin_right.setClickable(false);
                     lin_left.setClickable(false);
                 }
                 break;
@@ -431,8 +523,16 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
             case R.id.img_chat_switch:
                 leftLanguage = SpUtils.getString(ChatActivity.this, Constants.LEFT_LANGUAGE, Constants.zh_CN);
                 rightLanguage = SpUtils.getString(ChatActivity.this, Constants.RIGHT_LANGUAGE, Constants.en_US);
+                Log.e(TAG,"leftLanguage"+leftLanguage);
+                Log.e(TAG,"rightLanguage"+rightLanguage);
                 SpUtils.putString(ChatActivity.this, Constants.LEFT_LANGUAGE, rightLanguage);
                 SpUtils.putString(ChatActivity.this, Constants.RIGHT_LANGUAGE, leftLanguage);
+
+                leftLanguage = SpUtils.getString(ChatActivity.this, Constants.LEFT_LANGUAGE, Constants.zh_CN);
+                rightLanguage = SpUtils.getString(ChatActivity.this, Constants.RIGHT_LANGUAGE, Constants.en_US);
+
+                Log.e(TAG,"l "+leftLanguage);
+                Log.e(TAG,"r "+rightLanguage);
                 Utils.perseLanguage(ChatActivity.this, leftLanguage, chat_left_img, mLeftText);
                 Utils.perseLanguage(ChatActivity.this, rightLanguage, chat_right_img, mRightText);
                 Utils.setLanguageHead(ChatActivity.this, leftlanguage_head, leftLanguage);
@@ -464,7 +564,7 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
 
     @Override
     public void onStartRecoderUsePhone() {
-        initSpeechRecognition(mVoiceFilePath);
+        //initSpeechRecognition(mVoiceFilePath);
     }
 
     @Override
@@ -518,7 +618,7 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
 
     }*/
 
-    private void initSpeechRecognition(String mLanguageType) {
+   /* private void initSpeechRecognition(String mLanguageType) {
         this.micClient = SpeechRecognitionServiceFactory.createMicrophoneClient(
                 this,
                 SpeechRecognitionMode.ShortPhrase,
@@ -530,12 +630,10 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
         // this.micClient.
         // mHandler.sendEmptyMessageAtTime(MSG_AUDIO_START,2000);
 
-    }
+    }*/
 
-    /**
-     * @param filename
-     */
-    private void SendAudioHelper(String filename) {
+
+  /*  private void SendAudioHelper(String filename) {
         RecognitionTask doDataReco = new RecognitionTask(this.dataClient, SpeechRecognitionMode.ShortPhrase, filename);
         Log.d(TAG, "SendAudioHelper : " + filename);
         try {
@@ -544,65 +642,12 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
             doDataReco.cancel(true);
             isReceivedResponse = FinalResponseStatus.Timeout;
         }
-    }
-
-    /*
-    * Speech recognition with data (for example from a file or audio source).
-    * The data is broken up into buffers and each buffer is sent to the Speech Recognition Service.
-    * No modification is done to the buffers, so the user can apply their
-    * own VAD (Voice Activation Detection) or Silence Detection
-    *
-    * @param dataClient
-    * @param recoMode
-    * @param filename
-    */
-    private class RecognitionTask extends AsyncTask<Void, Void, Void> {
-        DataRecognitionClient dataClient;
-        SpeechRecognitionMode recoMode;
-        String filename;
+    }*/
 
 
-        RecognitionTask(DataRecognitionClient dataClient, SpeechRecognitionMode recoMode, String filename) {
-            this.dataClient = dataClient;
-            this.recoMode = recoMode;
-            this.filename = filename;
-        }
 
-        @Override
-        protected Void doInBackground(Void... params) {
-            try {
-                // Note for wave files, we can just send data from the file right to the server.
-                // In the case you are not an audio file in wave format, and instead you have just
-                // raw data (for example audio coming over bluetooth), then before sending up any
-                // audio data, you must first send up an SpeechAudioFormat descriptor to describe
-                // the layout and format of your raw audio data via DataRecognitionClient's sendAudioFormat() method.
-                // String filename = recoMode == SpeechRecognitionMode.ShortPhrase ? "whatstheweatherlike.wav" : "batman.wav";
-                Log.d(TAG, "RecognitionTask" + filename);
-                InputStream fileStream = new FileInputStream(filename);
-                int bytesRead = 0;
-                byte[] buffer = new byte[1024];
 
-                do {
-                    // Get  Audio data to send into byte buffer.
-                    bytesRead = fileStream.read(buffer);
-
-                    if (bytesRead > -1) {
-                        // Send of audio data to service.
-                        dataClient.sendAudio(buffer, bytesRead);
-                    }
-                } while (bytesRead > 0);
-
-            } catch (Throwable throwable) {
-                throwable.printStackTrace();
-            } finally {
-                dataClient.endAudio();
-            }
-
-            return null;
-        }
-    }
-
-    @Override
+  /*  @Override
     public void onPartialResponseReceived(String s) {
         Log.e(TAG, "onPartialResponseReceived ： " + s);
     }
@@ -612,15 +657,16 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
         boolean isFinalDicationMessage = this.getMode() == SpeechRecognitionMode.LongDictation &&
                 (recognitionResult.RecognitionStatus == RecognitionStatus.EndOfDictation ||
                         recognitionResult.RecognitionStatus == RecognitionStatus.DictationEndSilenceTimeout);
-      /*  if (null != this.micClient && (this.getMode() == SpeechRecognitionMode.ShortPhrase) || isFinalDicationMessage) {
+      *//*  if (null != this.micClient && (this.getMode() == SpeechRecognitionMode.ShortPhrase) || isFinalDicationMessage) {
             // we got the final result, so it we can end the mic reco.  No need to do this
             // for dataReco, since we already called endAudio() on it as soon as we were done
             // sending all the data.
             this.micClient.endMicAndRecognition();
-        }*/
+        }*//*
       if(null!=this.micClient){
           Log.e(TAG,"micClient end");
           this.micClient.endMicAndRecognition();
+          this.micClient = null;
       }
         Log.d(TAG, "********* Final n-BEST Results *********");
         for (int i = 0; i < recognitionResult.Results.length; i++) {
@@ -676,35 +722,36 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
             requestTran(userRecoderTxt, leftLanguage, rightLanguage);
 
         }
-        /*lin_left.setBackground(ChatActivity.this.getDrawable(R.drawable.chat_left_btn_unselect));
+        *//*lin_left.setBackground(ChatActivity.this.getDrawable(R.drawable.chat_left_btn_unselect));
         lin_right.setBackground(ChatActivity.this.getDrawable(R.drawable.chat_right_btn_unselect));
-        animationDrawable.stop();*/
-    }
+        animationDrawable.stop();*//*
+    }*/
 
 
-    @Override
+ /*   @Override
     public void onIntentReceived(String s) {
         Log.e(TAG, "onIntentReceived ： " + s);
-    }
+    }*/
 
-    @Override
+   /* @Override
     public void onError(int i, String s) {
-        Log.e(TAG, "微软语音合成错误 ： " + s);
+        Log.e(TAG, "微软语音合成错误 ： " + s.toString()+" "+i);
         lin_left.setBackground(this.getDrawable(R.drawable.chat_left_btn_unselect));
         lin_right.setBackground(this.getDrawable(R.drawable.chat_right_btn_unselect));
         lin_left.setClickable(true);
         lin_right.setClickable(true);
         mVoice.setImageResource(R.drawable.chat_voice);
+
         animationDrawable.stop();
         leftIsStartVoice = false;
         rightIsStartVoice = false;
         Toast.makeText(ChatActivity.this, "录音失败", Toast.LENGTH_SHORT).show();
-    }
+    }*/
 
-    @Override
+   /* @Override
     public void onAudioEvent(boolean b) {
         Log.e(TAG, "onAudioEvent ： " + b);
-    }
+    }*/
 
     /**
      * 请求翻译
@@ -738,16 +785,16 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
 
                                 if (rightIsStartVoice) {
                                     rightRecorderBean.setmResultTxt(tranText);
-                                    // rightRecorderBean.setmFilePath(resultBean.getTranslateResult().getAudio());
+                                   //  rightRecorderBean.setmFilePath(resultBean.getTranslateResult().getAudio());
                                     // mRecorderList.add(rightRecorderBean);
 
-                                    //DaoUtils.getRecorderBeanDaoManager().insertObject(rightRecorderBean);
+
                                 } else if (leftIsStartVoice) {
                                     leftRecorderBean.setmResultTxt(tranText);
-                                    // leftRecorderBean.setmFilePath(resultBean.getTranslateResult().getAudio());
+                                    //leftRecorderBean.setmFilePath(resultBean.getTranslateResult().getAudio());
                                     // mRecorderList.add(leftRecorderBean);
 
-                                    // DaoUtils.getRecorderBeanDaoManager().insertObject(leftRecorderBean);
+
                                 }
                                 // List<RecorderBean> list = DaoUtils.getRecorderBeanDaoManager().QueryAll(RecorderBean.class);
                                 /*if(list.size() > 0){
@@ -760,17 +807,22 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
                                 }*/
                                 if (!tranAudio.endsWith(".mp3")) {
                                     Log.e(TAG, "语音合成出错！！！！！！");
-                                    if (rightIsStartVoice) {
-                                        rightRecorderBean.setmFilePath("");
-                                        mRecorderList.add(rightRecorderBean);
+                                  /* if (rightIsStartVoice) {
+                                        //rightRecorderBean.setmFilePath("");
+                                       // mRecorderList.add(rightRecorderBean);
+                                       DaoUtils.getRecorderBeanDaoManager().insertObject(rightRecorderBean);
                                     } else if (leftIsStartVoice) {
-                                        leftRecorderBean.setmFilePath("");
-                                        mRecorderList.add(leftRecorderBean);
-                                    }
+                                       // leftRecorderBean.setmFilePath("");
+                                       // mRecorderList.add(leftRecorderBean);
+                                       DaoUtils.getRecorderBeanDaoManager().insertObject(leftRecorderBean);
+
+                                    }*/
+
                                     leftIsStartVoice = false;
                                     rightIsStartVoice = false;
-                                    mAdapter.notifyDataSetChanged();
-                                    mListViewChat.setSelection(mRecorderList.size() - 1);
+                                    Toast.makeText(ChatActivity.this,R.string.request_error,Toast.LENGTH_SHORT);
+                                 /*   mAdapter.notifyDataSetChanged();
+                                    mListViewChat.setSelection(mRecorderList.size() - 1);*/
                                     //return;
                                 } else {
                                     //下载音频
@@ -836,13 +888,13 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
                                 rightRecorderBean.setmFilePath(file.getAbsolutePath());
                                 mRecorderList.add(rightRecorderBean);
 
-                                //DaoUtils.getRecorderBeanDaoManager().insertObject(rightRecorderBean);
+                                DaoUtils.getRecorderBeanDaoManager().insertObject(rightRecorderBean);
                             } else if (leftIsStartVoice) {
                                 // leftRecorderBean.setmFilePath(resultBean.getTranslateResult().getAudio());
                                 leftRecorderBean.setmFilePath(file.getAbsolutePath());
                                 mRecorderList.add(leftRecorderBean);
 
-                                // DaoUtils.getRecorderBeanDaoManager().insertObject(leftRecorderBean);
+                                 DaoUtils.getRecorderBeanDaoManager().insertObject(leftRecorderBean);
                             }
                             mAdapter.notifyDataSetChanged();
                             mListViewChat.setSelection(mRecorderList.size() - 1);
@@ -908,12 +960,25 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(null != this.micClient){
+        mMicroRecogitionManager.releseClient();
+        if(mMicroRecogitionManager !=null){
+            Log.e(TAG,"MicroRecogitionManager !=null");
+            mMicroRecogitionManager = null;
+        }else {
+            Log.e(TAG,"MicroRecogitionManager null");
+        }
+//        if(mMicroRecogitionManager !=null){
+//            Log.e(TAG,"MicroRecogitionManager !=null");
+//            mMicroRecogitionManager = null;
+//        }else {
+//            Log.e(TAG,"MicroRecogitionManager null");
+//        }
+      /*  if(null != this.micClient){
             Log.e(TAG,"        if(this.micClient){\n");
             this.micClient = null;
         }else{
             Log.e(TAG,"        if(null == this.micClient){\n");
-        }
+        }*/
         OkGo.getInstance().cancelTag(this);
     }
 }

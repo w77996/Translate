@@ -80,12 +80,13 @@
 
                 <ImageView
                     android:id="@+id/img_chat_play"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="@dimen/x18"
+                    android:layout_height="@dimen/x18"
+                    android:padding="@dimen/x2"
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/x5"
-                    android:src="@drawable/chat_play" />
+                    android:src="@drawable/item_voice1" />
 
 
             </LinearLayout>

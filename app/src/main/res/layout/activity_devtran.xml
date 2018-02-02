@@ -89,7 +89,7 @@
                     android:text="请按住按钮进行语音输入"
                     android:gravity="center"/>
 
-               <!-- <Button
+                <Button
                     android:id="@+id/start"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -99,7 +99,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/start"
-                    />-->
+                    />
             </RelativeLayout>
 
         </LinearLayout>

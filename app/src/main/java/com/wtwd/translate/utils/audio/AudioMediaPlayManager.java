@@ -294,6 +294,8 @@ public class AudioMediaPlayManager {
             mMediaPlayer.start();
             mAudioStateChange.onStartPlayUseBluetoothEar();
         } catch (IOException e) {
+            stopPlayingUseBluetoothEar();
+//           releaseMediaPlay();
             Log.e(TAG, "prepare() failed");
         }
     }
@@ -446,6 +448,7 @@ public class AudioMediaPlayManager {
             mAudioStateChange.onStartPlayUsePhone();
         } catch (IOException e) {
             e.printStackTrace();
+            releaseMediaPlay();
             //播放失败正理
 //            playEndOrFail(false);
         }

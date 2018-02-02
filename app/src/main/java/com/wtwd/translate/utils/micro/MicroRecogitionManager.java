@@ -84,8 +84,24 @@ public class MicroRecogitionManager implements ISpeechRecognitionServerEvents {
      * 初始化微软语音合成
      * @param mLanguageType
      */
-    public void initSpeechRecognition(String mLanguageType){
+    public  void initSpeechRecognition(String mLanguageType){
+        Log.e(TAG,"mLanguageType" + mLanguageType);
+       /* if(null !=this.micClient){
+            try {
+                this.micClient.finalize();
+            } catch (Throwable throwable) {
+                throwable.printStackTrace();
+            }
+            this.micClient = null;
+        }*/
+       mMicroRecogitionManagerCallBack.startInitSpeechRecognition();
         this.micClient = SpeechRecognitionServiceFactory.createMicrophoneClient((Activity) mContext, SpeechRecognitionMode.ShortPhrase , mLanguageType, this, "6d5a91fa9c614a33a681731279f2450c");
+        if(this.micClient == null){
+            Log.e(TAG,""+"this.micClient"+"  null");
+        }else {
+            Log.e(TAG,""+"this.micClient"+" not null");
+        }
+        Log.e(TAG,"对象"+this.micClient);
         this.micClient.setAuthenticationUri("");
         this.micClient.startMicAndRecognition();
     }
@@ -165,7 +181,7 @@ public class MicroRecogitionManager implements ISpeechRecognitionServerEvents {
 
     @Override
     public void onPartialResponseReceived(String s) {
-
+        Log.e(TAG,"onPartialResponseReceived :"+s.toString());
     }
 
     @Override
@@ -178,6 +194,15 @@ public class MicroRecogitionManager implements ISpeechRecognitionServerEvents {
             // for dataReco, since we already called endAudio() on it as soon as we were done
             // sending all the data.
             this.micClient.endMicAndRecognition();
+            Log.e(TAG,"对象"+this.micClient);
+            Log.e(TAG,"micClient");
+            try {
+                this.micClient.finalize();
+            } catch (Throwable throwable) {
+                throwable.printStackTrace();
+            }
+            //this.micClient.PlayWaveFile();
+            //this.micClient = null;
         }
         Log.d(TAG,"********* Final n-BEST Results *********");
         for (int i = 0; i < recognitionResult.Results.length; i++) {
@@ -203,14 +228,37 @@ public class MicroRecogitionManager implements ISpeechRecognitionServerEvents {
     public void onError(int i, String s) {
         Log.e(TAG,"微软语音合成错误 ： "+s.toString()+" "+ i);
         mMicroRecogitionManagerCallBack.onError(s);
+        if(null!=this.micClient){
+            Log.e(TAG,"微软语音合成错误,set client is null");
+            try {
+                this.micClient.finalize();
+            } catch (Throwable throwable) {
+                throwable.printStackTrace();
+            }
+            this.micClient = null;
+        }else{
+            Log.e(TAG,"微软语音合成错误,client is not  null");
+        }
     }
 
     @Override
     public void onAudioEvent(boolean b) {
         Log.e(TAG,"onAudioEvent ： "+b);
+        mMicroRecogitionManagerCallBack.getOnAudioEvent(b);
     }
 
+    public void releseClient(){
+        if(null != this.micClient){
+            this.micClient.endMicAndRecognition();
+            try {
+                this.micClient.finalize();
+            } catch (Throwable throwable) {
+                throwable.printStackTrace();
+            }
+            this.micClient = null;
+        }
 
+    }
 
     public interface MicroRecogitionManagerCallBack{
         /**
@@ -231,5 +279,8 @@ public class MicroRecogitionManager implements ISpeechRecognitionServerEvents {
          */
         void onError(String s);
 
+        void startInitSpeechRecognition();
+
+        void getOnAudioEvent(boolean b);
     }
 }

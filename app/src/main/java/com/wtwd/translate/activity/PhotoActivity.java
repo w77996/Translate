@@ -426,6 +426,9 @@ public class PhotoActivity extends Activity implements SurfaceHolder.Callback, V
                 rightLanguage = SpUtils.getString(PhotoActivity.this,Constants.RIGHT_LANGUAGE,Constants.en_US);
                 SpUtils.putString(PhotoActivity.this,Constants.LEFT_LANGUAGE,rightLanguage);
                 SpUtils.putString(PhotoActivity.this,Constants.RIGHT_LANGUAGE,leftLanguage);
+                leftLanguage = SpUtils.getString(PhotoActivity.this, Constants.LEFT_LANGUAGE, Constants.zh_CN);
+                rightLanguage = SpUtils.getString(PhotoActivity.this, Constants.RIGHT_LANGUAGE, Constants.en_US);
+
                 Utils.perseLanguage(PhotoActivity.this, leftLanguage,leftlanguage_head,text_photo_left_language);
                 Utils.perseLanguage(PhotoActivity.this,rightLanguage,rightlanguage_head,text_photo_right_language);
                 break;

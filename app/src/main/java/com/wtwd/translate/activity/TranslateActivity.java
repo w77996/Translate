@@ -30,6 +30,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.FileCallback;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
 import com.wtwd.translate.R;
@@ -39,6 +40,7 @@ import com.wtwd.translate.bean.TranResultBean;
 import com.wtwd.translate.utils.Constants;
 import com.wtwd.translate.utils.GsonUtils;
 import com.wtwd.translate.utils.SpUtils;
+import com.wtwd.translate.utils.audio.AudioMediaPlayManager;
 import com.wtwd.translate.utils.audio.AudioStateChange;
 import com.wtwd.translate.utils.keybord.InputTools;
 import com.wtwd.translate.utils.Utils;
@@ -46,6 +48,7 @@ import com.wtwd.translate.utils.keybord.SoftKeyBoardListener;
 import com.wtwd.translate.utils.micro.MicroRecogitionManager;
 import com.wtwd.translate.view.InputEdittext;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -149,6 +152,7 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
 
     MicroRecogitionManager mMicroRecogitionManager;
     private Animation mAnimation = null;
+    private AudioMediaPlayManager mAudioMediaPlayManager;
 
 
     @Override
@@ -160,6 +164,59 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
         addListener();
         mMicroRecogitionManager = MicroRecogitionManager.getMicroRecogitionManager(this);
         mMicroRecogitionManager.setmicroRecogitionManagerCallBack(this);
+
+        mAudioMediaPlayManager = AudioMediaPlayManager.getAudioMediaPlayManager(this);
+        mAudioMediaPlayManager.setAudioStateChange(new AudioStateChange() {
+            @Override
+            public void onStartRecoderUseBluetoothEar() {
+
+            }
+
+            @Override
+            public void onStopRecoderUseBluetoothEar() {
+
+            }
+
+            @Override
+            public void onStartPlayUseBluetoothEar() {
+
+            }
+
+            @Override
+            public void onStopPlayuseBluetoothEar() {
+
+            }
+
+            @Override
+            public void onStartRecoderUsePhone() {
+
+            }
+
+            @Override
+            public void onStopRecoderUsePhone() {
+
+            }
+
+            @Override
+            public void onStartPlayUsePhone() {
+
+            }
+
+            @Override
+            public void onStopPlayUsePhone() {
+
+            }
+
+            @Override
+            public void onPlayCompletion() {
+
+            }
+
+            @Override
+            public void onPlayError() {
+
+            }
+        });
     }
 
     /**
@@ -339,6 +396,7 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
                 mAnimation = AnimationUtils.loadAnimation(this,R.anim.voice_bg_anim);
                 img_tran_recro_bg.startAnimation(mAnimation);
                 //mAnimation.start();
+                img_tran_recro.setClickable(false);
                 mMicroRecogitionManager.initSpeechRecognition(leftLanguage);
                 break;
             case R.id.leftlanguage_head:
@@ -358,8 +416,11 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
                 rightLanguage = SpUtils.getString(TranslateActivity.this,Constants.RIGHT_LANGUAGE,Constants.en_US);
                 SpUtils.putString(TranslateActivity.this,Constants.LEFT_LANGUAGE,rightLanguage);
                 SpUtils.putString(TranslateActivity.this,Constants.RIGHT_LANGUAGE,leftLanguage);
+                leftLanguage = SpUtils.getString(TranslateActivity.this, Constants.LEFT_LANGUAGE, Constants.zh_CN);
+                rightLanguage = SpUtils.getString(TranslateActivity.this, Constants.RIGHT_LANGUAGE, Constants.en_US);
                 Utils.perseLanguage(TranslateActivity.this, leftLanguage,leftlanguage_head,text_tran_left_language);
                 Utils.perseLanguage(TranslateActivity.this,rightLanguage,rightlanguage_head,text_tran_right_language);
+
                 break;
             case R.id.tran_back:
                 finish();
@@ -375,6 +436,10 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
         }
     }
 
+    /**
+     * 请求翻译
+     * @param tranData
+     */
     private void requestTran(String tranData) {
         int guestId = SpUtils.getInt(TranslateActivity.this,Constants.GUEST_ID,1);
         OkGo.<String>post(Constants.BASEURL+Constants.TEXTTRANSLATE)
@@ -393,10 +458,30 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
                             if(lin_tran_result.getVisibility() == View.GONE){
                                 lin_tran_result.setVisibility(View.VISIBLE);
                             }
+
                             String tranText = resultBean.getTranslateResult().getText();
+                            String tranAudio = resultBean.getTranslateResult().getAudio();
                             if(!TextUtils.isEmpty(tranText)){
                                 tv_tran_result.setText(tranText);
                             }
+                            if (!tranAudio.endsWith(".mp3")) {
+                                Log.e(TAG, "语音合成出错！！！！！！");
+                                   /* if (rightIsStartVoice) {
+                                        rightRecorderBean.setmFilePath("");
+                                        mRecorderList.add(rightRecorderBean);
+                                    } else if (leftIsStartVoice) {
+                                        leftRecorderBean.setmFilePath("");
+                                        mRecorderList.add(leftRecorderBean);
+                                    }*/
+                                Toast.makeText(TranslateActivity.this,R.string.request_error,Toast.LENGTH_SHORT);
+                                 /*   mAdapter.notifyDataSetChanged();
+                                    mListViewChat.setSelection(mRecorderList.size() - 1);*/
+                                //return;
+                            } else {
+                                //下载音频
+                                requestAudio(tranAudio);
+                            }
+                            img_tran_recro.setClickable(true);
                         }else if(resultBean.getStatus() == Constants.REQUEST_FAIL){
                             Log.e(TAG,"请求失败");
                             Toast.makeText(TranslateActivity.this,R.string.request_error,Toast.LENGTH_SHORT).show();
@@ -411,12 +496,49 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
                     public void onError(Response<String> response) {
                         super.onError(response);
                         Log.e(TAG,"请求错误");
+                        img_tran_recro.setClickable(true);
                         Toast.makeText(TranslateActivity.this,R.string.request_error,Toast.LENGTH_SHORT).show();
                        // img_tran_recro_bg.clearAnimation();
                     }
                 });
     }
 
+    /**
+     * 请求下载音频
+     * @param tranAudio
+     */
+    private void requestAudio(String tranAudio) {
+        OkGo.<File>get(tranAudio)
+                .retryCount(0)
+                .execute(new FileCallback() {
+                    @Override
+                    public void onSuccess(Response<File> response) {
+                        if (response.body().isFile()) {
+                            Log.e(TAG, "file");
+                            // InputStream inputStream = new FileInputStream(response.body());
+                            final File file = response.body().getAbsoluteFile();
+                            Log.e(TAG, file.getAbsolutePath());
+                               /* new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        mAudioMediaPlayManager.startPlayingUsePhone(file.getAbsolutePath());
+                                    }
+                                }).start();*/
+                            //Log.e(TAG,mRecorderList.get(pos).getmFilePath());
+
+
+                            mAudioMediaPlayManager.startPlayingUsePhone(file.getAbsolutePath());
+
+                        }
+                    }
+
+                    @Override
+                    public void onError(Response<File> response) {
+                        super.onError(response);
+                      Log.e(TAG,"播放错误");
+                    }
+                });
+    }
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (event.getKeyCode() == KeyEvent.KEYCODE_BACK) {
@@ -442,11 +564,23 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
     @Override
     public void ononFinalResponseResultEmtity(String error) {
         img_tran_recro_bg.clearAnimation();
+        img_tran_recro.setClickable(true);
     }
 
     @Override
     public void onError(String s) {
         img_tran_recro_bg.clearAnimation();
+        img_tran_recro.setClickable(true);
+
+    }
+
+    @Override
+    public void startInitSpeechRecognition() {
+
+    }
+
+    @Override
+    public void getOnAudioEvent(boolean b) {
 
     }
 
@@ -473,10 +607,12 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        mMicroRecogitionManager.releseClient();
         if(null != mMicroRecogitionManager){
-            Log.e(TAG,"        if(this.mMicroRecogitionManager){\n");
-        }else{
-            Log.e(TAG,"        if(null == this.mMicroRecogitionManager){\n");
+            Log.e(TAG," mMicroRecogitionManager not null ");
+            mMicroRecogitionManager = null;
+       }else{
+            Log.e(TAG," mMicroRecogitionManager null{\n");
         }
     }
 }
