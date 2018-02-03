@@ -6,7 +6,7 @@ import android.speech.tts.TextToSpeech;
 import java.util.Locale;
 
 /**
- * time:2018/1/19
+ * time:2018/tran_voice1/19
  * Created by w77996
  * Github:https://github.com/w77996
  * CSDN:http://blog.csdn.net/w77996?viewmode=contents
@@ -39,7 +39,7 @@ public class SpeechUtils {
             public void onInit(int i) {
                 if (i == TextToSpeech.SUCCESS) {
                     textToSpeech.setLanguage(locale);
-                    textToSpeech.setPitch(1.0f);// 设置音调，值越大声音越尖（女生），值越小则变成男声,1.0是常规
+                    textToSpeech.setPitch(1.0f);// 设置音调，值越大声音越尖（女生），值越小则变成男声,tran_voice1.0是常规
                     textToSpeech.setSpeechRate(1.0f);
                 }
             }

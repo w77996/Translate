@@ -54,7 +54,8 @@
                 android:id="@+id/lv_dev_tran"
                 android:layout_width="match_parent"
                 android:divider="@null"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent"
+               >
 
             </ListView>
 
@@ -86,7 +87,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/dev_voice"
                     android:layout_marginTop="@dimen/x5"
-                    android:text="请按住按钮进行语音输入"
+                    android:text="@string/press_and_voice"
                     android:gravity="center"/>
 
                 <Button

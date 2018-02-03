@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/login_bg">
+    android:background="@drawable/login_bg"
+    android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/main_title"
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="@dimen/x45"
         android:background="@color/main_title_color"
-        >
+        android:orientation="vertical">
+
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -20,188 +21,247 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:textSize="20sp"
+                android:text="@string/login"
                 android:textColor="@color/color_white"
-                android:text="@string/login"/>
+                android:textSize="20sp" />
         </RelativeLayout>
     </LinearLayout>
+
     <LinearLayout
-        android:layout_below="@+id/main_title"
         android:layout_width="match_parent"
-        android:gravity="center"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/main_title"
         android:layout_marginTop="@dimen/x20"
-        android:layout_height="wrap_content">
+        android:gravity="center">
+
         <ImageView
             android:layout_width="@dimen/x80"
             android:layout_height="@dimen/x80"
             android:layout_centerVertical="true"
-            android:src="@drawable/logo"/>
+            android:src="@drawable/logo" />
     </LinearLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginRight="20dp"
             android:layout_marginLeft="20dp"
-            >
+            android:layout_marginRight="20dp"
+            android:orientation="vertical">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/x40"
                 android:layout_marginBottom="@dimen/x10"
-                android:padding="@dimen/x5"
                 android:background="@drawable/login_edittext_background"
-                android:gravity="center">
+                android:gravity="center"
+                android:padding="@dimen/x5">
+
                 <ImageView
 
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/login_user"
-                    />
+                    android:src="@drawable/login_user" />
+
                 <EditText
                     android:id="@+id/ed_username"
-                    android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:background="@null"
+                    android:hint="@string/input_name"
                     android:paddingLeft="@dimen/x5"
-                    android:hint="请输入已注册的账号"
-                    />
+                    android:textSize="14sp" />
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/login_clear"
-                    android:layout_marginRight="5dp"
                     android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"/>
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="5dp"
+                    android:src="@drawable/login_clear" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/x40"
                 android:layout_marginBottom="@dimen/x10"
                 android:background="@drawable/login_edittext_background"
-                android:padding="@dimen/x5"
-                android:gravity="center">
+                android:gravity="center"
+                android:padding="@dimen/x5">
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/login_pwd"
-                    />
+                    android:src="@drawable/login_pwd" />
+
                 <EditText
                     android:id="@+id/ed_pwd"
-                    android:layout_weight="1"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:background="@null"
+                    android:hint="@string/input_pwd"
                     android:inputType="textPassword"
                     android:paddingLeft="5dp"
-                    android:hint="请输入密码"
-                    />
+                    android:textSize="14sp" />
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/login_eye_close"
-                    android:layout_marginRight="@dimen/x5"
                     android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"/>
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="@dimen/x5"
+                    android:src="@drawable/login_eye_close" />
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
+
                     <TextView
                         android:id="@+id/login_forget_pwd"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/pwd_forget"/>
+                        android:text="@string/pwd_forget" />
+
                     <TextView
                         android:id="@+id/login_code"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:text="@string/code_login"/>
-                    <ImageView
-                        android:id="@+id/img_login"
-                        android:layout_below="@+id/login_forget_pwd"
-                        android:layout_width="@dimen/x120"
-                        android:layout_height="@dimen/x60"
-                        android:src="@drawable/login_loginbtn"
+                        android:text="@string/code_login" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
-                        android:layout_marginTop="@dimen/x10"/>
-                    <ImageView
-                        android:id="@+id/img_regist"
-                        android:layout_below="@+id/login_code"
-                        android:layout_width="@dimen/x120"
-                        android:layout_height="@dimen/x60"
+                        android:layout_below="@+id/login_forget_pwd">
+
+                        <RelativeLayout
+                            android:layout_width="@dimen/x120"
+                            android:layout_height="@dimen/x60">
+                            <ImageView
+                                android:id="@+id/img_login"
+                                android:layout_width="@dimen/x120"
+                                android:layout_height="@dimen/x60"
+                                android:layout_centerInParent="true"
+                                android:layout_marginTop="@dimen/x10"
+                                android:src="@drawable/btn_bg_login" />
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:textColor="@color/color_white"
+                                android:text="@string/login"/>
+                        </RelativeLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/lin_login"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
-                        android:layout_marginTop="@dimen/x10"
-                        android:src="@drawable/login_registbtn"/>
+                        android:layout_below="@+id/login_code">
+
+                        <RelativeLayout
+                            android:layout_width="@dimen/x120"
+                            android:layout_height="@dimen/x60">
+
+                            <ImageView
+                                android:id="@+id/img_regist"
+                                android:layout_width="@dimen/x120"
+                                android:layout_height="@dimen/x60"
+                                android:layout_centerInParent="true"
+                                android:layout_marginTop="@dimen/x10"
+                                android:src="@drawable/btn_bg_regist" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_centerInParent="true"
+                                android:text="@string/regist"
+                                android:textColor="@color/main_title_color"
+                                 />
+                        </RelativeLayout>
+
+                    </LinearLayout>
+
 
                 </RelativeLayout>
             </LinearLayout>
         </LinearLayout>
 
     </RelativeLayout>
+
     <LinearLayout
-        android:layout_above="@+id/linear_login_else"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/linear_login_else"
         android:layout_marginBottom="@dimen/x30"
         android:gravity="center">
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/login_left_line"
-            />
+            android:src="@drawable/login_left_line" />
+
         <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/x15"
             android:layout_marginRight="@dimen/x15"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/main_title_color"
-            android:text="@string/else_login"/>
+            android:text="@string/else_login"
+            android:textColor="@color/main_title_color" />
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@drawable/login_right_line"
-            />
+            android:src="@drawable/login_right_line" />
     </LinearLayout>
+
     <LinearLayout
         android:id="@+id/linear_login_else"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
+        android:layout_alignParentBottom="true"
         android:layout_marginBottom="@dimen/x50"
-        android:layout_alignParentBottom="true">
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        >
-        <ImageView
-            android:id="@+id/img_wechat_login"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toLeftOf="@+id/img_sina_login"
-            android:src="@drawable/wechat_login"/>
-        <ImageView
-            android:id="@+id/img_sina_login"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginLeft="@dimen/x50"
-            android:layout_marginRight="@dimen/x50"
-            android:src="@drawable/sina_login"/>
-        <ImageView
-            android:id="@+id/img_qq_login"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_toRightOf="@+id/img_sina_login"
-            android:src="@drawable/qqlogin"/>
-    </RelativeLayout>
+        android:orientation="horizontal">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/img_wechat_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@+id/img_sina_login"
+                android:src="@drawable/wechat_login" />
+
+            <ImageView
+                android:id="@+id/img_sina_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_marginLeft="@dimen/x50"
+                android:layout_marginRight="@dimen/x50"
+                android:src="@drawable/sina_login" />
+
+            <ImageView
+                android:id="@+id/img_qq_login"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/img_sina_login"
+                android:src="@drawable/qqlogin" />
+        </RelativeLayout>
     </LinearLayout>
 </RelativeLayout>

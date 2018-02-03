@@ -23,7 +23,7 @@ import java.util.List;
 
 /**
  * 母语选择页
- * time:2018/1/9
+ * time:2018/tran_voice1/9
  * Created by w77996
  */
 public class SplashLanguageActivity extends Activity implements View.OnClickListener{

@@ -27,7 +27,7 @@ import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
 
 /**
- * time:2018/1/22
+ * time:2018/tran_voice1/22
  * Created by w77996
  */
 
@@ -86,8 +86,8 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
                    // sendCode("86", ed_username.getText().toString());
                     break;
                 case SEND_CODE_SUCCESS:
-                    Toast.makeText(RegistActivity.this, R.string.tips_code_send_success, Toast.LENGTH_SHORT).show();
-
+                   // Toast.makeText(RegistActivity.this, R.string.tips_code_send_success, Toast.LENGTH_SHORT).show();
+                    Log.e(TAG,"发送验证码成功");
                     break;
                 case CODE_ERROR:
                     Toast.makeText(RegistActivity.this, R.string.tips_code_error, Toast.LENGTH_SHORT).show();
@@ -178,6 +178,10 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
                     Toast.makeText(RegistActivity.this, R.string.tips_input_pwd, Toast.LENGTH_SHORT).show();
                     return;
                 }
+                if(userpwd.length() < 5){
+                    Toast.makeText(RegistActivity.this, R.string.input_six_pwd, Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 username = ed_username.getText().toString().trim();
                 if(TextUtils.isEmpty(username)){
                     Toast.makeText(RegistActivity.this, R.string.tips_input_username, Toast.LENGTH_SHORT).show();
@@ -237,7 +241,7 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
             public void afterEvent(int event, int result, Object data) {
                 if (result == SMSSDK.RESULT_COMPLETE) {
                     // TODO 处理验证成功的结果
-                   // mHandler.sendEmptyMessage(REGIST_UESR);
+                    mHandler.sendEmptyMessage(REGIST_UESR);
 
                 } else {
                     // TODO 处理错误的结果

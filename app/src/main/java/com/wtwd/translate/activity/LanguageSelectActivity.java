@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * time:2018/1/16
+ * time:2018/tran_voice1/16
  * Created by w77996
  */
 
@@ -74,8 +74,12 @@ public class LanguageSelectActivity extends Activity implements View.OnClickList
     LanguageSelectAdapter mLanguageSelectAdapter;
     private String leftLanguage;
     private String rightLanguage;
-    private String[] countryText =  {"中文[CHS]","英语[ENG]","法语[FRA]","德语[DEU]","韩语[KOR]","日语[JPN]","西班牙语[SPA]","葡萄牙语[POR]",
-            "俄罗斯语[RUS]"};
+    private String[] countryText =  {"中文[CHS]","English[ENG]","Français[FRA]","Deutsch[DEU]","한국어[KOR]","日本語[JPN]","Español[SPA]","Português[POR]",
+            "Italiano[ITA]"};
+    /**
+     * @"中文[CHS]", @"English[ENG]", @"Français[FRA]", @"Deutsch[DEU]", @"한국어[KOR]", @"日本語[JPN]", @"Español[SPA]", @"Português[POR]", @"Italiano[ITA]", @"Pусский[RUS]
+     */
+    private int[] countryTextInt = {R.string.china_text,R.string.eng_text,R.string.fra_text,R.string.deu_text,R.string.kor_text,R.string.jpa_text,R.string.spa_text,R.string.por_text,R.string.rus_text};
     private int[] countryImage = {R.drawable.flag_china,R.drawable.flag_eng,R.drawable.flag_fra,R.drawable.flag_deu,R.drawable.flag_kor,R.drawable.flag_jpa,
             R.drawable.flag_spa,R.drawable.flag_por,R.drawable.flag_rus};
     private String[] languageType = {Constants.zh_CN,Constants.en_US,Constants.fr_FR,Constants.de_DE,Constants.ko_KR,Constants.ja_JP,Constants.es_ES,Constants.pt_PT,Constants.ru_RU};
@@ -122,8 +126,8 @@ public class LanguageSelectActivity extends Activity implements View.OnClickList
             Utils.perseLanguage(LanguageSelectActivity.this,leftLanguage,language_select_left_head,language_select_left_text);
             Utils.perseLanguage(LanguageSelectActivity.this,rightLanguage,language_select_right_head,language_select_right_text);
         }else if (type == Constants.LANGUAGE_SELECT_DEV_TYPE){
-            language_select_left_text.setText("设备语言");
-            language_select_right_text.setText("手机语言");
+            language_select_left_text.setText("Device");
+            language_select_right_text.setText("Mobile");
 
             if(derect == 0){
                 //左边
@@ -198,6 +202,7 @@ public class LanguageSelectActivity extends Activity implements View.OnClickList
             SelectBean selectBean = new SelectBean();
             selectBean.setImg(countryImage[i]);
             selectBean.setData(countryText[i]);
+            selectBean.setLanguageTypeText(countryTextInt[i]);
             selectBean.setLanguageType(languageType[i]);
             if(derect == 0){
                 if(leftLanguage.equals(languageType[i])){
@@ -243,6 +248,7 @@ public class LanguageSelectActivity extends Activity implements View.OnClickList
                     SelectBean selectBean = new SelectBean();
                     selectBean.setImg(countryImage[i]);
                     selectBean.setData(countryText[i]);
+                    selectBean.setLanguageTypeText(countryTextInt[i]);
                     selectBean.setLanguageType(languageType[i]);
                     if(leftLanguage.equals(languageType[i])){
                         selectBean.setSelect(true);
@@ -278,6 +284,7 @@ public class LanguageSelectActivity extends Activity implements View.OnClickList
                     SelectBean selectBean = new SelectBean();
                     selectBean.setImg(countryImage[i]);
                     selectBean.setData(countryText[i]);
+                    selectBean.setLanguageTypeText(countryTextInt[i]);
                     selectBean.setLanguageType(languageType[i]);
                     if(rightLanguage.equals(languageType[i])){
                         selectBean.setSelect(true);

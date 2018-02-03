@@ -21,7 +21,7 @@
 
     <string name="miscor_primarykey">c96c2a771c6e4548a24e269884889478 </string>
     <string name="regist">注册</string>
-    <string name="login_user_tips">请输入已注册的账号</string>
+    <string name="login_user_tips">请输入账号</string>
     <string name="regist_user_tips">请输入手机号码注册</string>
     <string name="login_pwd_tips">请输入密码</string>
     <string name="regist_pwd_tips">请输入登录密码</string>
@@ -33,7 +33,7 @@
     <string name="tips_input_sure_number">请输入正确手机号</string>
     <string name="tips_code_send_success">验证码发送成功</string>
     <string name="tips_intput_username">请输入用户名</string>
-    <string name="tips_input_code">请输入验证码</string>
+    <string name="tips_input_code">验证码</string>
     <string name="record_fail">录音失败</string>
     <string name="no_network">请连接网络</string>
     <string name="dev_tran">设备翻译</string>
@@ -100,5 +100,19 @@
     <string name="request_error">请求错误</string>
     <string name="login_success">登陆成功</string>
     <string name="tran_error">翻译失败</string>
+    <string name="input_letter_or_sen">在此输入单词或句子</string>
+
+    <string name="china_text">中文</string>
+    <string name="eng_text">英语</string>
+    <string name="deu_text">德语</string>
+    <string name="fra_text">法语</string>
+    <string name="kor_text">韩语</string>
+    <string name="jpa_text">日语</string>
+    <string name="spa_text">西班牙语</string>
+    <string name="por_text">葡萄牙语</string>
+    <string name="rus_text">俄罗斯语</string>
+    <string name="press_and_voice">请按语音按钮进行语音输入</string>
+    <string name="input_name">请输入已注册的账号</string>
+    <string name="input_pwd">请输入密码</string>
 
 </resources>

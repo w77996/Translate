@@ -246,7 +246,7 @@ public class BitmapUtils {
 
             float aBili = (float) maxHeight / (float) maxWidth;
             float bBili = (float) h / (float) w;
-            // be=1表示不缩放，be=2代表大小变成原来的1/2，注意be只能是2的次幂，即使算出的不是2的次幂，使用时也会自动转换成2的次幂
+            // be=1表示不缩放，be=2代表大小变成原来的1/tran_voice2，注意be只能是2的次幂，即使算出的不是2的次幂，使用时也会自动转换成2的次幂
             int be = 1;
             if (aBili > bBili) {
                 if (w > maxWidth) {
@@ -327,7 +327,7 @@ public class BitmapUtils {
 /*
 
     public static BitmapFactory.Options createBitmap(BitmapFactory.Options options ,int bwidth, int bheight, int reqWidth, int reqHeight){
-        int inSampleSize = 1;
+        int inSampleSize = tran_voice1;
         if (bheight > reqHeight || bwidth > reqWidth) {
             // 计算出实际宽高和目标宽高的比率
             final int heightRatio = Math.round((float) bheight
@@ -654,7 +654,7 @@ public class BitmapUtils {
         int picWidth = opt.outWidth;
         int picHeight = opt.outHeight;
 
-        //isSampleSize是表示对图片的缩放程度，比如值为2图片的宽度和高度都变为以前的1/2
+        //isSampleSize是表示对图片的缩放程度，比如值为2图片的宽度和高度都变为以前的1/tran_voice2
         opt.inSampleSize = 1;
         //根据屏的大小和图片大小计算出缩放比例
         if (picWidth > picHeight) {
@@ -811,7 +811,7 @@ public class BitmapUtils {
         Bitmap bmp = null;
 /*
         int maxWidth = MyApplication.getInstance().getScreenWidth() - SystemUtils.dp2px(context, 20);
-        int maxHeight = maxWidth * 4 / 3;*/
+        int maxHeight = maxWidth * 4 / tran_voice3;*/
 
         int reqWidth = screenWidth - SystemUtils.dp2px(context, 20);
         int reqHeight = reqWidth * 4 / 3;

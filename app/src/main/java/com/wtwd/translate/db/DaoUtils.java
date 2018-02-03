@@ -4,6 +4,7 @@ package com.wtwd.translate.db;
 import android.content.Context;
 
 import com.wtwd.translate.bean.dao.RecorderBeanDao;
+import com.wtwd.translate.bean.manager.DevRecorderDaoManager;
 import com.wtwd.translate.bean.manager.RecorderBeanDaoManager;
 import com.wtwd.translate.bean.manager.UserDaoManager;
 
@@ -12,6 +13,7 @@ public class DaoUtils {
 
     private static UserDaoManager landUserManager;
     private static RecorderBeanDaoManager recorderBeanDaoManager;
+    private static DevRecorderDaoManager devRecorderDaoManager;
     /*private static NormalMsgManager normalMsgManager;
     private static DeviceFaultMsgManager deviceFaultMsgManager;
     private static SmartDeviceManager smartDeviceManager;
@@ -40,6 +42,12 @@ public class DaoUtils {
             recorderBeanDaoManager = new RecorderBeanDaoManager(context);
         }
         return recorderBeanDaoManager;
+    }
+    public static DevRecorderDaoManager getDevrecorderBeanDaoManager(){
+        if (devRecorderDaoManager == null) {
+            devRecorderDaoManager = new DevRecorderDaoManager(context);
+        }
+        return devRecorderDaoManager;
     }
   /*  public static NormalMsgManager getNormalMsgManager() {
         if (normalMsgManager == null) {

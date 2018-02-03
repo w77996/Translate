@@ -13,6 +13,8 @@ import com.wtwd.translate.bean.RecorderBean;
 import com.wtwd.translate.bean.SelectBean;
 import com.wtwd.translate.utils.Constants;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,6 +56,7 @@ public class LanguageSelectAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         String type = list.get(position).getData();
+        int countryText = list.get(position).getLanguageTypeText();
         ViewHolder viewHolder;
         if (convertView == null)
         {
@@ -62,6 +65,7 @@ public class LanguageSelectAdapter extends BaseAdapter {
             viewHolder.language_select_item_text = (TextView) convertView.findViewById(R.id.language_select_item_text);
             viewHolder.language_select_item_select = (ImageView) convertView.findViewById(R.id.language_select_item_select);
             viewHolder.language_select_item_head = (ImageView) convertView.findViewById(R.id.language_select_item_head);
+            viewHolder.language_select_text = (TextView) convertView.findViewById(R.id.language_select_text);
             convertView.setTag(viewHolder);
         } else
         {
@@ -69,6 +73,7 @@ public class LanguageSelectAdapter extends BaseAdapter {
         }
         viewHolder.language_select_item_text.setText(type);
         viewHolder.language_select_item_head.setImageDrawable(context.getDrawable(list.get(position).getImg()));
+        viewHolder.language_select_text.setText(countryText);
         if(list.get(position).getisSelect()){
             viewHolder.language_select_item_select.setImageDrawable(context.getDrawable(R.drawable.language_select_selected));
 
@@ -83,6 +88,7 @@ public class LanguageSelectAdapter extends BaseAdapter {
     public class ViewHolder
     {
         public TextView language_select_item_text;
+        public TextView language_select_text;
         public ImageView language_select_item_head;
         public ImageView language_select_item_select;
     }

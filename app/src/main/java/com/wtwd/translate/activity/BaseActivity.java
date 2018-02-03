@@ -8,7 +8,7 @@ import android.support.annotation.Nullable;
 import com.wtwd.translate.view.LoadingDialogFragment;
 
 /**
- * time:2018/1/26
+ * time:2018/tran_voice1/26
  * Created by w77996
  */
 

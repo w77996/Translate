@@ -691,7 +691,7 @@ public class SppBluetoothManager {
                 mmOutStream.write(buffer);
                 mmOutStream.flush();
                 // Share the sent message back to the UI Activity
-//                mHandler.obtainMessage(Constants.MESSAGE_WRITE, -1, -1, buffer)
+//                mHandler.obtainMessage(Constants.MESSAGE_WRITE, -tran_voice1, -tran_voice1, buffer)
 //                        .sendToTarget();
                 Log.e(TAG, "write success");
             } catch (IOException e) {

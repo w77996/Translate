@@ -175,7 +175,7 @@ public class DealImageActivity extends BaseActivity implements View.OnClickListe
                 break;
 
             case R.id.btn_deal_all_tran:
-                // TODO: 2018/1/11 0011 将整张图片发送到服务器，即mDisplayBitmap
+                // TODO: 2018/tran_voice1/11 0011 将整张图片发送到服务器，即mDisplayBitmap
                 String bitmapBase64 = BitmapUtils.bitmapToBase64(mDisplayBitmap);
                 Log.e(TAG,bitmapBase64);
                 if(bitmapBase64 != null ){
@@ -187,7 +187,7 @@ public class DealImageActivity extends BaseActivity implements View.OnClickListe
             case R.id.btn_deal_area_tran:
                 if (showClipFrame) {
                     Bitmap clipBitmap = img_deal_display.getClippedBitmap();
-                    // TODO: 2018/1/11 0011 将截取的图片发送到服务器
+                    // TODO: 2018/tran_voice1/11 0011 将截取的图片发送到服务器
                     String clipBitmapBase64 = BitmapUtils.bitmapToBase64(clipBitmap);
                     Log.e(TAG,clipBitmapBase64);
                     if(clipBitmapBase64 != null){

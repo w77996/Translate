@@ -1,7 +1,6 @@
 package com.wtwd.translate.adapter;
 
 import android.content.Context;
-import android.graphics.drawable.AnimationDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,9 +9,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.wtwd.translate.R;
+import com.wtwd.translate.bean.DevRecorderBean;
 import com.wtwd.translate.bean.RecorderBean;
 import com.wtwd.translate.utils.Constants;
-import com.wtwd.translate.utils.SpUtils;
 import com.wtwd.translate.utils.Utils;
 
 import java.util.ArrayList;
@@ -23,15 +22,13 @@ import java.util.List;
  * Created by w77996
  */
 
-public class DevTranListViewAdapter extends BaseAdapter implements View.OnClickListener{
+public class DevTranslateListViewAdapter extends BaseAdapter implements View.OnClickListener{
 
-    public List<RecorderBean> list = new ArrayList<>();
+    public List<DevRecorderBean> list = new ArrayList<>();
     public Context context;
     public LayoutInflater inflater;
     public PlayVoceClick mCallback;
-    private AnimationDrawable animationDrawable;
-
-    public DevTranListViewAdapter(Context context, List<RecorderBean> list,PlayVoceClick playVoceClick){
+    public DevTranslateListViewAdapter(Context context, List<DevRecorderBean> list, PlayVoceClick playVoceClick){
         this.list = list;
         this.context = context;
         this.mCallback = playVoceClick;
@@ -120,20 +117,4 @@ public class DevTranListViewAdapter extends BaseAdapter implements View.OnClickL
      public interface PlayVoceClick {
          public void click(View v);
      }
-
-    public void startAmin(final ImageView view) {
-        /*view.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(onItemAddClick != null) {
-                    onItemAddClick.onItemClick(position,add);
-                }
-            }
-        });*/
-       // view = (ImageView) findViewById(R.id.img_chat_voice);
-        view.setImageResource(R.drawable.chat_voice);
-        view.setImageResource(R.drawable.voice_tran_animation);
-        animationDrawable = (AnimationDrawable) view.getDrawable();
-        animationDrawable.start();
-    }
 }

@@ -8,7 +8,7 @@ import android.util.Log;
 
 /**
  * 蓝牙搜索广播
- * time:2018/1/3
+ * time:2018/1/tran_voice3
  * Created by w77996
  */
 public class ScanBluetoothBroadcast extends BroadcastReceiver{

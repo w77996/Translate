@@ -1,9 +1,11 @@
 package com.wtwd.translate.activity;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Rect;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -46,6 +48,8 @@ import com.wtwd.translate.utils.keybord.InputTools;
 import com.wtwd.translate.utils.Utils;
 import com.wtwd.translate.utils.keybord.SoftKeyBoardListener;
 import com.wtwd.translate.utils.micro.MicroRecogitionManager;
+import com.wtwd.translate.utils.permissions.PermissionsActivity;
+import com.wtwd.translate.utils.permissions.PermissionsChecker;
 import com.wtwd.translate.view.InputEdittext;
 
 import java.io.File;
@@ -147,6 +151,8 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
 
     ImageView tran_back;
 
+    ImageView tran_play;
+
     private InputMethodManager mInputMethodManager;
 
 
@@ -154,7 +160,30 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
     private Animation mAnimation = null;
     private AudioMediaPlayManager mAudioMediaPlayManager;
 
+    private static final int PERMISSIONS_REQUEST_CODE = 0111; // 请求码
+    private AnimationDrawable animationDrawable;
+    private String mPlayPath;
+   /* private PermissionsChecker mPermissionsChecker; // 权限检测器
 
+    // 所需的全部权限
+    static final String[] PERMISSIONS = new String[]{
+            Manifest.permission.RECORD_AUDIO,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.READ_EXTERNAL_STORAGE
+    };*/
+
+   /* @Override
+    protected void onResume() {
+        super.onResume();
+        mPermissionsChecker = new PermissionsChecker(this);
+        // 缺少权限时, 进入权限配置页面
+        if (mPermissionsChecker.lacksPermissions(PERMISSIONS)) {
+            startPermissionsActivity();
+        }
+    }
+    private void startPermissionsActivity() {
+        PermissionsActivity.startActivityForResult(this, PERMISSIONS_REQUEST_CODE, PERMISSIONS);
+    }*/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -204,16 +233,25 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
 
             @Override
             public void onStopPlayUsePhone() {
-
+                Log.e(TAG,"onStopPlayUsePhone");
+                animationDrawable.stop();
+                tran_play.setImageResource(R.drawable.tran_voice1);
             }
 
             @Override
             public void onPlayCompletion() {
-
+                if(null != animationDrawable){
+                    animationDrawable.stop();
+                    tran_play.setImageResource(R.drawable.tran_voice1);
+                }
             }
 
             @Override
             public void onPlayError() {
+                if(null != animationDrawable){
+                    animationDrawable.stop();
+                    tran_play.setImageResource(R.drawable.tran_voice1);
+                }
 
             }
         });
@@ -266,7 +304,7 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
         img_tran_switch = (ImageView)findViewById(R.id.img_tran_switch);
         tv_tran_result = (TextView)findViewById(R.id.tv_tran_result);
         tran_back = (ImageView)findViewById(R.id.tran_back);
-
+        tran_play = (ImageView)findViewById(R.id.tran_play);
         Utils.perseLanguage(this,leftLanguage,leftlanguage_head,text_tran_left_language);
         Utils.perseLanguage(this,rightLanguage,rightlanguage_head,text_tran_right_language);
 
@@ -371,6 +409,7 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
         rightlanguage_head.setOnClickListener(this);
         img_tran_switch.setOnClickListener(this);
         tran_back.setOnClickListener(this);
+        tran_play.setOnClickListener(this);
     }
 
     @Override
@@ -423,6 +462,9 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
 
                 break;
             case R.id.tran_back:
+                if (InputTools.KeyBoard(mSearchBoxEditText)) {
+                    mInputMethodManager.hideSoftInputFromWindow(mSearchBoxEditText.getWindowToken(), 0);
+                }
                 finish();
                 break;
             case R.id.search_box_img:
@@ -432,6 +474,16 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
                     return;
                 }
                 requestTran(tranData);
+                break;
+            case R.id.tran_play:
+                if(null == mPlayPath || !mPlayPath.endsWith(".mp3")){
+                    return;
+                }
+                tran_play.setImageResource(R.drawable.tran_voice_play);
+                animationDrawable = (AnimationDrawable) tran_play.getDrawable();
+                animationDrawable.start();
+
+                mAudioMediaPlayManager.startPlayingUsePhone(mPlayPath);
                 break;
         }
     }
@@ -475,7 +527,7 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
                                     }*/
                                 Toast.makeText(TranslateActivity.this,R.string.request_error,Toast.LENGTH_SHORT);
                                  /*   mAdapter.notifyDataSetChanged();
-                                    mListViewChat.setSelection(mRecorderList.size() - 1);*/
+                                    mListViewChat.setSelection(mRecorderList.size() - tran_voice1);*/
                                 //return;
                             } else {
                                 //下载音频
@@ -526,8 +578,8 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
                                 }).start();*/
                             //Log.e(TAG,mRecorderList.get(pos).getmFilePath());
 
-
-                            mAudioMediaPlayManager.startPlayingUsePhone(file.getAbsolutePath());
+                            mPlayPath = file.getAbsolutePath();
+                           // mAudioMediaPlayManager.startPlayingUsePhone(file.getAbsolutePath());
 
                         }
                     }
@@ -602,6 +654,10 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
                 showKeyBord();
             }
         }
+        // 拒绝时, 关闭页面, 缺少主要权限, 无法运行
+        /*if (requestCode == PERMISSIONS_REQUEST_CODE && resultCode == PermissionsActivity.PERMISSIONS_DENIED) {
+            finish();
+        }*/
     }
 
     @Override

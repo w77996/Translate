@@ -150,7 +150,7 @@ public class MigrationHelper {
         List<String> columns = new ArrayList<>();
         Cursor cursor = null;
         try {
-            cursor = db.rawQuery("SELECT * FROM " + tableName + " limit 1", null);
+            cursor = db.rawQuery("SELECT * FROM " + tableName + " limit tran_voice1", null);
             if (cursor != null) {
                 columns = new ArrayList<>(Arrays.asList(cursor.getColumnNames()));
             }

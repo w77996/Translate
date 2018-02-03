@@ -20,9 +20,10 @@
     <string name="regist_user_tips">Ingrese su numero de teléfono para registrarse</string>
     <string name="login_pwd_tips">Ingrese su contraseña</string>
     <string name="regist_pwd_tips">Ingrese su contraseña para iniciar sesión</string>
-    <string name="regist_code_tips">Ingrese su código de verificación</string>
+    <string name="regist_code_tips">Verificación</string>
     <string name="login">Inicio de sesión</string>
-    <string name="code_login">Inicio de sesión con código de verificación</string>
+
+    <string name="code_login">Código de verificación</string>
     <string name="pwd_forget">Olvidó su contraseña</string>
     <string name="pwd_login">Inicio de sesión con contraseña</string>
     <string name="tips_input_sure_number">Ingrese el número de teléfono correcto</string>
@@ -81,8 +82,8 @@
     <string name="unconnect_dev">No se conectó al dispositivo</string>
     <string name="next">Siguiente</string>
     <string name="ed_tips_input_username">Ingrese el número de cuenta registrado</string>
-    <string name="get_code">Obtener código de verificación</string>
-    <string name="else_login">Inicio de sesión de terceros</string>
+    <string name="get_code">Obtener</string>
+    <string name="else_login">Tercero</string>
     <string name="re_photo">Repetir la fotografía</string>
     <string name="tran_all">Traducir todo</string>
     <string name="part_tran">Traducir la sección</string>
@@ -95,4 +96,21 @@
     <string name="request_error">Solicitud errónea</string>
     <string name="tran_error">Translate error</string>
     <string name="login_success">Login success</string>
+
+    <string name="input_letter_or_sen">Ingrese una palabra u oración aquí</string>
+
+    <string name="china_text">Chino</string>
+    <string name="eng_text">Inglés</string>
+    <string name="deu_text">Alemán</string>
+    <string name="fra_text">Francés</string>
+    <string name="kor_text">Coreano</string>
+    <string name="jpa_text">Japonés</string>
+    <string name="spa_text">Español</string>
+    <string name="por_text">Portugués</string>
+    <string name="rus_text">Ruso</string>
+
+    <string name="press_and_voice">Pulse el botón «Voz» para ingresar la voz</string>
+
+    <string name="input_name">Tu cuenta</string>
+    <string name="input_pwd">Tu contraseña</string>
 </resources>

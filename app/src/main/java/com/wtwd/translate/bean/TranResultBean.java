@@ -3,7 +3,7 @@ package com.wtwd.translate.bean;
 import com.google.gson.annotations.SerializedName;
 
 /**
- * time:2018/1/26
+ * time:2018/tran_voice1/26
  * Created by w77996
  */
 

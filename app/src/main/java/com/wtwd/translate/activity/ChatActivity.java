@@ -179,7 +179,7 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
 
             lin_right.setBackground(this.getDrawable(R.drawable.chat_right_btn_unselect));
 
-            // TODO: 2018/1/17  停止录音后更新界面处理
+            // TODO: 2018/tran_voice1/17  停止录音后更新界面处理
             rightRecorderBean = new RecorderBean();
             rightRecorderBean.setLanguage_type(rightLanguage);
             //rightRecorderBean.setmFilePath(mVoiceFilePath);
@@ -191,7 +191,7 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
         } else if (leftIsStartVoice) {
             lin_left.setBackground(this.getDrawable(R.drawable.chat_left_btn_unselect));
 
-            // TODO: 2018/1/17  停止录音后更新界面处理
+            // TODO: 2018/tran_voice1/17  停止录音后更新界面处理
             leftRecorderBean = new RecorderBean();
             leftRecorderBean.setLanguage_type(leftLanguage);
             //leftRecorderBean.setmFilePath(mVoiceFilePath);
@@ -212,6 +212,7 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
         Log.e(TAG, "recognitionResult 长度为0识别失败");
         lin_right.setBackground(this.getDrawable(R.drawable.chat_right_btn_unselect));
         lin_left.setBackground(this.getDrawable(R.drawable.chat_left_btn_unselect));
+        mVoice.setImageResource(R.drawable.chat_voice);
         lin_left.setClickable(true);
         lin_right.setClickable(true);
         animationDrawable.stop();
@@ -254,7 +255,7 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
     MicrophoneRecognitionClient micClient = null;*/
 
     MicroRecogitionManager mMicroRecogitionManager;
-    private static final int PERMISSIONS_REQUEST_CODE = 0111; // 请求码
+    /*private static final int PERMISSIONS_REQUEST_CODE = 0111; // 请求码
 
     private PermissionsChecker mPermissionsChecker; // 权限检测器
 
@@ -263,7 +264,7 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
             Manifest.permission.RECORD_AUDIO,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.READ_EXTERNAL_STORAGE
-    };
+    };*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -278,7 +279,7 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
         initView();
     }
 
-    @Override
+  /*  @Override
     protected void onResume() {
         super.onResume();
         mPermissionsChecker = new PermissionsChecker(this);
@@ -286,7 +287,7 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
         if (mPermissionsChecker.lacksPermissions(PERMISSIONS)) {
             startPermissionsActivity();
         }
-    }
+    }*/
 
     private void initData() {
 
@@ -346,6 +347,7 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
             public void click(View v) {
                 final int pos = (Integer) v.getTag();
                 Log.d(TAG, pos + " 点击按钮位置");
+
                 if (!mRecorderList.get(pos).getmFilePath().endsWith(".mp3") || "".equals(mRecorderList.get(pos).getmFilePath()) || mRecorderList.get(pos).getmFilePath() == null) {
                     Log.e(TAG, "语音合成出错！！！！！！");
                     return;
@@ -422,7 +424,7 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
                     lin_right.setClickable(true);
                     lin_left.setBackground(this.getDrawable(R.drawable.chat_left_btn_unselect));
 
-                    // TODO: 2018/1/17  停止录音后更新界面处理
+                    // TODO: 2018/tran_voice1/17  停止录音后更新界面处理
                     RecorderBean recorderBean = new RecorderBean();
                     recorderBean.setLanguage_type(leftLanguage);
                     recorderBean.setmFilePath(mVoiceFilePath);
@@ -430,7 +432,7 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
                     recorderBean.setType(Constants.ITEM_LEFT);
                     mRecorderList.add(recorderBean);
                     mAdapter.notifyDataSetChanged();
-                    mListViewChat.setSelection(mRecorderList.size()-1);*/
+                    mListViewChat.setSelection(mRecorderList.size()-tran_voice1);*/
                 } else {
                     // leftBtnPress = true;
                     //mVoiceFilePath = Utils.getVoiceFilePath();
@@ -465,7 +467,7 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
                     lin_left.setClickable(true);
                     lin_right.setBackground(this.getDrawable(R.drawable.chat_right_btn_unselect));
 
-                    // TODO: 2018/1/17  停止录音后更新界面处理
+                    // TODO: 2018/tran_voice1/17  停止录音后更新界面处理
                     RecorderBean recorderBean = new RecorderBean();
                     recorderBean.setLanguage_type(rightLanguage);
                     recorderBean.setmFilePath(mVoiceFilePath);
@@ -473,7 +475,7 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
                     recorderBean.setType(Constants.ITEM_RIGHT);
                     mRecorderList.add(recorderBean);
                     mAdapter.notifyDataSetChanged();
-                    mListViewChat.setSelection(mRecorderList.size()-1);*/
+                    mListViewChat.setSelection(mRecorderList.size()-tran_voice1);*/
                     //mListViewChat.s
                 } else {
                     // leftBtnPress = true;
@@ -697,7 +699,7 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
             lin_left.setClickable(true);
             lin_right.setBackground(this.getDrawable(R.drawable.chat_right_btn_unselect));
 
-            // TODO: 2018/1/17  停止录音后更新界面处理
+            // TODO: 2018/tran_voice1/17  停止录音后更新界面处理
             rightRecorderBean = new RecorderBean();
             rightRecorderBean.setLanguage_type(rightLanguage);
             //rightRecorderBean.setmFilePath(mVoiceFilePath);
@@ -711,7 +713,7 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
             lin_right.setClickable(true);
             lin_left.setBackground(this.getDrawable(R.drawable.chat_left_btn_unselect));
 
-            // TODO: 2018/1/17  停止录音后更新界面处理
+            // TODO: 2018/tran_voice1/17  停止录音后更新界面处理
             leftRecorderBean = new RecorderBean();
             leftRecorderBean.setLanguage_type(leftLanguage);
             //leftRecorderBean.setmFilePath(mVoiceFilePath);
@@ -822,7 +824,7 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
                                     rightIsStartVoice = false;
                                     Toast.makeText(ChatActivity.this,R.string.request_error,Toast.LENGTH_SHORT);
                                  /*   mAdapter.notifyDataSetChanged();
-                                    mListViewChat.setSelection(mRecorderList.size() - 1);*/
+                                    mListViewChat.setSelection(mRecorderList.size() - tran_voice1);*/
                                     //return;
                                 } else {
                                     //下载音频
@@ -923,9 +925,9 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
                 });
     }
 
-    private void startPermissionsActivity() {
+   /* private void startPermissionsActivity() {
         PermissionsActivity.startActivityForResult(this, PERMISSIONS_REQUEST_CODE, PERMISSIONS);
-    }
+    }*/
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -952,9 +954,9 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
             Log.d(TAG, "右边: " + rightLanguage);
         }
         // 拒绝时, 关闭页面, 缺少主要权限, 无法运行
-        if (requestCode == PERMISSIONS_REQUEST_CODE && resultCode == PermissionsActivity.PERMISSIONS_DENIED) {
+       /* if (requestCode == PERMISSIONS_REQUEST_CODE && resultCode == PermissionsActivity.PERMISSIONS_DENIED) {
             finish();
-        }
+        }*/
     }
 
     @Override

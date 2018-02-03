@@ -68,6 +68,7 @@
                     android:layout_height="wrap_content"
                     android:background="@null"
                     android:paddingLeft="@dimen/x5"
+                    android:textSize="14sp"
                     android:hint="@string/ed_tips_input_username"
                     />
                 <ImageView
@@ -98,6 +99,7 @@
                     android:background="@null"
                     android:paddingLeft="5dp"
                     android:hint="@string/regist_code_tips"
+                    android:textSize="14sp"
                     />
                 <RelativeLayout
                     android:layout_width="@dimen/x80"

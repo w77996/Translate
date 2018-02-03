@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import com.wtwd.translate.R;
 
 /**
- * time:2018/1/26
+ * time:2018/tran_voice1/26
  * Created by w77996
  * Github:https://github.com/w77996
  * CSDN:http://blog.csdn.net/w77996?viewmode=contents

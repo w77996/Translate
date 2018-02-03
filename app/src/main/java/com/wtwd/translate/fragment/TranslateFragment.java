@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import com.wtwd.translate.R;
 import com.wtwd.translate.activity.ChatActivity;
 import com.wtwd.translate.activity.DevTranslateActivity;
+import com.wtwd.translate.activity.DevTranslationActivity;
 import com.wtwd.translate.activity.PhotoActivity;
 import com.wtwd.translate.activity.TranslateActivity;
 import com.wtwd.translate.utils.Constants;
@@ -93,7 +94,7 @@ public class TranslateFragment extends Fragment implements View.OnClickListener{
         switch (id){
             case R.id.btn_dev_tran:
                 Log.d(TAG,"btn_dev_tran");
-                Intent DevTranIntent = new Intent(mContext, DevTranslateActivity.class);
+                Intent DevTranIntent = new Intent(mContext, DevTranslationActivity.class);
                 startActivity(DevTranIntent);
                 break;
             case R.id.btn_photo_tran:

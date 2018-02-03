@@ -78,6 +78,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
     // 所需的全部权限
     static final String[] PERMISSIONS = new String[]{
             Manifest.permission.CAMERA,
+            Manifest.permission.RECORD_AUDIO,
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE
     };

@@ -12,7 +12,7 @@ import android.util.Log;
 import java.io.IOException;
 
 /**
- * Created by Administrator on 2018/1/15 0015.
+ * Created by Administrator on 2018/tran_voice1/15 0015.
  */
 
 public class AudioMediaPlayManager {
@@ -72,7 +72,7 @@ public class AudioMediaPlayManager {
 
     private boolean notClientedBluetoothEar() {
         if (!bluetoothEarCliented()) {
-            // TODO: 2018/1/16 0016 未连接蓝牙耳机提示
+            // TODO: 2018/tran_voice1/16 0016 未连接蓝牙耳机提示
 
 
             return true;
@@ -245,35 +245,36 @@ public class AudioMediaPlayManager {
 //            if (mAudioManager.isBluetoothA2dpOn())
 //                mAudioManager.setBluetoothA2dpOn(false); //如果A2DP没建立，则建立A2DP连接
             mAudioManager.stopBluetoothSco();//如果SCO没有断开，由于SCO优先级高于A2DP，A2DP可能无声音
-            mAudioManager.startBluetoothSco();
+//            mAudioManager.startBluetoothSco();
+            try {
+                Thread.sleep(500);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+//            mAudioManager.setStreamSolo(AudioManager.STREAM_MUSIC, true);
+
+//            mAudioManager.setRouting(AudioManager.MODE_NORMAL, AudioManager.ROUTE_ALL, AudioManager.ROUTE_SPEAKER);
+//            mAudioManager.setSpeakerphoneOn(false);
+//            mAudioManager.setBluetoothScoOn(true);
+
+
+            if (!mAudioManager.isBluetoothA2dpOn())
+                mAudioManager.setBluetoothA2dpOn(true); //如果A2DP没建立，则建立A2DP连接
+            mAudioManager.stopBluetoothSco();//如果SCO没有断开，由于SCO优先级高于A2DP，A2DP可能无声音
             try {
                 Thread.sleep(500);
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
             mAudioManager.setStreamSolo(AudioManager.STREAM_MUSIC, true);
-
-//            mAudioManager.setRouting(AudioManager.MODE_NORMAL, AudioManager.ROUTE_ALL, AudioManager.ROUTE_SPEAKER);
-            mAudioManager.setSpeakerphoneOn(false);
-            mAudioManager.setBluetoothScoOn(true);
-
-
-//            if (!mAudioManager.isBluetoothA2dpOn())
-//                mAudioManager.setBluetoothA2dpOn(true); //如果A2DP没建立，则建立A2DP连接
-//            mAudioManager.stopBluetoothSco();//如果SCO没有断开，由于SCO优先级高于A2DP，A2DP可能无声音
-//            try {
-//                Thread.sleep(500);
-//            } catch (InterruptedException e) {
-//                e.printStackTrace();
-//            }
-//            mAudioManager.setStreamSolo(AudioManager.STREAM_MUSIC, true);
 //            //让声音路由到蓝牙A2DP。此方法虽已弃用，但就它比较直接、好用。
-//            mAudioManager.setRouting(AudioManager.MODE_NORMAL, AudioManager.ROUTE_BLUETOOTH_A2DP, AudioManager.ROUTE_BLUETOOTH);
+            mAudioManager.setRouting(AudioManager.MODE_NORMAL, AudioManager.ROUTE_BLUETOOTH_A2DP, AudioManager.ROUTE_BLUETOOTH);
             mMediaPlayer.setDataSource(mFilePath);
 
             mMediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
                 @Override
                 public void onCompletion(MediaPlayer mp) {
+                    Log.e(TAG,"OnCompletion");
                     /**播放完成*/
                     releaseMediaPlay();
                     mAudioStateChange.onPlayCompletion();
@@ -283,6 +284,7 @@ public class AudioMediaPlayManager {
             mMediaPlayer.setOnErrorListener(new MediaPlayer.OnErrorListener() {
                 @Override
                 public boolean onError(MediaPlayer mp, int what, int extra) {
+                    Log.e(TAG,"error");
                     /**播放错误**/
                     releaseMediaPlay();
                     mAudioStateChange.onPlayError();
@@ -305,7 +307,8 @@ public class AudioMediaPlayManager {
      * 停止蓝牙耳机播放
      */
     public void stopPlayingUseBluetoothEar() {
-
+        if (mAudioManager.isBluetoothA2dpOn())
+            mAudioManager.setBluetoothA2dpOn(false);
         releaseMediaPlay();
         mAudioStateChange.onStopPlayuseBluetoothEar();
     }
@@ -397,8 +400,8 @@ public class AudioMediaPlayManager {
             }
 
 
-//            if (mAudioManager.isBluetoothA2dpOn())
-//                mAudioManager.setBluetoothA2dpOn(false); //如果A2DP没建立，则建立A2DP连接
+            if (mAudioManager.isBluetoothA2dpOn())
+                mAudioManager.setBluetoothA2dpOn(false); //如果A2DP没建立，则建立A2DP连接
             mAudioManager.stopBluetoothSco();//如果SCO没有断开，由于SCO优先级高于A2DP，A2DP可能无声音
             try {
                 Thread.sleep(500);
@@ -437,7 +440,7 @@ public class AudioMediaPlayManager {
                 }
             });
             //播放器音量配置
-//            mMediaPlayer.setVolume(1, 1);
+//            mMediaPlayer.setVolume(tran_voice1, tran_voice1);
             //是否循环播放
             mMediaPlayer.setLooping(false);
 

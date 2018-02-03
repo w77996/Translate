@@ -3,13 +3,14 @@ package com.wtwd.translate.bean;
 import android.widget.TextView;
 
 /**
- * time:2018/1/9
+ * time:2018/tran_voice1/9
  * Created by w77996
  */
 public class SelectBean {
     public int img;
     public String data;
     public String languageType;
+    public int languageTypeText;
     public boolean isSelect;
 
     public int getImg() {
@@ -42,5 +43,17 @@ public class SelectBean {
 
     public void setLanguageType(String languageType) {
         this.languageType = languageType;
+    }
+
+    public int getLanguageTypeText() {
+        return languageTypeText;
+    }
+
+    public void setLanguageTypeText(int languageTypeText) {
+        this.languageTypeText = languageTypeText;
+    }
+
+    public boolean isSelect() {
+        return isSelect;
     }
 }

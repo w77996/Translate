@@ -28,7 +28,7 @@ import cn.smssdk.EventHandler;
 import cn.smssdk.SMSSDK;
 
 /**
- * time:2018/1/22
+ * time:2018/tran_voice1/22
  * Created by w77996
  */
 

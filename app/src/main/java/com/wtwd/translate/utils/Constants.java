@@ -1,7 +1,7 @@
 package com.wtwd.translate.utils;
 
 /**
- * Created by Administrator on 2018/1/10 0010.
+ * Created by Administrator on 2018/tran_voice1/10 0010.
  */
 
 public class Constants {

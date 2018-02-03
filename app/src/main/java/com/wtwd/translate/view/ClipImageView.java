@@ -19,7 +19,7 @@ import com.wtwd.translate.R;
 import com.wtwd.translate.utils.photos.BitmapUtils;
 
 /**
- * Created by Administrator on 2018/1/9 0009.
+ * Created by Administrator on 2018/tran_voice1/9 0009.
  */
 
 public class ClipImageView extends ImageView {
