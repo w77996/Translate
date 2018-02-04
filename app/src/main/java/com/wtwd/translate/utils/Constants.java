@@ -8,7 +8,7 @@ public class Constants {
 
 
    // public static final String BASEURL = "http://192.168.13.231:8080/open/";
-    public static final String BASEURL = "http://192.168.13.34:8080/open/";
+    public static final String BASEURL = "http://appserver1.paby.com:8086/open/";
     public static final String RIGTSTURL = "registUser.action";//注册用户
     public static final String LOGINURL = "loginUser.action";//用户登陆
     public static final String VERCODEURL = "verificationCodeLogin.action";//验证码登陆

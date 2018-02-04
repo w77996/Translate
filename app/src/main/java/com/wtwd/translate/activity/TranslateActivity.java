@@ -35,6 +35,11 @@ import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.FileCallback;
 import com.lzy.okgo.callback.StringCallback;
 import com.lzy.okgo.model.Response;
+import com.microsoft.cognitiveservices.speechrecognition.ISpeechRecognitionServerEvents;
+import com.microsoft.cognitiveservices.speechrecognition.MicrophoneRecognitionClient;
+import com.microsoft.cognitiveservices.speechrecognition.RecognitionResult;
+import com.microsoft.cognitiveservices.speechrecognition.SpeechRecognitionMode;
+import com.microsoft.cognitiveservices.speechrecognition.SpeechRecognitionServiceFactory;
 import com.wtwd.translate.R;
 import com.wtwd.translate.adapter.LanguageSelectListViewAdapter;
 import com.wtwd.translate.bean.SelectBean;
@@ -61,7 +66,7 @@ import java.util.List;
  * time:2017/12/27
  * Created by w77996
  */
-public class TranslateActivity extends Activity implements View.OnClickListener,MicroRecogitionManager.MicroRecogitionManagerCallBack{
+public class TranslateActivity extends Activity implements View.OnClickListener,ISpeechRecognitionServerEvents {
 
     private static final String TAG = "TranslateActivity";
     /**
@@ -155,8 +160,14 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
 
     private InputMethodManager mInputMethodManager;
 
+    MicrophoneRecognitionClient micClient = null;
+    ChatActivity.FinalResponseStatus isReceivedResponse = ChatActivity.FinalResponseStatus.NotReceived;
 
-    MicroRecogitionManager mMicroRecogitionManager;
+    String nowLanguage="";
+
+
+    public enum FinalResponseStatus { NotReceived, OK, Timeout }
+   // MicroRecogitionManager mMicroRecogitionManager;
     private Animation mAnimation = null;
     private AudioMediaPlayManager mAudioMediaPlayManager;
 
@@ -191,8 +202,8 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
         initDatas();
         initView();
         addListener();
-        mMicroRecogitionManager = MicroRecogitionManager.getMicroRecogitionManager(this);
-        mMicroRecogitionManager.setmicroRecogitionManagerCallBack(this);
+       /* mMicroRecogitionManager = MicroRecogitionManager.getMicroRecogitionManager(this);
+        mMicroRecogitionManager.setmicroRecogitionManagerCallBack(this);*/
 
         mAudioMediaPlayManager = AudioMediaPlayManager.getAudioMediaPlayManager(this);
         mAudioMediaPlayManager.setAudioStateChange(new AudioStateChange() {
@@ -436,7 +447,7 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
                 img_tran_recro_bg.startAnimation(mAnimation);
                 //mAnimation.start();
                 img_tran_recro.setClickable(false);
-                mMicroRecogitionManager.initSpeechRecognition(leftLanguage);
+                initSpeechRecognition(leftLanguage);
                 break;
             case R.id.leftlanguage_head:
                 LanguageSelectIntent = new Intent(this, LanguageSelectActivity.class);
@@ -604,6 +615,7 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
         return super.onKeyDown(keyCode, event);
     }
 
+/*
 
     @Override
     public void onFinalResponseResult(String result) {
@@ -635,11 +647,100 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
     public void getOnAudioEvent(boolean b) {
 
     }
+*/
 
    /* @Override
     public void onMicroStartRecoderUseBluetoothEar() {
 
     }*/
+    /**
+     * 微软语音
+     * @param mLanguage
+     */
+    public void initSpeechRecognition(String mLanguage) {
+
+        if(!nowLanguage.equals(mLanguage)&&this.micClient == null){
+            Log.e(TAG,"!nowLanguage.equals(mLanguage)&&this.micClient == null");
+            this.micClient = SpeechRecognitionServiceFactory.createMicrophoneClient(
+                    this,
+                    this.getMode(),
+                    mLanguage,
+                    this,
+                    "6d5a91fa9c614a33a681731279f2450c");
+            nowLanguage = mLanguage;
+            this.micClient.setAuthenticationUri("");
+        }else if(!nowLanguage.equals(mLanguage)&&this.micClient !=null){
+            Log.e(TAG,"!nowLanguage.equals(mLanguage)&&this.micClient !=null");
+            try {
+                this.micClient.finalize();
+            } catch (Throwable throwable) {
+                throwable.printStackTrace();
+            }
+            this.micClient = null;
+            this.micClient = SpeechRecognitionServiceFactory.createMicrophoneClient(
+                    this,
+                    this.getMode(),
+                    mLanguage,
+                    this,
+                    "6d5a91fa9c614a33a681731279f2450c");
+            nowLanguage = mLanguage;
+            this.micClient.setAuthenticationUri("");
+        }else if(nowLanguage.equals(mLanguage)&&this.micClient ==null){
+            Log.e(TAG,"nowLanguage.equals(mLanguage)&&this.micClient ==null");
+            this.micClient = SpeechRecognitionServiceFactory.createMicrophoneClient(
+                    this,
+                    this.getMode(),
+                    mLanguage,
+                    this,
+                    "6d5a91fa9c614a33a681731279f2450c");
+            nowLanguage = mLanguage;
+            this.micClient.setAuthenticationUri("");
+        }
+
+
+        this.micClient.startMicAndRecognition();
+
+    }
+    private SpeechRecognitionMode getMode() {
+        return SpeechRecognitionMode.ShortPhrase;
+    }
+    @Override
+    public void onPartialResponseReceived(String s) {
+        Log.e(TAG,"onPartialResponseReceived "+s);
+    }
+
+    @Override
+    public void onFinalResponseReceived(RecognitionResult recognitionResult) {
+        Log.e(TAG,"onFinalResponseReceived ");
+        if (recognitionResult.Results.length <= 0) {
+            img_tran_recro_bg.clearAnimation();
+            img_tran_recro.setClickable(true);
+            Toast.makeText(this,R.string.record_fail,Toast.LENGTH_SHORT).show();
+            return;
+        }
+        String result = recognitionResult.Results[0].DisplayText;
+        mSearchBoxEditText.setText(result);
+        requestTran(result);
+        img_tran_recro_bg.clearAnimation();
+    }
+
+    @Override
+    public void onIntentReceived(String s) {
+        Log.e(TAG,"onIntentReceived"+s);
+    }
+
+    @Override
+    public void onError(int i, String s) {
+        Log.e(TAG,"onError"+s+" i "+i);
+        img_tran_recro_bg.clearAnimation();
+        img_tran_recro.setClickable(true);
+        Toast.makeText(this,R.string.record_fail,Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onAudioEvent(boolean b) {
+
+    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -663,12 +764,12 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mMicroRecogitionManager.releseClient();
+       /* mMicroRecogitionManager.releseClient();
         if(null != mMicroRecogitionManager){
             Log.e(TAG," mMicroRecogitionManager not null ");
             mMicroRecogitionManager = null;
        }else{
             Log.e(TAG," mMicroRecogitionManager null{\n");
-        }
+        }*/
     }
 }

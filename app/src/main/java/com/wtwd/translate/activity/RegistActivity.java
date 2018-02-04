@@ -168,25 +168,26 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
 
                 break;
             case R.id.img_regist_btn:
+                username = ed_username.getText().toString().trim();
+                if(TextUtils.isEmpty(username) || !Utils.isChinaPhoneLegal(username) || username.length() <11){
+                    Toast.makeText(RegistActivity.this, R.string.tips_input_username, Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 code = ed_code.getText().toString().trim();
                 if (TextUtils.isEmpty(code)) {
                     Toast.makeText(RegistActivity.this, R.string.tips_input_code, Toast.LENGTH_SHORT).show();
                     return;
                 }
                 userpwd = ed_pwd.getText().toString().trim();
-                if (TextUtils.isEmpty(userpwd)) {
+                if (TextUtils.isEmpty(userpwd) || userpwd.length() < 6) {
                     Toast.makeText(RegistActivity.this, R.string.tips_input_pwd, Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if(userpwd.length() < 5){
+               /* if(userpwd.length() < 5){
                     Toast.makeText(RegistActivity.this, R.string.input_six_pwd, Toast.LENGTH_SHORT).show();
                     return;
-                }
-                username = ed_username.getText().toString().trim();
-                if(TextUtils.isEmpty(username)){
-                    Toast.makeText(RegistActivity.this, R.string.tips_input_username, Toast.LENGTH_SHORT).show();
-                    return;
-                }
+                }*/
+
                // rigstUser();
                 submitCode("86", username, code);
                 break;
@@ -296,6 +297,7 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
                                                 Log.e(TAG,"用户注册请求成功");
                                             }else{
                                                 Log.e(TAG,"用户注册请求失败");
+                                                Toast.makeText(RegistActivity.this,R.string.request_error,Toast.LENGTH_SHORT).show();
                                             }
                                             Log.d(TAG,"注册成功"+response.toString());
                                             Toast.makeText(RegistActivity.this, R.string.regist_success,Toast.LENGTH_SHORT).show();

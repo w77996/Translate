@@ -181,7 +181,8 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="@dimen/x10"
                 card_view:cardCornerRadius="4dp"
-                card_view:cardElevation="2dp">
+                card_view:cardElevation="2dp"
+                >
 
                 <LinearLayout
                     android:id="@+id/lin_tran_result"
@@ -189,6 +190,7 @@
                     android:layout_height="wrap_content"
                     android:padding="@dimen/x10"
                     android:orientation="vertical"
+                    android:visibility="gone"
                     >
 
                     <LinearLayout
@@ -228,7 +230,7 @@
                             android:id="@+id/tran_play"
                             android:layout_width="@dimen/x25"
                             android:layout_height="@dimen/x25"
-                            android:padding="@dimen/x3"
+                            android:padding="@dimen/x5"
                             android:src="@drawable/tran_voice1" />
 
                      <!--   <TextView

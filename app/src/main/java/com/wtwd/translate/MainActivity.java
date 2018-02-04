@@ -177,7 +177,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 }
                 transaction.show(mTranslateFragment);
                 transaction.commit();
-                mNavTranslateImage.setBackgroundResource(R.drawable.translate_btn_select);
+                mNavTranslateImage.setBackgroundResource(R.drawable.tran_select);
                 mNavTranslateText.setTextColor(getResources().getColor(R.color.main_title_color));
                 break;
             case R.id.nav_strategy:
@@ -190,7 +190,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
                 transaction.show(mStrategyFragment);
                 transaction.commit();
-                mNavStrategyImage.setBackgroundResource(R.drawable.strategy_btn_select);
+                mNavStrategyImage.setBackgroundResource(R.drawable.strategy_select);
                 mNavStrategyText.setTextColor(getResources().getColor(R.color.main_title_color));
                 break;
             case R.id.nav_travel:
@@ -202,7 +202,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 }
                 transaction.show(mTravelFragment);
                 transaction.commit();
-                mNavTravelImage.setBackgroundResource(R.drawable.travel_btn_select);
+                mNavTravelImage.setBackgroundResource(R.drawable.travel_select);
                 mNavTravelText.setTextColor(getResources().getColor(R.color.main_title_color));
                 break;
             case R.id.nav_edu:
@@ -214,7 +214,7 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
                 }
                 transaction.show(mEducationFragment);
                 transaction.commit();
-                mNavEduImage.setBackgroundResource(R.drawable.edu_btn_select);
+                mNavEduImage.setBackgroundResource(R.drawable.edu_select);
                 mNavEduText.setTextColor(getResources().getColor(R.color.main_title_color));
                 break;
             case R.id.nav_user:
@@ -259,11 +259,11 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
      * 改变底部按钮和文字的颜色
      */
     private void changeSelect() {
-        mNavTranslateImage.setBackgroundResource(R.drawable.translate_btn_normal);
-        mNavStrategyImage.setBackgroundResource(R.drawable.strategy_btn_normal);
-        mNavTravelImage.setBackgroundResource(R.drawable.travel_btn_normal);
-        mNavEduImage.setBackgroundResource(R.drawable.edu_btn_normal);
-        mNavUserImage.setBackgroundResource(R.drawable.user_btn_normal);
+        mNavTranslateImage.setBackgroundResource(R.drawable.tran_normal);
+        mNavStrategyImage.setBackgroundResource(R.drawable.strategy_normal);
+        mNavTravelImage.setBackgroundResource(R.drawable.travel_normal);
+        mNavEduImage.setBackgroundResource(R.drawable.edu_normal);
+        mNavUserImage.setBackgroundResource(R.drawable.main_user_normal);
 
         mNavTranslateText.setTextColor(Color.parseColor("#616161"));
         mNavStrategyText.setTextColor(Color.parseColor("#616161"));

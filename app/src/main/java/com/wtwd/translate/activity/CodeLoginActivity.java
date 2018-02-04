@@ -255,8 +255,8 @@ public class CodeLoginActivity extends BaseActivity implements View.OnClickListe
         switch (id){
             case R.id.img_login:
                 username = ed_username.getText().toString().trim();
-                if(TextUtils.isEmpty(username)){
-                    Toast.makeText(CodeLoginActivity.this, R.string.tips_intput_username, Toast.LENGTH_SHORT).show();
+                if(TextUtils.isEmpty(username)|| !Utils.isChinaPhoneLegal(username) || username.length() < 11){
+                    Toast.makeText(CodeLoginActivity.this, R.string.tips_input_sure_number, Toast.LENGTH_SHORT).show();
                     return;
                 }
                 code = ed_code.getText().toString().trim();

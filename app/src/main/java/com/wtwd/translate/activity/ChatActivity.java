@@ -61,7 +61,7 @@ import java.util.concurrent.TimeUnit;
  * time:2017/12/27
  * Created by w77996
  */
-public class ChatActivity extends Activity implements View.OnClickListener, AudioStateChange, MicroRecogitionManager.MicroRecogitionManagerCallBack {
+public class ChatActivity extends Activity implements View.OnClickListener, AudioStateChange,ISpeechRecognitionServerEvents {
 
     public final static String TAG = "ChatActivity";
     /**
@@ -149,6 +149,15 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
     boolean leftIsStartVoice = false;
     boolean rightIsStartVoice = false;
     private AnimationDrawable animationDrawable;
+
+    private boolean isRecordering = false;
+
+
+    MicrophoneRecognitionClient micClient = null;
+    FinalResponseStatus isReceivedResponse = FinalResponseStatus.NotReceived;
+
+    String nowLanguage="";
+    public enum FinalResponseStatus { NotReceived, OK, Timeout }
     /**
      * 微软语音状态
      */
@@ -160,15 +169,15 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
         return SpeechRecognitionMode.ShortPhrase;
     }*/
     /****自定义微软接口*****/
-    @Override
+   /* @Override
     public void onFinalResponseResult(String result) {
         animationDrawable.stop();
         //mVoice.setBackground(getResources().getDrawable(R.drawable.voice_img3));
         mVoice.setImageResource(R.drawable.chat_voice);
-       /* if (recognitionResult.Results.length <= 0) {
+       *//* if (recognitionResult.Results.length <= 0) {
 
             return;
-        }*/
+        }*//*
         //String userRecoderTxt = recognitionResult.Results[0].DisplayText;
         //更新界面
         lin_right.setClickable(true);
@@ -205,6 +214,7 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
        lin_left.setBackground(ChatActivity.this.getDrawable(R.drawable.chat_left_btn_unselect));
         lin_right.setBackground(ChatActivity.this.getDrawable(R.drawable.chat_right_btn_unselect));
         animationDrawable.stop();
+        isRecordering = false;
     }
 
     @Override
@@ -216,6 +226,7 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
         lin_left.setClickable(true);
         lin_right.setClickable(true);
         animationDrawable.stop();
+        isRecordering = false;
         leftIsStartVoice = false;
         rightIsStartVoice = false;
         Toast.makeText(this, R.string.record_fail, Toast.LENGTH_SHORT).show();
@@ -229,7 +240,7 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
         lin_left.setClickable(true);
         lin_right.setClickable(true);
         mVoice.setImageResource(R.drawable.chat_voice);
-
+        isRecordering = false;
         animationDrawable.stop();
         leftIsStartVoice = false;
         rightIsStartVoice = false;
@@ -244,7 +255,7 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
     @Override
     public void getOnAudioEvent(boolean b) {
 
-    }
+    }*/
 
     // public enum FinalResponseStatus {NotReceived, OK, Timeout}
 
@@ -254,7 +265,7 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
    /* DataRecognitionClient dataClient = null;
     MicrophoneRecognitionClient micClient = null;*/
 
-    MicroRecogitionManager mMicroRecogitionManager;
+   // MicroRecogitionManager mMicroRecogitionManager;
     /*private static final int PERMISSIONS_REQUEST_CODE = 0111; // 请求码
 
     private PermissionsChecker mPermissionsChecker; // 权限检测器
@@ -272,8 +283,8 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
         setContentView(R.layout.activity_chat);
         mAudioMediaPlayManager = AudioMediaPlayManager.getAudioMediaPlayManager(this);
         mAudioMediaPlayManager.setAudioStateChange(this);
-        mMicroRecogitionManager =MicroRecogitionManager.getMicroRecogitionManager(this);
-        mMicroRecogitionManager.setmicroRecogitionManagerCallBack(this);
+        /*mMicroRecogitionManager =MicroRecogitionManager.getMicroRecogitionManager(this);
+        mMicroRecogitionManager.setmicroRecogitionManagerCallBack(this);*/
 
         initData();
         initView();
@@ -409,15 +420,24 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
                     mAudioMediaPlayManager.stopRecorderUsePhone();
                     lin_right.setBackground(this.getDrawable(R.drawable.chat_right_btn_selected));
                 }*/
-                if (!Utils.isNetworkConnected(this)) {
+
+               if (!Utils.isNetworkConnected(this)) {
                     Toast.makeText(this, R.string.no_network, Toast.LENGTH_SHORT).show();
                     return;
                 }
+                if(isRecordering){
+                    Log.e(TAG,"正在录音");
+                    return;
+                }
+                isRecordering = true;
                 mVoice.setImageResource(R.drawable.voice_tran_animation);
                 animationDrawable = (AnimationDrawable) mVoice.getDrawable();
                 animationDrawable.start();
                 Log.d(TAG, "左侧开始录音");
                 lin_left.setBackground(this.getDrawable(R.drawable.chat_left_btn_selected));
+
+
+
                 if (leftIsStartVoice) {
                     // mAudioMediaPlayManager.stopRecorderUsePhone();
                     /*leftIsStartVoice = false;
@@ -439,10 +459,11 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
                     //Log.d(TAG, "左侧录音 " );
                     //mAudioMediaPlayManager.startRecorderUsePhone();;
                     //  mAudioMediaPlayManager.startRecorderUsePhone(mVoiceFilePath);
-                    mMicroRecogitionManager.initSpeechRecognition(leftLanguage);
-                    leftIsStartVoice = true;
                     lin_right.setClickable(false);
                     lin_left.setClickable(false);
+                    initSpeechRecognition(leftLanguage);
+                    leftIsStartVoice = true;
+
                 }
 
                 break;
@@ -454,6 +475,10 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
                 }*/
                 if (!Utils.isNetworkConnected(this)) {
                     Toast.makeText(this, R.string.no_network, Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(isRecordering){
+                    Log.e(TAG,"正在录音");
                     return;
                 }
                 mVoice.setImageResource(R.drawable.voice_tran_animation);
@@ -482,10 +507,13 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
                    // mVoiceFilePath = Utils.getVoiceFilePath();
                    // Log.d(TAG, "右侧录音路径 " + mVoiceFilePath);
                     //mAudioMediaPlayManager.startRecorderUsePhone(mVoiceFilePath);
-                   mMicroRecogitionManager.initSpeechRecognition(rightLanguage);
-                    rightIsStartVoice = true;
+                    Log.e(TAG,"right click");
+                    isRecordering = true;
                     lin_right.setClickable(false);
                     lin_left.setClickable(false);
+                   initSpeechRecognition(rightLanguage);
+                    rightIsStartVoice = true;
+
                 }
                 break;
             /*case R.id.img_chat_down_row:
@@ -543,6 +571,58 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
         }
     }
 
+    /**
+     * 微软语音
+     * @param mLanguage
+     */
+    public void initSpeechRecognition(String mLanguage) {
+
+        if(!nowLanguage.equals(mLanguage)&&this.micClient == null){
+            Log.e(TAG,"!nowLanguage.equals(mLanguage)&&this.micClient == null");
+            this.micClient = SpeechRecognitionServiceFactory.createMicrophoneClient(
+                    this,
+                    this.getMode(),
+                    mLanguage,
+                    this,
+                    "6d5a91fa9c614a33a681731279f2450c");
+            nowLanguage = mLanguage;
+            this.micClient.setAuthenticationUri("");
+        }else if(!nowLanguage.equals(mLanguage)&&this.micClient !=null){
+            Log.e(TAG,"!nowLanguage.equals(mLanguage)&&this.micClient !=null");
+            try {
+                this.micClient.finalize();
+            } catch (Throwable throwable) {
+                throwable.printStackTrace();
+            }
+            this.micClient = null;
+            this.micClient = SpeechRecognitionServiceFactory.createMicrophoneClient(
+                    this,
+                    this.getMode(),
+                    mLanguage,
+                    this,
+                    "6d5a91fa9c614a33a681731279f2450c");
+            nowLanguage = mLanguage;
+            this.micClient.setAuthenticationUri("");
+        }else if(nowLanguage.equals(mLanguage)&&this.micClient ==null){
+            Log.e(TAG,"nowLanguage.equals(mLanguage)&&this.micClient ==null");
+            this.micClient = SpeechRecognitionServiceFactory.createMicrophoneClient(
+                    this,
+                    this.getMode(),
+                    mLanguage,
+                    this,
+                    "6d5a91fa9c614a33a681731279f2450c");
+            nowLanguage = mLanguage;
+            this.micClient.setAuthenticationUri("");
+        }
+
+
+        this.micClient.startMicAndRecognition();
+
+    }
+
+    private SpeechRecognitionMode getMode() {
+        return SpeechRecognitionMode.ShortPhrase;
+    }
     /**********蓝牙与本地录音回调*************/
     @Override
     public void onStartRecoderUseBluetoothEar() {
@@ -962,13 +1042,21 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        mMicroRecogitionManager.releseClient();
+        if(null != this.micClient){
+            try {
+                this.micClient.finalize();
+            } catch (Throwable throwable) {
+                throwable.printStackTrace();
+            }
+            this.micClient = null;
+        }
+     /*   mMicroRecogitionManager.releseClient();
         if(mMicroRecogitionManager !=null){
             Log.e(TAG,"MicroRecogitionManager !=null");
             mMicroRecogitionManager = null;
         }else {
             Log.e(TAG,"MicroRecogitionManager null");
-        }
+        }*/
 //        if(mMicroRecogitionManager !=null){
 //            Log.e(TAG,"MicroRecogitionManager !=null");
 //            mMicroRecogitionManager = null;
@@ -982,5 +1070,95 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
             Log.e(TAG,"        if(null == this.micClient){\n");
         }*/
         OkGo.getInstance().cancelTag(this);
+    }
+
+    @Override
+    public void onPartialResponseReceived(String s) {
+
+    }
+
+    @Override
+    public void onFinalResponseReceived(RecognitionResult recognitionResult) {
+        //mVoice.setBackground(getResources().getDrawable(R.drawable.voice_img3));
+
+       if (recognitionResult.Results.length <= 0) {
+           lin_left.setBackground(this.getDrawable(R.drawable.chat_left_btn_unselect));
+           lin_right.setBackground(this.getDrawable(R.drawable.chat_right_btn_unselect));
+           lin_left.setClickable(true);
+           lin_right.setClickable(true);
+           mVoice.setImageResource(R.drawable.chat_voice);
+           isRecordering = false;
+           animationDrawable.stop();
+           leftIsStartVoice = false;
+           rightIsStartVoice = false;
+           Toast.makeText(ChatActivity.this, "录音失败", Toast.LENGTH_SHORT).show();
+        return;
+    }
+        animationDrawable.stop();
+        mVoice.setImageResource(R.drawable.chat_voice);
+        lin_left.setBackground(ChatActivity.this.getDrawable(R.drawable.chat_left_btn_unselect));
+        lin_right.setBackground(ChatActivity.this.getDrawable(R.drawable.chat_right_btn_unselect));
+
+        String result = recognitionResult.Results[0].DisplayText;
+            //更新界面
+            lin_right.setClickable(true);
+        lin_left.setClickable(true);
+        if (rightIsStartVoice) {
+
+
+
+       // lin_right.setBackground(this.getDrawable(R.drawable.chat_right_btn_unselect));
+
+        // TODO: 2018/tran_voice1/17  停止录音后更新界面处理
+        rightRecorderBean = new RecorderBean();
+        rightRecorderBean.setLanguage_type(rightLanguage);
+        //rightRecorderBean.setmFilePath(mVoiceFilePath);
+
+        rightRecorderBean.setmRecorderTxt(result);
+        rightRecorderBean.setType(Constants.ITEM_RIGHT);
+        requestTran(result, rightLanguage, leftLanguage);
+        //mListViewChat.s
+    } else if (leftIsStartVoice) {
+       // lin_left.setBackground(this.getDrawable(R.drawable.chat_left_btn_unselect));
+
+        // TODO: 2018/tran_voice1/17  停止录音后更新界面处理
+        leftRecorderBean = new RecorderBean();
+        leftRecorderBean.setLanguage_type(leftLanguage);
+        //leftRecorderBean.setmFilePath(mVoiceFilePath);
+        //initSpeechRecognition(mVoiceFilePath);
+
+        leftRecorderBean.setmRecorderTxt(result);
+        leftRecorderBean.setType(Constants.ITEM_LEFT);
+        requestTran(result, leftLanguage, rightLanguage);
+
+    }
+
+
+        isRecordering = false;
+    }
+
+    @Override
+    public void onIntentReceived(String s) {
+        Log.e(TAG,"onIntentReceived");
+    }
+
+    @Override
+    public void onError(int i, String s) {
+        Log.e(TAG, "微软语音合成错误 ： " + s.toString());
+        lin_left.setBackground(this.getDrawable(R.drawable.chat_left_btn_unselect));
+        lin_right.setBackground(this.getDrawable(R.drawable.chat_right_btn_unselect));
+        lin_left.setClickable(true);
+        lin_right.setClickable(true);
+        mVoice.setImageResource(R.drawable.chat_voice);
+        isRecordering = false;
+        animationDrawable.stop();
+        leftIsStartVoice = false;
+        rightIsStartVoice = false;
+        Toast.makeText(ChatActivity.this, "录音失败", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onAudioEvent(boolean b) {
+
     }
 }

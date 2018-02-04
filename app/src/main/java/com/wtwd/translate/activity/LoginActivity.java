@@ -124,7 +124,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                 break;
             case R.id.img_login:
                 loginUser();
-                showProgressDialog();
+
                 break;
             case R.id.img_regist:
                 Intent registIntent = new Intent(LoginActivity.this,RegistActivity.class);
@@ -159,6 +159,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
             Toast.makeText(LoginActivity.this, R.string.input_six_pwd,Toast.LENGTH_SHORT).show();
             return;
         }
+        showProgressDialog();
         OkGo.<String>post(Constants.BASEURL+Constants.LOGINURL)
                 .tag(this)
                 .params("userName",username)
