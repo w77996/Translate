@@ -241,8 +241,9 @@ public class SplashDevPairActivity extends Activity implements View.OnClickListe
                 break;
             case R.id.img_devpair_next:
                 Intent intent = new Intent(SplashDevPairActivity.this,MainActivity.class);
-                startActivity(intent);
                 SpUtils.putBoolean(SplashDevPairActivity.this, Constants.APP_FIRST_START,false);
+                startActivity(intent);
+
                 finish();
                 break;
         }

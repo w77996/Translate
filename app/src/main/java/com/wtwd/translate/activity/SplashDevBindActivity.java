@@ -124,6 +124,7 @@ public class SplashDevBindActivity extends Activity implements View.OnClickListe
                 }else{
                     Intent splashBTOpenIntent = new Intent(SplashDevBindActivity.this,SplashDevPairActivity.class);
                     startActivity(splashBTOpenIntent);
+                    finish();
                 }
                 break;
 
@@ -191,7 +192,7 @@ public class SplashDevBindActivity extends Activity implements View.OnClickListe
     public void OnCenterItemClick(BTOpenDialog dialog, View view) {
         switch (view.getId()){
             case R.id.dialog_sure:
-                Toast.makeText(SplashDevBindActivity.this,"确定按钮",Toast.LENGTH_SHORT).show();
+               // Toast.makeText(SplashDevBindActivity.this,"确定按钮",Toast.LENGTH_SHORT).show();
                 //mSppBluetoothManager.openBluetooth();
                 Intent intent =  new Intent(Settings.ACTION_BLUETOOTH_SETTINGS);
                 startActivityForResult(intent,Constants.SETTING_BLUE);

@@ -86,7 +86,7 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
                    // sendCode("86", ed_username.getText().toString());
                     break;
                 case SEND_CODE_SUCCESS:
-                   // Toast.makeText(RegistActivity.this, R.string.tips_code_send_success, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegistActivity.this, R.string.tips_code_send_success, Toast.LENGTH_SHORT).show();
                     Log.e(TAG,"发送验证码成功");
                     break;
                 case CODE_ERROR:
@@ -175,7 +175,7 @@ public class RegistActivity extends BaseActivity implements View.OnClickListener
                 }
                 code = ed_code.getText().toString().trim();
                 if (TextUtils.isEmpty(code)) {
-                    Toast.makeText(RegistActivity.this, R.string.tips_input_code, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(RegistActivity.this, R.string.regist_code_tips, Toast.LENGTH_SHORT).show();
                     return;
                 }
                 userpwd = ed_pwd.getText().toString().trim();

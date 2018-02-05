@@ -308,10 +308,10 @@ public class DevTranslateActivity extends Activity implements AudioStateChange,T
         mVoiceImage.setOnClickListener(this);
         dev_back.setOnClickListener(this);
 
-        findViewById(R.id.start).setOnClickListener(new View.OnClickListener() {
+      /*  findViewById(R.id.start).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*Utils.createFile()*/
+                *//*Utils.createFile()*//*
                 mAudioMediaPlayManager.startRecorderUseBluetoothEar();
                 mMicroRecogitionManager.initSpeechRecognition(leftLanguage);
             }
@@ -321,7 +321,7 @@ public class DevTranslateActivity extends Activity implements AudioStateChange,T
             public void onClick(View v) {
                 mAudioMediaPlayManager.stopPlayingUseBluetoothEar();
             }
-        });
+        });*/
     }
 
     /**

@@ -76,6 +76,7 @@
                 android:layout_toRightOf="@id/text_deal_right_language"
                 android:background="@drawable/chat_english_head" />
         </RelativeLayout>
+
     </LinearLayout>
 
 
@@ -83,7 +84,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:background="@color/color_white"
+        android:background="@color/app_background"
         >
 
         <com.wtwd.translate.view.ClipImageView

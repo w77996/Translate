@@ -46,7 +46,10 @@ import com.wtwd.translate.utils.micro.MicroRecogitionManager;
 import com.wtwd.translate.view.BTOpenDialog;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -171,7 +174,27 @@ public class DevTranslationActivity extends Activity implements AudioStateChange
         mSppBluetoothManager.setBluetoothListener(this);
 
         mSppBluetoothReceivedManager = SppBluetoothReceivedManager.getInstance(this);
-        mSppBluetoothManager.setBluetoothListener(this);
+        mSppBluetoothReceivedManager.setBluetoothListener(new SppBluetoothReceivedManager.BluetoothListener() {
+            @Override
+            public void notifyChangeConnectstate(int mState) {
+
+            }
+
+            @Override
+            public void foundBluetoothDevice(BluetoothDevice mDevice) {
+
+            }
+
+            @Override
+            public void scanBluetoothFinish() {
+
+            }
+
+            @Override
+            public void notifyChangeOpenstate(int mState) {
+
+            }
+        });
         //微软
        /* mMicroRecogitionManager = MicroRecogitionManager.getMicroRecogitionManager(this);
         mMicroRecogitionManager.setmicroRecogitionManagerCallBack(this);*/
@@ -320,10 +343,10 @@ public class DevTranslationActivity extends Activity implements AudioStateChange
         mVoiceImage.setOnClickListener(this);
         dev_back.setOnClickListener(this);
 
-        findViewById(R.id.start).setOnClickListener(new View.OnClickListener() {
+       /* findViewById(R.id.start).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*Utils.createFile()*/
+                *//*Utils.createFile()*//*
                // mAudioMediaPlayManager.startRecorderUseBluetoothEar();
                 mAudioMediaPlayManager.startPlayingUseBluetoothEar(mRecorderList.get(1).getmFilePath());
                 //mMicroRecogitionManager.initSpeechRecognition(leftLanguage);
@@ -335,7 +358,7 @@ public class DevTranslationActivity extends Activity implements AudioStateChange
               //  mAudioMediaPlayManager.stopRecorderUseBluetoothEar();
                 mAudioMediaPlayManager.stopPlayingUseBluetoothEar();
             }
-        });
+        });*/
     }
 
     /**
@@ -465,6 +488,7 @@ public class DevTranslationActivity extends Activity implements AudioStateChange
     @Override
     public void onStartPlayUsePhone() {
         Log.e(TAG,"onStartPlayUsePhone");
+        mHandler.sendEmptyMessage(DEV_RECORDERING);
     }
 
     @Override
@@ -720,7 +744,7 @@ public class DevTranslationActivity extends Activity implements AudioStateChange
          Log.e(TAG,"onMicroStartRecoderUseBluetoothEar");
 
      }*/
-   private void requestTran(String trandata,String from ,String to){
+   private void requestTran(String trandata, final String from , final String to){
        int guestId = SpUtils.getInt(DevTranslationActivity.this,Constants.GUEST_ID,1);
        OkGo.<String>post(Constants.BASEURL+Constants.TEXTTRANSLATE)
                .tag(this)
@@ -753,8 +777,21 @@ public class DevTranslationActivity extends Activity implements AudioStateChange
                                   // rightRecorderBean.setmFilePath(resultBean.getTranslateResult().getAudio());
                                    //mRecorderList.add(rightRecorderBean);
                                   // isPhoneRecrod = false;
-                                   send = BluetoothSerialString.getTranslationResultString(leftLanguage,rightLanguage,rightRecorderBean.getmResultTxt(),tranText,true);
-                                   mTranProtocalAnalysis.writeToDevice(send);
+                                  /* String data = "";
+                                    byte[] recorder = rightRecorderBean.getmRecorderTxt().getBytes("UnicodeBigUnmarked");
+                                    String recorderstring = new String(recorder,"UnicodeBigUnmarked");
+                                       byte[] trantext = tranText.getBytes("UnicodeBigUnmarked");
+                                       String trantextstring = new String(trantext,"UnicodeBigUnmarked");
+                                       data = "{\"src\":\"zh-CN\",\"des\":\"en-GB\",\"rec\":\"11.\",\"tra\":\"11。\"}";
+                                       byte[] datab = data.getBytes("UnicodeBigUnmarked");*/
+
+                                      // datab.toString();
+                                   /*if(!(from.equals(Constants.ja_JP)|| to.equals(Constants.ko_KR))||(!from.equals(Constants.ko_KR)||!to.equals(Constants.ko_KR))){
+
+                                   }*/
+                                   send = BluetoothSerialString.getTranslationResultString(leftLanguage,rightLanguage,rightRecorderBean.getmRecorderTxt(),tranText,true);
+                                   byte[] data = BluetoothSerialString.getTranslationResultByte(leftLanguage,rightLanguage,rightRecorderBean.getmRecorderTxt(),tranText,true);
+                                   mTranProtocalAnalysis.writeToDeviceByte(data);
                                }
                               // mRecorderList.add(rightRecorderBean);
                                /*if(isPhoneRecrod){
@@ -942,6 +979,27 @@ public class DevTranslationActivity extends Activity implements AudioStateChange
     @Override
     public void onError(int i, String s) {
         Log.e(TAG,"onError"+s+" "+i);
+        if(isDevRecrod){
+            Log.e(TAG,"onFinalResponseResult:isDevRecrod");
+            mAudioMediaPlayManager.stopRecorderUseBluetoothEar();
+            isDevRecrodering = false;
+        }else if(isPhoneRecrod){
+            img_tran_recro_bg.clearAnimation();
+            mVoiceImage.setClickable(true);
+        }
+        isDevRecrod = false;
+        isPhoneRecrod = false;
+        Log.e(TAG,"录音失败，长度为0");
+        Toast.makeText(DevTranslationActivity.this,R.string.record_fail,Toast.LENGTH_SHORT).show();
+        if(null != this.micClient){
+            try {
+                this.micClient.finalize();
+            } catch (Throwable throwable) {
+                throwable.printStackTrace();
+            }
+            this.micClient = null;
+        }
+        return;
     }
 
     @Override

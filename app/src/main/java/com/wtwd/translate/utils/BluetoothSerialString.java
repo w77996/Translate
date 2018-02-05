@@ -1,6 +1,7 @@
 package com.wtwd.translate.utils;
 
 import android.util.Log;
+import android.widget.Toast;
 
 import org.json.JSONObject;
 
@@ -55,7 +56,78 @@ public class BluetoothSerialString {
         }
         return null;
     }
+    public static byte[] getTranslationResultByte(String from, String to, String recognition, String translation, boolean flag) {
+        byte[] result = null;
+        try {
 
+            String src = "{\"src\":\"";
+            byte[] srcbyte = src.getBytes();
+            byte[] srcdata = from.getBytes();
+
+            String des = "\",\"des\":\"";
+            byte[] desbyte = des.getBytes();
+            byte[] desdata = to.getBytes();
+
+            String rec = "\",\"rec\":\"";
+            byte[] recbyte = rec.getBytes();
+            byte[] recdata = recognition.getBytes("UnicodeBigUnmarked");
+
+            String tra = "\",\"tra\":\"";
+            byte[] trabyte = tra.getBytes();
+            byte[] tradata = translation.getBytes("UnicodeBigUnmarked");
+
+            String end = "\"}";
+            byte[] endbyte = end.getBytes();
+
+            int leng = srcbyte.length + srcdata.length + desbyte.length + desdata.length + recbyte.length + recdata.length + trabyte.length + tradata.length+endbyte.length;
+            System.out.println("leng "+leng+" data "+src+from+des+to+rec+recognition+tra+translation+end);
+            result = new byte[leng];
+            int index = 0;
+            for (int i = 0; i < srcbyte.length; i++) {
+                result[index] = srcbyte[i];
+                index++;
+            }
+            for (int i = 0; i < srcdata.length; i++) {
+                result[index] = srcdata[i];
+                index++;
+            }
+            for (int i = 0; i < desbyte.length; i++) {
+                result[index] = desbyte[i];
+                index++;
+            }
+            for (int i = 0; i < desdata.length; i++) {
+                result[index] = desdata[i];
+                index++;
+            }
+            for (int i = 0; i < recbyte.length; i++) {
+                result[index] = recbyte[i];
+                index++;
+            }
+            for (int i = 0; i < recdata.length; i++) {
+                result[index] = recdata[i];
+                index++;
+            }
+            for (int i = 0; i < trabyte.length; i++) {
+                result[index] = trabyte[i];
+                index++;
+            }
+            for (int i = 0; i < tradata.length; i++) {
+                result[index] = tradata[i];
+                index++;
+            }
+            for (int i = 0; i < endbyte.length; i++) {
+                result[index] = endbyte[i];
+                index++;
+            }
+           Log.e(TAG,"tradata " +Arrays.toString(endbyte));
+            // index --;
+            System.out.println("result "+Arrays.toString(result)+" index"+index+" length");
+            //Log.e(TAG,Arrays.toString(result));
+        }catch(Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
     /**
      * add the headdata to datas, the headdata is needed for the serial transport.
      * @param datas the byte[] needed the headdata.

@@ -47,7 +47,7 @@
     <string name="open_dev_near_mobile">开启后请将设备靠近手机</string>
     <string name="dev_bind">设备绑定</string>
     <string name="connect_dev">请连接设备</string>
-    <string name="dev_isrecoder">手机在录音</string>
+    <string name="dev_isrecoder">录音中</string>
     <string name="user_info">个人信息</string>
     <string name="my_head_img">我的头像</string>
     <string name="user_name">用户名</string>

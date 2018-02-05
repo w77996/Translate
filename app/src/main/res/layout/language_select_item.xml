@@ -19,7 +19,7 @@
             android:layout_toRightOf="@+id/language_select_item_head"
             android:id="@+id/lin_text"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/x32"
+            android:layout_height="@dimen/x35"
             android:layout_centerVertical="true"
             android:orientation="vertical">
             <TextView

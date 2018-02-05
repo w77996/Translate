@@ -189,6 +189,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                             }
                         }else if(resultBean.getStatus() == Constants.REQUEST_FAIL){
                             Log.e(TAG,"请求错误");
+                           /* if(resultBean.getErrCode() == 3){
+                                Toast.makeText(LoginActivity.this,"密码错误",Toast.LENGTH_SHORT).show();
+                            }*/
+                            Toast.makeText(LoginActivity.this,resultBean.getMsg(),Toast.LENGTH_SHORT).show();
+
                         }
                     }
 
@@ -196,6 +201,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener{
                     public void onError(Response<String> response) {
                         super.onError(response);
                         Log.e(TAG,"请求错误");
+
                         dismissProgressDialog();
                     }
                 });

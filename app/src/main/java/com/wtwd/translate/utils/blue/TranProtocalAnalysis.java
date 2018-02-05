@@ -218,7 +218,16 @@ public class TranProtocalAnalysis implements SppBluetoothManager.BluetoothReceiv
             SppBluetoothManager.getInstance(mContext).write(needList.get(i));
         }
     }
-
+    /***
+     * 向设备按照协议发送数据包
+     * @param msg 需要发送的string数据
+     */
+    public void writeToDeviceByte(byte[] msg) {
+        List<byte[]> needList = dividedAndCombinebyte(msg);
+        for (int i = 0; i < needList.size(); i++) {
+            SppBluetoothManager.getInstance(mContext).write(needList.get(i));
+        }
+    }
 
     /**
      * 按照协议添加包头，每包20个字节
@@ -296,7 +305,59 @@ public class TranProtocalAnalysis implements SppBluetoothManager.BluetoothReceiv
         }
     }
 
+    /**
+     * 将string类型数据转换成协议要求的数据集合，每包20个字节，需要添加规定的包头
+     *
+     * @param msg 需要转换的字符串数据
+     * @return 每包添加包头后的byte数组集合
+     */
+    public List<byte[]> dividedAndCombinebyte(byte[] msg) {
+        if (msg == null)
+            return null;
+        List<byte[]> list = new ArrayList<>();
+        byte[] bytes = msg;
+        Log.e(TAG, "bytes:" + Arrays.toString(bytes));
 
+        if (bytes.length <= PACKAGE_LENGTH) {
+            byte[] temp = new byte[bytes.length + 2];
+            temp[0] = 1;
+            temp[1] = 0;
+            for (int i = 0; i < bytes.length; i++) {
+                temp[i + 2] = bytes[i];
+            }
+
+            list.add(addHeadData(temp));
+            Log.e(TAG, "temp : " + Arrays.toString(list.get(0)));
+            return list;
+        } else {
+            int count = bytes.length / PACKAGE_LENGTH;
+            int sing = bytes.length % PACKAGE_LENGTH;
+            int count_fix = count;
+            if (sing != 0)
+                count_fix = count + 1;
+            for (int i = 0; i < count; i++) {
+                byte[] temp = new byte[PACKAGE_LENGTH + 2];
+                temp[0] = (byte) count_fix;
+                temp[1] = (byte) i;
+                for (int j = 0; j < PACKAGE_LENGTH; j++) {
+                    temp[j + 2] = bytes[i * PACKAGE_LENGTH + j];
+                    Log.e(TAG, "temp" + i + ":" + Integer.toHexString((byte) temp[j + 2]));
+                }
+                list.add(addHeadData(temp));
+            }
+            if (sing != 0) {
+                byte[] temp = new byte[sing + 2];
+                temp[0] = (byte) count_fix;
+                temp[1] = (byte) (count_fix - 1);
+                for (int j = 0; j < sing; j++) {
+                    temp[j + 2] = bytes[count * PACKAGE_LENGTH + j];
+                    Log.e(TAG, "temp" + (count_fix - 1) + ":" + Integer.toHexString((byte) temp[j + 2]));
+                }
+                list.add(addHeadData(temp));
+            }
+            return list;
+        }
+    }
     @SuppressWarnings("HandlerLeak")
     private final Handler mHandler = new Handler() {
         @Override

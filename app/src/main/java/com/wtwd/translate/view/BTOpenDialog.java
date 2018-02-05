@@ -39,7 +39,7 @@ public class BTOpenDialog extends Dialog implements View.OnClickListener{
         WindowManager windowManager = ((Activity) context).getWindowManager();
         Display display = windowManager.getDefaultDisplay();
         WindowManager.LayoutParams lp = getWindow().getAttributes();
-        lp.width = display.getWidth()*5/6; // 设置dialog宽度为屏幕的4/5
+        lp.width = display.getWidth()*9/10; // 设置dialog宽度为屏幕的4/5
         getWindow().setAttributes(lp);
         setCanceledOnTouchOutside(true);// 点击Dialog外部消失
         //遍历控件id,添加点击事件

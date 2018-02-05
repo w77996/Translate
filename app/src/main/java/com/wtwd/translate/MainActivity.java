@@ -126,10 +126,10 @@ public class MainActivity extends FragmentActivity implements View.OnClickListen
 
         //初始化点击事件
         mNavTranslate.setOnClickListener(this);
-        mNavStrategy.setOnClickListener(this);
-        mNavTravel.setOnClickListener(this);
-        mNavEdu.setOnClickListener(this);
-        mNavUser.setOnClickListener(this);
+       // mNavStrategy.setOnClickListener(this);
+      //  mNavTravel.setOnClickListener(this);
+        mNavEdu.setClickable(false);
+          mNavUser.setOnClickListener(this);
 
         Utils.setWindowStatusBarColor(this,R.color.main_title_color);//设置状态栏颜色
 
