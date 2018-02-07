@@ -87,7 +87,7 @@
     <string name="re_photo">Repetir la fotografía</string>
     <string name="tran_all">Traducir todo</string>
     <string name="part_tran">Traducir la sección</string>
-    <string name="blue_con">Conectar a Bluetooth </string>
+    <string name="blue_con">Bluetooth no está conectado</string>
     <string name="open_blue_con_dev">Active Bluetooth en "Configuración" y conecte el dispositivo </string>
     <string name="language_select">Seleccionar idioma</string>
     <string name="user_alread_regist">Ya está registrado</string>
@@ -113,4 +113,13 @@
 
     <string name="input_name">Tu cuenta</string>
     <string name="input_pwd">Tu contraseña</string>
+
+    <string name="blue_uncon">Bluetooth no está conectado</string>
+    <string name="blue_iscon">Bluetooth está conectado</string>
+
+    <string name="device_language">Device</string>
+    <string name="mobile_language">Phone</string>
+
+    <string name="add_label">Agregar etiqueta</string>
+    <string name="you_mother_language">Su idioma nativo ess</string>
 </resources>

@@ -666,7 +666,7 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
                     this.getMode(),
                     mLanguage,
                     this,
-                    "6d5a91fa9c614a33a681731279f2450c");
+                    "91401e4bf24e4312bd5d50dd3a93628a");
             nowLanguage = mLanguage;
             this.micClient.setAuthenticationUri("");
         }else if(!nowLanguage.equals(mLanguage)&&this.micClient !=null){
@@ -682,7 +682,7 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
                     this.getMode(),
                     mLanguage,
                     this,
-                    "6d5a91fa9c614a33a681731279f2450c");
+                    "91401e4bf24e4312bd5d50dd3a93628a");
             nowLanguage = mLanguage;
             this.micClient.setAuthenticationUri("");
         }else if(nowLanguage.equals(mLanguage)&&this.micClient ==null){
@@ -692,7 +692,7 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
                     this.getMode(),
                     mLanguage,
                     this,
-                    "6d5a91fa9c614a33a681731279f2450c");
+                    "91401e4bf24e4312bd5d50dd3a93628a");
             nowLanguage = mLanguage;
             this.micClient.setAuthenticationUri("");
         }

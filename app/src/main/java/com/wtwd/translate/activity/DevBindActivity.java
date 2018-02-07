@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.wtwd.translate.R;
@@ -31,6 +32,8 @@ public class DevBindActivity extends Activity  implements View.OnClickListener{
 
     Switch dev_bind_switch;
     ImageView img_blue;
+    TextView dev_bind_con_state;
+    ImageView language_select_back;
 
     SppBluetoothReceivedManager mSppBluetoothReceivedManager;
     SppBluetoothManager mSppBluetoothManager;
@@ -62,11 +65,14 @@ public class DevBindActivity extends Activity  implements View.OnClickListener{
     public void initView(){
         img_blue = (ImageView)findViewById(R.id.img_blue);
         dev_bind_switch = (Switch)findViewById(R.id.dev_bind_switch);
+        dev_bind_con_state = (TextView)findViewById(R.id.dev_bind_con_state);
+        language_select_back = (ImageView)findViewById(R.id.language_select_back);
     }
     private void initListener(){
         img_blue.setOnClickListener(this);
         //dev_bind_switch.setChecked(false);
         dev_bind_switch.setOnClickListener(this);
+        language_select_back.setOnClickListener(this);
         mSppBluetoothManager.setBluetoothListener(new SppBluetoothManager.BluetoothListener() {
             @Override
             public void notifyChangeConnectstate(int mState) {
@@ -78,6 +84,7 @@ public class DevBindActivity extends Activity  implements View.OnClickListener{
                         @Override
                         public void run() {
                             dev_bind_switch.setChecked(true);
+                            dev_bind_con_state.setText(R.string.blue_iscon);
                         }
                     });
                 }else if(mSppBluetoothManagerState != SppBluetoothManager.STATE_CONNECTED || mSppBluetoothReceivedManagerState != SppBluetoothReceivedManager.STATE_CONNECTED){
@@ -85,6 +92,7 @@ public class DevBindActivity extends Activity  implements View.OnClickListener{
                         @Override
                         public void run() {
                             dev_bind_switch.setChecked(false);
+                            dev_bind_con_state.setText(R.string.blue_uncon);
                         }
                     });
                 }
@@ -132,6 +140,7 @@ public class DevBindActivity extends Activity  implements View.OnClickListener{
                         @Override
                         public void run() {
                             dev_bind_switch.setChecked(true);
+                            dev_bind_con_state.setText(R.string.blue_iscon);
                         }
                     });
                 }else if(mSppBluetoothManagerState != SppBluetoothManager.STATE_CONNECTED || mSppBluetoothReceivedManagerState != SppBluetoothReceivedManager.STATE_CONNECTED){
@@ -139,6 +148,7 @@ public class DevBindActivity extends Activity  implements View.OnClickListener{
                         @Override
                         public void run() {
                             dev_bind_switch.setChecked(false);
+                            dev_bind_con_state.setText(R.string.blue_uncon);
                         }
                     });
                 }
@@ -175,6 +185,13 @@ public class DevBindActivity extends Activity  implements View.OnClickListener{
                 Intent intent =  new Intent(Settings.ACTION_BLUETOOTH_SETTINGS);
                 startActivityForResult(intent, Constants.SETTING_BLUE);
                 break;
+            case R.id.img_blue:
+                Intent settingIntent =  new Intent(Settings.ACTION_BLUETOOTH_SETTINGS);
+                startActivityForResult(settingIntent, Constants.SETTING_BLUE);
+                break;
+            case R.id.language_select_back:
+                finish();
+                break;
         }
     }
 
@@ -188,6 +205,8 @@ public class DevBindActivity extends Activity  implements View.OnClickListener{
                     mSppBluetoothManager.getConnectBt();
                     mSppBluetoothReceivedManager.start();
                 }else{
+                    dev_bind_switch.setChecked(false);
+                    dev_bind_con_state.setText(R.string.blue_uncon);
                     Toast.makeText(this, R.string.blue_close,Toast.LENGTH_SHORT).show();
                 }
             }

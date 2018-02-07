@@ -75,7 +75,7 @@ public class LanguageSelectActivity extends Activity implements View.OnClickList
     private String leftLanguage;
     private String rightLanguage;
     private String[] countryText =  {"中文[CHS]","English[ENG]","Français[FRA]","Deutsch[DEU]","한국어[KOR]","日本語[JPN]","Español[SPA]","Português[POR]",
-            "Italiano[ITA]"};
+            "Pусский[RUS]"};
     /**
      * @"中文[CHS]", @"English[ENG]", @"Français[FRA]", @"Deutsch[DEU]", @"한국어[KOR]", @"日本語[JPN]", @"Español[SPA]", @"Português[POR]", @"Italiano[ITA]", @"Pусский[RUS]
      */
@@ -126,8 +126,8 @@ public class LanguageSelectActivity extends Activity implements View.OnClickList
             Utils.perseLanguage(LanguageSelectActivity.this,leftLanguage,language_select_left_head,language_select_left_text);
             Utils.perseLanguage(LanguageSelectActivity.this,rightLanguage,language_select_right_head,language_select_right_text);
         }else if (type == Constants.LANGUAGE_SELECT_DEV_TYPE){
-            language_select_left_text.setText("Device");
-            language_select_right_text.setText("Mobile");
+            language_select_left_text.setText(R.string.device_language);
+            language_select_right_text.setText(R.string.mobile_language);
 
             if(derect == 0){
                 //左边

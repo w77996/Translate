@@ -57,7 +57,7 @@
     <string name="my_dev">My device</string>
     <string name="question">FAQ</string>
     <string name="click_edit_head">Click to edit the profile picture</string>
-    <string name="blue_close">Bluetooth is disabled</string>
+    <string name="blue_close">Bluetooth is not connected</string>
     <string name="photo_tran">Photo translation</string>
     <string name="tips_input_username">Please enter your phone number</string>
     <string name="tips_input_pwd">Please enter your password</string>
@@ -113,4 +113,14 @@
 
     <string name="input_name"> Mobile Number</string>
     <string name="input_pwd"> Password</string>
+
+    <string name="blue_uncon">Bluetooth is not connected</string>
+    <string name="blue_iscon">Bluetooth is connected</string>
+
+    <string name="device_language">Device</string>
+    <string name="mobile_language">Phone</string>
+
+    <string name="add_label">Add label</string>
+    <string name="you_mother_language">Your native language is</string>
+
 </resources>

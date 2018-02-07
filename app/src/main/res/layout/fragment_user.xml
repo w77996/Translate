@@ -44,19 +44,19 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_marginTop="@dimen/x20"
-        android:layout_marginRight="@dimen/x1"
-        android:layout_marginLeft="@dimen/x1"
+        android:layout_marginRight="@dimen/x3"
+        android:layout_marginLeft="@dimen/x3"
         android:background="@drawable/user_item_linear_border">
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/x25"
+            android:layout_height="@dimen/x30"
             android:gravity="center_vertical">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="@dimen/x15"
                 android:textColor="@color/md_black_color_code"
-                android:textSize="15sp"
+                android:textSize="14sp"
                 android:text="@string/my_dev"/>
         </LinearLayout>
         <View
@@ -80,7 +80,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="15sp"
+                    android:textSize="14sp"
                     android:textColor="@color/md_black_color_code"
                     android:paddingLeft="@dimen/x10"
                     android:text="@string/dev_bind"/>
@@ -107,11 +107,11 @@
                     android:paddingLeft="@dimen/x10"
                     android:text="固件升级"/>
             </LinearLayout>-->
-            <View
+            <!--<View
                 android:layout_width="match_parent"
                 android:layout_height="1px"
                 android:background="@color/md_grey_400_color_code"
-                android:layout_marginLeft="@dimen/x25"/>
+                android:layout_marginLeft="@dimen/x25"/>-->
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/x35"
@@ -124,7 +124,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="15sp"
+                    android:textSize="14sp"
                     android:textColor="@color/md_black_color_code"
                     android:paddingLeft="@dimen/x10"
                     android:text="@string/question"/>

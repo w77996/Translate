@@ -91,7 +91,7 @@ public class DevTranListViewAdapter extends BaseAdapter implements View.OnClickL
         viewHolder.tv_recv_txt.setText(list.get(position).getmResultTxt());
         viewHolder.img_chat_play.setTag(position);
         viewHolder.img_chat_play.setOnClickListener(this);
-
+        viewHolder.img_chat_play.setImageResource(R.drawable.item_voice1);
         if(type == Constants.ITEM_RIGHT){
             Utils.setLanguageHead(context,viewHolder.img_head,list.get(position).getLanguage_type());
         }else if(type == Constants.ITEM_LEFT){

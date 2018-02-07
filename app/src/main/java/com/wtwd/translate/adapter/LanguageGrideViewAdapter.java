@@ -72,6 +72,7 @@ public class LanguageGrideViewAdapter extends BaseAdapter {
 
         if(mData.get(position).isSelect){
             viewHolder.linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.main_title_color));
+            viewHolder.tv_flag.setTextColor(mContext.getResources().getColor(R.color.color_white));
         }else{
             viewHolder.linearLayout.setBackgroundColor(mContext.getResources().getColor(R.color.app_background));
         }

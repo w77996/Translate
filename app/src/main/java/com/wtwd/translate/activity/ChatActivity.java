@@ -4,6 +4,7 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.AnimationDrawable;
+import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -149,7 +150,9 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
     boolean leftIsStartVoice = false;
     boolean rightIsStartVoice = false;
     private AnimationDrawable animationDrawable;
-
+   // private AnimationDrawable animationPlay;
+    private int lastPlaypos = 0;
+    private boolean itemIsPlaying = false;
     private boolean isRecordering = false;
 
 
@@ -157,11 +160,14 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
     FinalResponseStatus isReceivedResponse = FinalResponseStatus.NotReceived;
 
     String nowLanguage="";
+    private ImageView itemview;
+
     public enum FinalResponseStatus { NotReceived, OK, Timeout }
+
     /**
      * 微软语音状态
      */
-  //  FinalResponseStatus isReceivedResponse = FinalResponseStatus.NotReceived;
+    //  FinalResponseStatus isReceivedResponse = FinalResponseStatus.NotReceived;
     private RecorderBean rightRecorderBean;
     private RecorderBean leftRecorderBean;
 
@@ -357,8 +363,19 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
             @Override
             public void click(View v) {
                 final int pos = (Integer) v.getTag();
+               if(isRecordering){
+                   Log.e(TAG,"itemIsPlaying isRecordering ");
+                   return;
+               }
                 Log.d(TAG, pos + " 点击按钮位置");
-
+                /*LinearLayout itemLinear = (LinearLayout)mListViewChat.getChildAt(pos);
+                ImageView.*/
+              /*  itemIsPlaying =true;
+                 itemview = (ImageView) v.findViewById(R.id.img_chat_play);
+                 itemview.setImageResource(R.drawable.item_voice_play_animation);
+                animationPlay = (AnimationDrawable) itemview.getDrawable();
+                animationPlay.start();*/
+               // Log.e(TAG,itemview.getId()+"");
                 if (!mRecorderList.get(pos).getmFilePath().endsWith(".mp3") || "".equals(mRecorderList.get(pos).getmFilePath()) || mRecorderList.get(pos).getmFilePath() == null) {
                     Log.e(TAG, "语音合成出错！！！！！！");
                     return;
@@ -379,7 +396,8 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
         if(mRecorderList.size() <= 0 || mRecorderList == null ){
             Log.e(TAG,mRecorderList+" 为空");
         }else{
-            Log.e(TAG,mRecorderList+"不为空");
+            Log.e(TAG,"不为空 size"+mRecorderList.size());
+
             mListViewChat.setSelection(mRecorderList.size() - 1);
         }
       /* mListViewChat.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
@@ -584,7 +602,7 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
                     this.getMode(),
                     mLanguage,
                     this,
-                    "6d5a91fa9c614a33a681731279f2450c");
+                    "91401e4bf24e4312bd5d50dd3a93628a");
             nowLanguage = mLanguage;
             this.micClient.setAuthenticationUri("");
         }else if(!nowLanguage.equals(mLanguage)&&this.micClient !=null){
@@ -600,7 +618,7 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
                     this.getMode(),
                     mLanguage,
                     this,
-                    "6d5a91fa9c614a33a681731279f2450c");
+                    "91401e4bf24e4312bd5d50dd3a93628a");
             nowLanguage = mLanguage;
             this.micClient.setAuthenticationUri("");
         }else if(nowLanguage.equals(mLanguage)&&this.micClient ==null){
@@ -610,7 +628,7 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
                     this.getMode(),
                     mLanguage,
                     this,
-                    "6d5a91fa9c614a33a681731279f2450c");
+                    "91401e4bf24e4312bd5d50dd3a93628a");
             nowLanguage = mLanguage;
             this.micClient.setAuthenticationUri("");
         }
@@ -647,6 +665,7 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
     @Override
     public void onStartRecoderUsePhone() {
         //initSpeechRecognition(mVoiceFilePath);
+
     }
 
     @Override
@@ -661,16 +680,32 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
 
     @Override
     public void onStopPlayUsePhone() {
+       /* itemIsPlaying = false;
+        if(animationPlay !=null){
+            animationPlay.stop();
+            itemview.setImageResource(R.drawable.item_voice1);
+        }*/
 
     }
 
     @Override
     public void onPlayCompletion() {
+       /* itemIsPlaying = false;
+        if(animationPlay !=null){
+            animationPlay.stop();
+            itemview.setImageResource(R.drawable.item_voice1);
+        }*/
+
 
     }
 
     @Override
     public void onPlayError() {
+       /* itemIsPlaying = false;
+        if(animationPlay !=null){
+            animationPlay.stop();
+            itemview.setImageResource(R.drawable.item_voice1);
+        }*/
 
     }
 
@@ -980,7 +1015,13 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
                             }
                             mAdapter.notifyDataSetChanged();
                             mListViewChat.setSelection(mRecorderList.size() - 1);
-
+                            /*  LinearLayout linearLayout = (LinearLayout) mListViewChat.getChildAt(mRecorderList.size()-1);
+                          LinearLayout linearLayout1 = (LinearLayout)linearLayout.getChildAt(0);
+                            LinearLayout linearLayout2 = (LinearLayout)linearLayout.getChildAt(1);
+                            ImageView v = (ImageView) linearLayout2.findViewById(R.id.img_chat_play);
+                            v.setImageResource(R.drawable.item_voice_play_animation);
+                            animationPlay = (AnimationDrawable)v.getDrawable();
+                            animationPlay.start();*/
                                /* new Thread(new Runnable() {
                                     @Override
                                     public void run() {
@@ -1043,6 +1084,7 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
     protected void onDestroy() {
         super.onDestroy();
         if(null != this.micClient){
+            Log.e(TAG,"onDestroy micClient");
             try {
                 this.micClient.finalize();
             } catch (Throwable throwable) {
@@ -1074,7 +1116,7 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
 
     @Override
     public void onPartialResponseReceived(String s) {
-
+        Log.e(TAG,"onPartialResponseReceived "+s);
     }
 
     @Override
@@ -1091,7 +1133,7 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
            animationDrawable.stop();
            leftIsStartVoice = false;
            rightIsStartVoice = false;
-           Toast.makeText(ChatActivity.this, "录音失败", Toast.LENGTH_SHORT).show();
+           Toast.makeText(ChatActivity.this, R.string.record_fail, Toast.LENGTH_SHORT).show();
         return;
     }
         animationDrawable.stop();
@@ -1154,11 +1196,11 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
         animationDrawable.stop();
         leftIsStartVoice = false;
         rightIsStartVoice = false;
-        Toast.makeText(ChatActivity.this, "录音失败", Toast.LENGTH_SHORT).show();
+        Toast.makeText(ChatActivity.this, R.string.record_fail, Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onAudioEvent(boolean b) {
-
+        Log.e(TAG,"onAudioEvent "+b);
     }
 }

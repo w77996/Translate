@@ -28,7 +28,7 @@
                 android:layout_centerInParent="true"
                 android:textSize="20sp"
                 android:textColor="@color/color_white"
-                android:text="添加标签"/>
+                android:text="@string/add_label"/>
 
         </RelativeLayout>
     </LinearLayout>
@@ -40,7 +40,7 @@
         android:layout_marginBottom="@dimen/x30"
         android:layout_marginTop="@dimen/x30"
         android:textColor="#686868"
-        android:text="您的母语是"/>
+        android:text="@string/you_mother_language"/>
     <LinearLayout
         android:layout_weight="1"
         android:layout_width="match_parent"
@@ -81,7 +81,7 @@
                 android:layout_height="wrap_content"
                 android:textColor="#FFFFFF"
                 android:textSize="19sp"
-                android:text="下一步"/>
+                android:text="@string/next"/>
         </RelativeLayout>
 
     </LinearLayout>

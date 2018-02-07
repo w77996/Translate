@@ -465,6 +465,7 @@ public class PhotoActivity extends Activity implements SurfaceHolder.Callback, V
                 //关闭
                 parameters.setFlashMode(Camera.Parameters.FLASH_MODE_OFF);//关闭
                 mCamera.setParameters(parameters);
+                img_photo_flash_light.setImageResource(R.drawable.photo_flash_light);
                 text_photo_light_state.setText(R.string.close);
                 break;
 
@@ -472,11 +473,13 @@ public class PhotoActivity extends Activity implements SurfaceHolder.Callback, V
                 parameters.setFlashMode(Camera.Parameters.FLASH_MODE_TORCH);//开启
                 mCamera.setParameters(parameters);
                 text_photo_light_state.setText(R.string.open);
+                img_photo_flash_light.setImageResource(R.drawable.light_yellow);
                 break;
 
             case 2:
                 parameters.setFlashMode(Camera.Parameters.FLASH_MODE_AUTO);
                 mCamera.setParameters(parameters);
+                img_photo_flash_light.setImageResource(R.drawable.light_yellow);
                 text_photo_light_state.setText(R.string.auto);
                 break;
         }

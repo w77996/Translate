@@ -91,7 +91,7 @@
     <string name="re_photo">重新拍照</string>
     <string name="tran_all">全部翻译</string>
     <string name="part_tran">区域翻译</string>
-    <string name="blue_con">蓝牙连接</string>
+    <string name="blue_con">蓝牙未连接</string>
     <string name="open_blue_con_dev">请在设置中打开蓝牙并连接配件</string>
     <string name="language_select">语言选择</string>
     <string name="user_alread_regist">用户已注册</string>
@@ -114,5 +114,13 @@
     <string name="press_and_voice">请按语音按钮进行语音输入</string>
     <string name="input_name">请输入已注册的账号</string>
     <string name="input_pwd">请输入密码</string>
+    <string name="blue_uncon">蓝牙未连接</string>
+    <string name="blue_iscon">蓝牙已连接</string>
+
+    <string name="device_language">设备语言</string>
+    <string name="mobile_language">手机语言</string>
+    <string name="add_label">添加标签</string>
+    <string name="you_mother_language">您的母语是</string>
+
 
 </resources>
