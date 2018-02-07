@@ -232,6 +232,8 @@ public class DealImageActivity extends BaseActivity implements View.OnClickListe
             case R.id.view_close:
                 if(linear_result_view.getVisibility() == View.VISIBLE){
                     linear_result_view.setVisibility(View.GONE);
+                    view_close.setVisibility(View.GONE);
+
                 }
                 break;
         }
@@ -270,6 +272,7 @@ public class DealImageActivity extends BaseActivity implements View.OnClickListe
                                 ocr_tran_text.setText(tranText);
                                 if(linear_result_view.getVisibility() == View.GONE){
                                     linear_result_view.setVisibility(View.VISIBLE);
+                                    view_close.setVisibility(View.VISIBLE);
                                 }
                             }
                         }else if(resultBean.getStatus() == Constants.REQUEST_FAIL){

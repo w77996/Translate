@@ -413,7 +413,11 @@ public class AudioMediaPlayManager {
 //            mAudioManager.setRouting(AudioManager.MODE_NORMAL, AudioManager.ROUTE_ALL, AudioManager.ROUTE_SPEAKER);
             mAudioManager.setBluetoothScoOn(false);
             mAudioManager.setSpeakerphoneOn(true);
-
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
             //设置播放音频数据文件
             mMediaPlayer.setDataSource(mFilePath);
 
