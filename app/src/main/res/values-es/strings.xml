@@ -122,4 +122,7 @@
 
     <string name="add_label">Agregar etiqueta</string>
     <string name="you_mother_language">Su idioma nativo ess</string>
+    <string name="recognition_failed">Reconocimiento fallido</string>
+
+    <string name="translating">En traducción</string>
 </resources>

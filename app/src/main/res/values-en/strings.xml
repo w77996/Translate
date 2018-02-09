@@ -122,5 +122,6 @@
 
     <string name="add_label">Add label</string>
     <string name="you_mother_language">Your native language is</string>
-
+    <string name="recognition_failed">Recognition failed</string>
+    <string name="translating">translating</string>
 </resources>

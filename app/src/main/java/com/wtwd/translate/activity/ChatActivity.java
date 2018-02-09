@@ -153,14 +153,15 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
    // private AnimationDrawable animationPlay;
     private int lastPlaypos = 0;
     private boolean itemIsPlaying = false;
-    private boolean isRecordering = false;
-
+    private boolean isRecordering = false;//是否在录音记录
+    private boolean isTranslate = false;//是否在翻译
 
     MicrophoneRecognitionClient micClient = null;
     FinalResponseStatus isReceivedResponse = FinalResponseStatus.NotReceived;
 
     String nowLanguage="";
     private ImageView itemview;
+
 
     public enum FinalResponseStatus { NotReceived, OK, Timeout }
 
@@ -447,6 +448,11 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
                     Log.e(TAG,"正在录音");
                     return;
                 }
+                if(isTranslate){
+                    Log.e(TAG,"翻译中");
+                    Toast.makeText(ChatActivity.this,R.string.translating,Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 isRecordering = true;
                 mVoice.setImageResource(R.drawable.voice_tran_animation);
                 animationDrawable = (AnimationDrawable) mVoice.getDrawable();
@@ -497,6 +503,11 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
                 }
                 if(isRecordering){
                     Log.e(TAG,"正在录音");
+                    return;
+                }
+                if(isTranslate){
+                    Log.e(TAG,"翻译中");
+                    Toast.makeText(ChatActivity.this,R.string.translating,Toast.LENGTH_SHORT).show();
                     return;
                 }
                 mVoice.setImageResource(R.drawable.voice_tran_animation);
@@ -878,6 +889,7 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
      * @param to
      */
     private void requestTran(String trandata, String from, String to) {
+        isTranslate = true;
         int guestId = SpUtils.getInt(ChatActivity.this, Constants.GUEST_ID, 1);
         OkGo.<String>post(Constants.BASEURL + Constants.TEXTTRANSLATE)
                 .tag(this)
@@ -937,6 +949,7 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
 
                                     leftIsStartVoice = false;
                                     rightIsStartVoice = false;
+                                    isTranslate = false;
                                     Toast.makeText(ChatActivity.this,R.string.request_error,Toast.LENGTH_SHORT);
                                  /*   mAdapter.notifyDataSetChanged();
                                     mListViewChat.setSelection(mRecorderList.size() - tran_voice1);*/
@@ -966,6 +979,7 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
                             Log.e(TAG, "请求失败");
                             rightIsStartVoice = false;
                             leftIsStartVoice = false;
+                            isTranslate = false;
                             lin_left.setBackground(ChatActivity.this.getDrawable(R.drawable.chat_left_btn_unselect));
                             lin_right.setBackground(ChatActivity.this.getDrawable(R.drawable.chat_right_btn_unselect));
                             Toast.makeText(ChatActivity.this, R.string.tran_error, Toast.LENGTH_SHORT).show();
@@ -978,6 +992,7 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
                         super.onError(response);
                         leftIsStartVoice = false;
                         rightIsStartVoice = false;
+                        isTranslate = false;
                         animationDrawable.stop();
                         Toast.makeText(ChatActivity.this, R.string.tran_error, Toast.LENGTH_SHORT).show();
                     }
@@ -990,6 +1005,7 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
      * @param tranAudio
      */
     private void requestAudio(String tranAudio) {
+
         OkGo.<File>get(tranAudio)
                 .retryCount(0)
                 .execute(new FileCallback() {
@@ -1033,7 +1049,7 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
                             leftIsStartVoice = false;
 
                              mAudioMediaPlayManager.startPlayingUsePhone(file.getAbsolutePath());
-
+                            isTranslate = false;
                         }
                     }
 
@@ -1042,6 +1058,7 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
                         super.onError(response);
                         rightIsStartVoice = false;
                         leftIsStartVoice = false;
+                        isTranslate = false;
                     }
                 });
     }
@@ -1133,7 +1150,7 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
            animationDrawable.stop();
            leftIsStartVoice = false;
            rightIsStartVoice = false;
-           Toast.makeText(ChatActivity.this, R.string.record_fail, Toast.LENGTH_SHORT).show();
+           Toast.makeText(ChatActivity.this, R.string.recognition_failed, Toast.LENGTH_SHORT).show();
         return;
     }
         animationDrawable.stop();

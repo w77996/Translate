@@ -125,12 +125,14 @@ public class DevTranslationActivity extends Activity implements AudioStateChange
     private boolean isDevPlaying = false;
     private boolean isCreate = false;
     private boolean itemIsPlaying = false;
+    private boolean isTransalte =false;//是否在翻译中
 
     MicrophoneRecognitionClient micClient = null;
     FinalResponseStatus isReceivedResponse = FinalResponseStatus.NotReceived;
 
     String nowLanguage;
     private ImageView itemview;
+
     //private AnimationDrawable animationPlay;
 
     public enum FinalResponseStatus { NotReceived, OK, Timeout }
@@ -253,6 +255,11 @@ public class DevTranslationActivity extends Activity implements AudioStateChange
                 if(isDevRecrodering == true){
                     Log.e(TAG,"isDevRecrodering");
                     return ;
+                }
+                if(isTransalte == true){
+                    Log.e(TAG,"正在翻译中");
+                    Toast.makeText(DevTranslationActivity.this,R.string.translating,Toast.LENGTH_SHORT).show();
+                    return;
                 }
                /* if(itemIsPlaying == true){
                     Log.e(TAG,"itemIsPlaying");
@@ -609,6 +616,11 @@ public class DevTranslationActivity extends Activity implements AudioStateChange
                     Toast.makeText(DevTranslationActivity.this, R.string.dev_isrecoder,Toast.LENGTH_SHORT).show();
                     return ;
                 }
+                if(isTransalte == true){
+                    Log.e(TAG,"正在翻译中");
+                    Toast.makeText(DevTranslationActivity.this,R.string.translating,Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 if(itemIsPlaying == true){
                     Log.e(TAG,"itemIsPlaying");
                     mAudioMediaPlayManager.stopPlayingUsePhone();
@@ -806,7 +818,15 @@ public class DevTranslationActivity extends Activity implements AudioStateChange
          Log.e(TAG,"onMicroStartRecoderUseBluetoothEar");
 
      }*/
+
+    /**
+     * 请求翻译
+     * @param trandata
+     * @param from
+     * @param to
+     */
    private void requestTran(String trandata, final String from , final String to){
+        isTransalte = true;
        int guestId = SpUtils.getInt(DevTranslationActivity.this,Constants.GUEST_ID,1);
        OkGo.<String>post(Constants.BASEURL+Constants.TEXTTRANSLATE)
                .tag(this)
@@ -870,6 +890,7 @@ public class DevTranslationActivity extends Activity implements AudioStateChange
                        }else if(resultBean.getStatus() == Constants.REQUEST_FAIL){
                            Log.e(TAG,"请求失败");
                           // img_tran_recro_bg.clearAnimation();
+                           isTransalte = false;
                            Toast.makeText(DevTranslationActivity.this,R.string.tran_error,Toast.LENGTH_SHORT).show();
                        }
                    }
@@ -879,6 +900,7 @@ public class DevTranslationActivity extends Activity implements AudioStateChange
                        super.onError(response);
                        isDevRecrod = false;
                        isPhoneRecrod = false;
+                       isTransalte = false;
                        //img_tran_recro_bg.clearAnimation();
                    }
                });
@@ -934,7 +956,13 @@ public class DevTranslationActivity extends Activity implements AudioStateChange
                             isPhoneRecrod = false;
                             isDevRecrod = false;
                             itemIsPlaying = true;
+                            isTransalte = false;
 
+                        }else{
+                            isPhoneRecrod = false;
+                            isDevRecrod = false;
+                            itemIsPlaying = true;
+                            isTransalte = false;
                         }
                     }
 
@@ -943,6 +971,7 @@ public class DevTranslationActivity extends Activity implements AudioStateChange
                         super.onError(response);
                         isPhoneRecrod = false;
                         isDevRecrod = false;
+                        isTransalte = false;
                     }
                 });
     }
@@ -998,8 +1027,8 @@ public class DevTranslationActivity extends Activity implements AudioStateChange
             }
             isDevRecrod = false;
             isPhoneRecrod = false;
-            Log.e(TAG,"录音失败，长度为0");
-            Toast.makeText(DevTranslationActivity.this,R.string.record_fail,Toast.LENGTH_SHORT).show();
+            Log.e(TAG,"识别失败，长度为0");
+            Toast.makeText(DevTranslationActivity.this,R.string.recognition_failed,Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -1052,7 +1081,7 @@ public class DevTranslationActivity extends Activity implements AudioStateChange
         }
         isDevRecrod = false;
         isPhoneRecrod = false;
-        Log.e(TAG,"录音失败，长度为0");
+        Log.e(TAG,"录音失败 onError");
         Toast.makeText(DevTranslationActivity.this,R.string.record_fail,Toast.LENGTH_SHORT).show();
         /*if(null != this.micClient){
             try {

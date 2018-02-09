@@ -121,6 +121,8 @@
     <string name="mobile_language">手机语言</string>
     <string name="add_label">添加标签</string>
     <string name="you_mother_language">您的母语是</string>
+    <string name="recognition_failed">识别失败</string>
+    <string name="translating">翻译中</string>
 
 
 </resources>

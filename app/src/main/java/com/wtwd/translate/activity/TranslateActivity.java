@@ -164,6 +164,7 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
     ChatActivity.FinalResponseStatus isReceivedResponse = ChatActivity.FinalResponseStatus.NotReceived;
 
     String nowLanguage="";
+    private boolean isTranslate = false;
 
 
     public enum FinalResponseStatus { NotReceived, OK, Timeout }
@@ -443,6 +444,11 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
                 showVoice();
                 break;
             case R.id.img_tran_recro:
+                if(isTranslate){
+                    Log.e(TAG,"翻译中");
+                    Toast.makeText(TranslateActivity.this,R.string.translating,Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 mAnimation = AnimationUtils.loadAnimation(this,R.anim.voice_bg_anim);
                 img_tran_recro_bg.startAnimation(mAnimation);
                 //mAnimation.start();
@@ -504,6 +510,7 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
      * @param tranData
      */
     private void requestTran(String tranData) {
+        isTranslate = true;
         int guestId = SpUtils.getInt(TranslateActivity.this,Constants.GUEST_ID,1);
         OkGo.<String>post(Constants.BASEURL+Constants.TEXTTRANSLATE)
                 .params("text",tranData)
@@ -545,8 +552,11 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
                                 requestAudio(tranAudio);
                             }
                             img_tran_recro.setClickable(true);
+                            isTranslate = false;
                         }else if(resultBean.getStatus() == Constants.REQUEST_FAIL){
                             Log.e(TAG,"请求失败");
+                            isTranslate = false;
+                            img_tran_recro.setClickable(true);
                             Toast.makeText(TranslateActivity.this,R.string.request_error,Toast.LENGTH_SHORT).show();
 
                         }/*else if(resultBean.getStatus() == Constants.TRAN_ERROR){
@@ -560,6 +570,7 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
                         super.onError(response);
                         Log.e(TAG,"请求错误");
                         img_tran_recro.setClickable(true);
+                        isTranslate = false;
                         Toast.makeText(TranslateActivity.this,R.string.request_error,Toast.LENGTH_SHORT).show();
                        // img_tran_recro_bg.clearAnimation();
                     }
@@ -715,7 +726,7 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
         if (recognitionResult.Results.length <= 0) {
             img_tran_recro_bg.clearAnimation();
             img_tran_recro.setClickable(true);
-            Toast.makeText(this,R.string.record_fail,Toast.LENGTH_SHORT).show();
+            Toast.makeText(this,R.string.recognition_failed,Toast.LENGTH_SHORT).show();
             return;
         }
         String result = recognitionResult.Results[0].DisplayText;
