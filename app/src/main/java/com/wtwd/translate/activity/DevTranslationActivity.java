@@ -1083,20 +1083,23 @@ public class DevTranslationActivity extends Activity implements AudioStateChange
         isPhoneRecrod = false;
         Log.e(TAG,"录音失败 onError");
         Toast.makeText(DevTranslationActivity.this,R.string.record_fail,Toast.LENGTH_SHORT).show();
-        /*if(null != this.micClient){
+        if(null != this.micClient){
             try {
                 this.micClient.finalize();
             } catch (Throwable throwable) {
                 throwable.printStackTrace();
             }
             this.micClient = null;
-        }*/
+        }
     }
 
     @Override
     public void onAudioEvent(boolean b) {
         Log.e(TAG,"onAudioEvent"+b);
-        isDevRecrodering = false;
+        if(b == false){
+            isDevRecrodering = false;
+        }
+
     }
 
 

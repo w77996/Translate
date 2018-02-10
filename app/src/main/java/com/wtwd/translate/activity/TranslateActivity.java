@@ -745,6 +745,14 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
         Log.e(TAG,"onError"+s+" i "+i);
         img_tran_recro_bg.clearAnimation();
         img_tran_recro.setClickable(true);
+        if(null != this.micClient){
+            try {
+                this.micClient.finalize();
+            } catch (Throwable throwable) {
+                throwable.printStackTrace();
+            }
+            this.micClient = null;
+        }
         Toast.makeText(this,R.string.record_fail,Toast.LENGTH_SHORT).show();
     }
 
