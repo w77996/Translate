@@ -165,6 +165,7 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
 
     String nowLanguage="";
     private boolean isTranslate = false;
+    private boolean isPlaying = false;
 
 
     public enum FinalResponseStatus { NotReceived, OK, Timeout }
@@ -246,6 +247,7 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
             @Override
             public void onStopPlayUsePhone() {
                 Log.e(TAG,"onStopPlayUsePhone");
+                isPlaying = false;
                 animationDrawable.stop();
                 tran_play.setImageResource(R.drawable.tran_voice1);
             }
@@ -256,6 +258,7 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
                     animationDrawable.stop();
                     tran_play.setImageResource(R.drawable.tran_voice1);
                 }
+                isPlaying = false;
             }
 
             @Override
@@ -264,6 +267,7 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
                     animationDrawable.stop();
                     tran_play.setImageResource(R.drawable.tran_voice1);
                 }
+                isPlaying = false;
 
             }
         });
@@ -496,10 +500,13 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
                 if(null == mPlayPath || !mPlayPath.endsWith(".mp3")){
                     return;
                 }
+                if(isPlaying){
+                    return;
+                }
                 tran_play.setImageResource(R.drawable.tran_voice_play);
                 animationDrawable = (AnimationDrawable) tran_play.getDrawable();
                 animationDrawable.start();
-
+                isPlaying = true;
                 mAudioMediaPlayManager.startPlayingUsePhone(mPlayPath);
                 break;
         }
