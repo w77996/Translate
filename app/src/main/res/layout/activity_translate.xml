@@ -97,6 +97,7 @@
                     android:layout_gravity="center_vertical|center_horizontal"
                     android:layout_marginLeft="@dimen/x5"
                     android:layout_weight="1"
+                    android:maxLength="50"
                     android:hint="@string/input_letter_or_sen"
                     android:background="@color/color_white"
                     android:singleLine="true"

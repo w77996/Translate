@@ -172,117 +172,7 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
     private RecorderBean rightRecorderBean;
     private RecorderBean leftRecorderBean;
 
-  /*  public SpeechRecognitionMode getMode() {
-        return SpeechRecognitionMode.ShortPhrase;
-    }*/
-    /****自定义微软接口*****/
-   /* @Override
-    public void onFinalResponseResult(String result) {
-        animationDrawable.stop();
-        //mVoice.setBackground(getResources().getDrawable(R.drawable.voice_img3));
-        mVoice.setImageResource(R.drawable.chat_voice);
-       *//* if (recognitionResult.Results.length <= 0) {
 
-            return;
-        }*//*
-        //String userRecoderTxt = recognitionResult.Results[0].DisplayText;
-        //更新界面
-        lin_right.setClickable(true);
-        lin_left.setClickable(true);
-        if (rightIsStartVoice) {
-
-
-
-            lin_right.setBackground(this.getDrawable(R.drawable.chat_right_btn_unselect));
-
-            // TODO: 2018/tran_voice1/17  停止录音后更新界面处理
-            rightRecorderBean = new RecorderBean();
-            rightRecorderBean.setLanguage_type(rightLanguage);
-            //rightRecorderBean.setmFilePath(mVoiceFilePath);
-
-            rightRecorderBean.setmRecorderTxt(result);
-            rightRecorderBean.setType(Constants.ITEM_RIGHT);
-            requestTran(result, rightLanguage, leftLanguage);
-            //mListViewChat.s
-        } else if (leftIsStartVoice) {
-            lin_left.setBackground(this.getDrawable(R.drawable.chat_left_btn_unselect));
-
-            // TODO: 2018/tran_voice1/17  停止录音后更新界面处理
-            leftRecorderBean = new RecorderBean();
-            leftRecorderBean.setLanguage_type(leftLanguage);
-            //leftRecorderBean.setmFilePath(mVoiceFilePath);
-            //initSpeechRecognition(mVoiceFilePath);
-
-            leftRecorderBean.setmRecorderTxt(result);
-            leftRecorderBean.setType(Constants.ITEM_LEFT);
-            requestTran(result, leftLanguage, rightLanguage);
-
-        }
-       lin_left.setBackground(ChatActivity.this.getDrawable(R.drawable.chat_left_btn_unselect));
-        lin_right.setBackground(ChatActivity.this.getDrawable(R.drawable.chat_right_btn_unselect));
-        animationDrawable.stop();
-        isRecordering = false;
-    }
-
-    @Override
-    public void ononFinalResponseResultEmtity(String error) {
-        Log.e(TAG, "recognitionResult 长度为0识别失败");
-        lin_right.setBackground(this.getDrawable(R.drawable.chat_right_btn_unselect));
-        lin_left.setBackground(this.getDrawable(R.drawable.chat_left_btn_unselect));
-        mVoice.setImageResource(R.drawable.chat_voice);
-        lin_left.setClickable(true);
-        lin_right.setClickable(true);
-        animationDrawable.stop();
-        isRecordering = false;
-        leftIsStartVoice = false;
-        rightIsStartVoice = false;
-        Toast.makeText(this, R.string.record_fail, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onError(String s) {
-        Log.e(TAG, "微软语音合成错误 ： " + s.toString());
-        lin_left.setBackground(this.getDrawable(R.drawable.chat_left_btn_unselect));
-        lin_right.setBackground(this.getDrawable(R.drawable.chat_right_btn_unselect));
-        lin_left.setClickable(true);
-        lin_right.setClickable(true);
-        mVoice.setImageResource(R.drawable.chat_voice);
-        isRecordering = false;
-        animationDrawable.stop();
-        leftIsStartVoice = false;
-        rightIsStartVoice = false;
-        Toast.makeText(ChatActivity.this, "录音失败", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void startInitSpeechRecognition() {
-
-    }
-
-    @Override
-    public void getOnAudioEvent(boolean b) {
-
-    }*/
-
-    // public enum FinalResponseStatus {NotReceived, OK, Timeout}
-
-    /**
-     * 微软语音接口
-     */
-   /* DataRecognitionClient dataClient = null;
-    MicrophoneRecognitionClient micClient = null;*/
-
-   // MicroRecogitionManager mMicroRecogitionManager;
-    /*private static final int PERMISSIONS_REQUEST_CODE = 0111; // 请求码
-
-    private PermissionsChecker mPermissionsChecker; // 权限检测器
-
-    // 所需的全部权限
-    static final String[] PERMISSIONS = new String[]{
-            Manifest.permission.RECORD_AUDIO,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE,
-            Manifest.permission.READ_EXTERNAL_STORAGE
-    };*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -369,14 +259,7 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
                    return;
                }
                 Log.d(TAG, pos + " 点击按钮位置");
-                /*LinearLayout itemLinear = (LinearLayout)mListViewChat.getChildAt(pos);
-                ImageView.*/
-              /*  itemIsPlaying =true;
-                 itemview = (ImageView) v.findViewById(R.id.img_chat_play);
-                 itemview.setImageResource(R.drawable.item_voice_play_animation);
-                animationPlay = (AnimationDrawable) itemview.getDrawable();
-                animationPlay.start();*/
-               // Log.e(TAG,itemview.getId()+"");
+
                 if (!mRecorderList.get(pos).getmFilePath().endsWith(".mp3") || "".equals(mRecorderList.get(pos).getmFilePath()) || mRecorderList.get(pos).getmFilePath() == null) {
                     Log.e(TAG, "语音合成出错！！！！！！");
                     return;
@@ -444,24 +327,16 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
                     Toast.makeText(this, R.string.no_network, Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if(isRecordering){
-                    Log.e(TAG,"正在录音");
+                if(isRecordering == true){
+                    Log.e(TAG,"左侧点击，正在录音");
+                    Toast.makeText(ChatActivity.this,R.string.dev_isrecoder,Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if(isTranslate){
-                    Log.e(TAG,"翻译中");
+                if(isTranslate == true){
+                    Log.e(TAG,"左侧翻译中");
                     Toast.makeText(ChatActivity.this,R.string.translating,Toast.LENGTH_SHORT).show();
                     return;
                 }
-                isRecordering = true;
-                mVoice.setImageResource(R.drawable.voice_tran_animation);
-                animationDrawable = (AnimationDrawable) mVoice.getDrawable();
-                animationDrawable.start();
-                Log.d(TAG, "左侧开始录音");
-                lin_left.setBackground(this.getDrawable(R.drawable.chat_left_btn_selected));
-
-
-
                 if (leftIsStartVoice) {
                     // mAudioMediaPlayManager.stopRecorderUsePhone();
                     /*leftIsStartVoice = false;
@@ -486,7 +361,15 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
                     lin_right.setClickable(false);
                     lin_left.setClickable(false);
                     initSpeechRecognition(leftLanguage);
+                    isRecordering = true;
+                    mVoice.setImageResource(R.drawable.voice_tran_animation);
+                    animationDrawable = (AnimationDrawable) mVoice.getDrawable();
+                    animationDrawable.start();
+                    Log.d(TAG, "左侧开始录音");
+                    lin_left.setBackground(this.getDrawable(R.drawable.chat_left_btn_selected));
+
                     leftIsStartVoice = true;
+                    Log.e(TAG,"leftIsStartVoice");
 
                 }
 
@@ -501,21 +384,18 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
                     Toast.makeText(this, R.string.no_network, Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if(isRecordering){
-                    Log.e(TAG,"正在录音");
+                if(isRecordering==true){
+                    Log.e(TAG,"右侧正在录音");
+                    Toast.makeText(ChatActivity.this,R.string.dev_isrecoder,Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if(isTranslate){
-                    Log.e(TAG,"翻译中");
+                if(isTranslate == true){
+                    Log.e(TAG,"右侧翻译中");
                     Toast.makeText(ChatActivity.this,R.string.translating,Toast.LENGTH_SHORT).show();
                     return;
                 }
-                mVoice.setImageResource(R.drawable.voice_tran_animation);
-                animationDrawable = (AnimationDrawable) mVoice.getDrawable();
-                animationDrawable.start();
-                Log.d(TAG, "右侧开始录音");
-                lin_right.setBackground(this.getDrawable(R.drawable.chat_right_btn_selected));
-                if (rightIsStartVoice) {
+
+                if (rightIsStartVoice == true) {
 
                    /* rightIsStartVoice = false;
                     lin_left.setClickable(true);
@@ -541,6 +421,11 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
                     lin_right.setClickable(false);
                     lin_left.setClickable(false);
                    initSpeechRecognition(rightLanguage);
+                    mVoice.setImageResource(R.drawable.voice_tran_animation);
+                    animationDrawable = (AnimationDrawable) mVoice.getDrawable();
+                    animationDrawable.start();
+                    Log.d(TAG, "右侧开始录音");
+                    lin_right.setBackground(this.getDrawable(R.drawable.chat_right_btn_selected));
                     rightIsStartVoice = true;
 
                 }
@@ -605,7 +490,7 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
      * @param mLanguage
      */
     public void initSpeechRecognition(String mLanguage) {
-
+        Log.e(TAG,"进入 initSpeechRecognition "+ mLanguage);
         if(!nowLanguage.equals(mLanguage)&&this.micClient == null){
             Log.e(TAG,"!nowLanguage.equals(mLanguage)&&this.micClient == null");
             this.micClient = SpeechRecognitionServiceFactory.createMicrophoneClient(
@@ -958,32 +843,18 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
                                     //下载音频
                                     requestAudio(tranAudio);
                                 }
-
-
-
-                               /* if(!tranAudio.endsWith(".pcm")){
-                                    Log.e(TAG,"语音合成出错！！！！！！");
-                                    return;
-                                }else{
-                                    mAudioMediaPlayManager.startPlayingUsePhone(tranAudio);
-                                }*/
-                             /*  new Thread(new Runnable() {
-                                   @Override
-                                   public void run() {
-                                       mAudioMediaPlayManager.startPlayingUsePhone(tranAudio);
-                                   }
-                               }).start();*/
-                                //
                             }
                         } else if (resultBean.getStatus() == Constants.REQUEST_FAIL) {
                             Log.e(TAG, "请求失败");
                             rightIsStartVoice = false;
                             leftIsStartVoice = false;
                             isTranslate = false;
+                            isRecordering = false;
+                            animationDrawable.stop();
                             lin_left.setBackground(ChatActivity.this.getDrawable(R.drawable.chat_left_btn_unselect));
                             lin_right.setBackground(ChatActivity.this.getDrawable(R.drawable.chat_right_btn_unselect));
                             Toast.makeText(ChatActivity.this, R.string.tran_error, Toast.LENGTH_SHORT).show();
-                            animationDrawable.stop();
+
                         }
                     }
 
@@ -993,7 +864,10 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
                         leftIsStartVoice = false;
                         rightIsStartVoice = false;
                         isTranslate = false;
+                        isRecordering = false;
                         animationDrawable.stop();
+                        lin_left.setBackground(ChatActivity.this.getDrawable(R.drawable.chat_left_btn_unselect));
+                        lin_right.setBackground(ChatActivity.this.getDrawable(R.drawable.chat_right_btn_unselect));
                         Toast.makeText(ChatActivity.this, R.string.tran_error, Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -1047,7 +921,7 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
                             //Log.e(TAG,mRecorderList.get(pos).getmFilePath());
                             rightIsStartVoice = false;
                             leftIsStartVoice = false;
-
+                            isRecordering = false;
                              mAudioMediaPlayManager.startPlayingUsePhone(file.getAbsolutePath());
                             isTranslate = false;
                         }
@@ -1058,6 +932,7 @@ public class ChatActivity extends Activity implements View.OnClickListener, Audi
                         super.onError(response);
                         rightIsStartVoice = false;
                         leftIsStartVoice = false;
+                        isRecordering = false;
                         isTranslate = false;
                     }
                 });

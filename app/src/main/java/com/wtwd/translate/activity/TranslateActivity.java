@@ -53,11 +53,18 @@ import com.wtwd.translate.utils.keybord.InputTools;
 import com.wtwd.translate.utils.Utils;
 import com.wtwd.translate.utils.keybord.SoftKeyBoardListener;
 import com.wtwd.translate.utils.micro.MicroRecogitionManager;
+import com.wtwd.translate.utils.micro.MicrosoftUtil;
 import com.wtwd.translate.utils.permissions.PermissionsActivity;
 import com.wtwd.translate.utils.permissions.PermissionsChecker;
 import com.wtwd.translate.view.InputEdittext;
 
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserFactory;
+
 import java.io.File;
+import java.io.StringReader;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -69,6 +76,7 @@ import java.util.List;
 public class TranslateActivity extends Activity implements View.OnClickListener,ISpeechRecognitionServerEvents {
 
     private static final String TAG = "TranslateActivity";
+    private static String textResult = "";
     /**
      * 输入框
      */
@@ -494,7 +502,13 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
                     Toast.makeText(TranslateActivity.this,"请输入翻译语句",Toast.LENGTH_SHORT).show();
                     return;
                 }
-                requestTran(tranData);
+               // requestTran(tranData);
+                requestTranslate(tranData);
+                try {
+                   //MicrosoftUtil.translate(tranData,leftLanguage,rightLanguage);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 break;
             case R.id.tran_play:
                 if(null == mPlayPath || !mPlayPath.endsWith(".mp3")){
@@ -512,8 +526,113 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
         }
     }
 
+
+
+    private void requestTranslate(String data){
+        String result = MicrosoftUtil.translate(data,leftLanguage,rightLanguage);
+        Log.e(TAG,"翻译结果"+result);
+        if(TextUtils.isEmpty(result)){
+            Toast.makeText(TranslateActivity.this,R.string.tran_error,Toast.LENGTH_SHORT);
+            return;
+        }
+        if(lin_tran_result.getVisibility() == View.GONE){
+            lin_tran_result.setVisibility(View.VISIBLE);
+        }
+
+
+        tv_tran_result.setText(result);
+
+
+        String path = MicrosoftUtil.speak(result,rightLanguage);
+        Log.e(TAG,"翻译结果"+path);
+       /* if (!tranAudio.endsWith(".mp3")) {
+            Log.e(TAG, "语音合成出错！！！！！！");
+
+            Toast.makeText(TranslateActivity.this,R.string.request_error,Toast.LENGTH_SHORT);
+            return;
+        } else {
+            //下载音频
+            requestAudio(tranAudio);
+        }*/
+       mPlayPath = path;
+        img_tran_recro.setClickable(true);
+        isTranslate = false;
+    }
+
     /**
-     * 请求翻译
+     *本地直接调用微软翻译服务
+     * @param text
+     * @param from
+     * @param to
+     * @return
+     * @throws Exception
+     */
+    public   void translate( final String text, final String from, final String to) {
+        String url="";
+        try {
+            url = URLEncoder.encode(text,"UTF-8")+"&from="+from+"&to="+to;
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        Log.e(TAG,url);
+        OkGo.<String>get("https://api.microsofttranslator.com/v2/Http.svc/Translate?text="+url)
+                .headers("Ocp-Apim-Subscription-Key",MicrosoftUtil.TRANSLATE_SUBSCRIPTION_KEY)
+                .retryCount(0)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        Log.e(TAG,response.body().toString());
+                        try {
+                            XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+                            XmlPullParser parser = factory.newPullParser();
+                            parser.setInput(new StringReader(response.body().toString()));
+                            int eventType = parser.getEventType();
+                            String name = "";
+                            String version = "";
+                            while (eventType != XmlPullParser.END_DOCUMENT) {
+                                String nodeName = parser.getName();
+                                switch (eventType) {
+                                    // 开始解析某个结点
+                                    case XmlPullParser.START_TAG: {
+                                        if ("string".equals(nodeName)) {
+                                            textResult = parser.nextText();
+                                            Log.e(TAG,"结果是"+textResult);
+                                        }
+                                        break;
+                                    }
+                                }
+                                eventType = parser.next();
+                            }
+                            //完成翻译后下载音频
+                            requestMicroAudio(textResult);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    @Override
+                    public void onError(Response<String> response) {
+                        super.onError(response);
+                        Log.e(TAG,"错误");
+                    }
+                });
+    }
+
+    /**
+     * 本地直接请求微软语音合成，下载音频
+     * @param textResult
+     */
+    private  void requestMicroAudio(String textResult) {
+
+        if(TextUtils.isEmpty(textResult)){
+            Toast.makeText(TranslateActivity.this,R.string.tran_error,Toast.LENGTH_SHORT);
+            return;
+        }
+
+
+    }
+
+    /**
+     * 请求服务器进行翻译
      * @param tranData
      */
     private void requestTran(String tranData) {
@@ -585,7 +704,7 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
     }
 
     /**
-     * 请求下载音频
+     * 请求服务器下载音频
      * @param tranAudio
      */
     private void requestAudio(String tranAudio) {
