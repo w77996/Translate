@@ -960,7 +960,12 @@ public class DevTranslationActivity extends Activity implements AudioStateChange
 
                             }
                             //完成翻译后下载音频
-                            requestMicroAudio(textResult);
+                            if(isDevRecrod == true){
+                                requestMicroAudio(textResult,rightLanguage);
+                            }else if(isPhoneRecrod == true){
+                                requestMicroAudio(textResult,leftLanguage);
+                            }
+
 
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -984,13 +989,13 @@ public class DevTranslationActivity extends Activity implements AudioStateChange
      * 请求翻译返回结果后下载音频
      * @param textResult
      */
-    private synchronized void requestMicroAudio(final String textResult) {
+    private synchronized void requestMicroAudio(final String textResult, final String language) {
 
         new Thread(new Runnable() {
             @Override
             public void run() {
-                mPlayPath = MicrosoftUtil.speak(textResult,rightLanguage);
-                mHandler.sendEmptyMessageDelayed(DOWNLOAD_SUCCESS,500);
+                mPlayPath = MicrosoftUtil.speak(textResult,language);
+                mHandler.sendEmptyMessage(DOWNLOAD_SUCCESS);
             }
         }).start();
     }

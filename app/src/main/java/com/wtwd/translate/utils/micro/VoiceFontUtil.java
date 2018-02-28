@@ -1,6 +1,7 @@
 package com.wtwd.translate.utils.micro;
 
 import android.text.TextUtils;
+import android.util.Log;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -69,8 +70,10 @@ public class VoiceFontUtil {
 			
 	public static String getVoiceName(String locale,String gender) {
 		String voiceName = voiceMap.get(locale+","+gender);
+		Log.e("VoiceFontUtil","VoiceFontUtil "+locale+" locale "+" gender "+gender);
 		if(TextUtils.isEmpty(voiceName)) {//如果女声不存在，取男声，都不存在，默认
 			voiceName = voiceMap.get(locale+","+Gender.Male);
+			Log.e("VoiceFontUtil","voiceName "+voiceName);
 			if(TextUtils.isEmpty(voiceName)) {
 				voiceName = "Microsoft Server Speech Text to Speech Voice (en-US, ZiraRUS)";
 			}

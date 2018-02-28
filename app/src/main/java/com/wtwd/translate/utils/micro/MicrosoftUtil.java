@@ -236,6 +236,7 @@ public class MicrosoftUtil {
         System.out.println("voiceName ------------"+voiceName);
         try
         {
+
         	byte[] audioBuffer = TTSService.Synthesize(SPEECH_SUBSCRIPTION_KEY, text, outputFormat, language, genderName, voiceName);
         	
         	// write the pcm data to the file
