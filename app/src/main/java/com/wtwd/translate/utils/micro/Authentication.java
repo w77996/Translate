@@ -56,12 +56,15 @@ public class Authentication
 
     private String HttpPost(String AccessTokenUri, String apiKey)
     {
+
+
+
         InputStream inSt = null;
         HttpsURLConnection webRequest = null;
         URL url = null;
         //Prepare OAuth request
         try{
-            url = new URL("http://192.168.31.200:8080/HttpServer/MyServlet?name=孙群&age=27");
+            url = new URL(AccessTokenUri);
             webRequest = (HttpsURLConnection) url.openConnection();
             webRequest.setDoInput(true);
             webRequest.setDoOutput(true);
@@ -96,6 +99,8 @@ public class Authentication
             // parse the access token
             String token = strBuffer.toString();
 
+
+
             return token;
         }catch (Exception e){
             e.printStackTrace();
@@ -103,4 +108,6 @@ public class Authentication
 
         return null;
     }
+
+
 }

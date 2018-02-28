@@ -503,7 +503,8 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
                     return;
                 }
                // requestTran(tranData);
-                requestTranslate(tranData);
+                //requestTranslate(tranData);
+                translate(tranData,leftLanguage,rightLanguage);
                 try {
                    //MicrosoftUtil.translate(tranData,leftLanguage,rightLanguage);
                 } catch (Exception e) {
@@ -530,11 +531,11 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
 
     private void requestTranslate(String data){
         String result = MicrosoftUtil.translate(data,leftLanguage,rightLanguage);
-        Log.e(TAG,"翻译结果"+result);
-        if(TextUtils.isEmpty(result)){
+        Log.e(TAG,"翻译结果result"+result);
+      /*  if(TextUtils.isEmpty(result)){
             Toast.makeText(TranslateActivity.this,R.string.tran_error,Toast.LENGTH_SHORT);
             return;
-        }
+        }*/
         if(lin_tran_result.getVisibility() == View.GONE){
             lin_tran_result.setVisibility(View.VISIBLE);
         }
@@ -544,7 +545,7 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
 
 
         String path = MicrosoftUtil.speak(result,rightLanguage);
-        Log.e(TAG,"翻译结果"+path);
+        Log.e(TAG,"翻译结果路径path"+path);
        /* if (!tranAudio.endsWith(".mp3")) {
             Log.e(TAG, "语音合成出错！！！！！！");
 
@@ -621,14 +622,30 @@ public class TranslateActivity extends Activity implements View.OnClickListener,
      * 本地直接请求微软语音合成，下载音频
      * @param textResult
      */
-    private  void requestMicroAudio(String textResult) {
+    private  void requestMicroAudio(final String textResult) {
 
+
+
+        //final String  path = "";
+
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mPlayPath = MicrosoftUtil.speak(textResult,rightLanguage);
+                    }
+                }).start();
         if(TextUtils.isEmpty(textResult)){
             Toast.makeText(TranslateActivity.this,R.string.tran_error,Toast.LENGTH_SHORT);
             return;
         }
-
-
+        if(lin_tran_result.getVisibility() == View.GONE){
+            lin_tran_result.setVisibility(View.VISIBLE);
+        }
+        tv_tran_result.setText(textResult);
+        //Log.e(TAG,"翻译结果的路径为 "+path);
+       // mPlayPath = path;
+        img_tran_recro.setClickable(true);
+        isTranslate = false;
     }
 
     /**

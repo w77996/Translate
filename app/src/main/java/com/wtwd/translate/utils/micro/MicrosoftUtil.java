@@ -243,7 +243,8 @@ public class MicrosoftUtil {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.CHINA);
             String filename = dateFormat.format(new Date(System.currentTimeMillis()));
         	path = filename+ ".mp3";
-        	File outputAudio = new File(FilePath.getAudioPath()+path);
+        	File outputAudio = new File(FilePath.getAudioPath()+File.separator+path);
+        	Log.e(TAG,FilePath.getAudioPath()+File.separator+path);
         	FileOutputStream fstream = new FileOutputStream(outputAudio);
             fstream.write(audioBuffer);
             fstream.flush();
@@ -253,7 +254,7 @@ public class MicrosoftUtil {
         {
             System.out.println(e.getMessage());
         }
-		return path;
+		return FilePath.getAudioPath()+File.separator+path;
 	}
 	
 //	private static boolean isUTF8(String key){
