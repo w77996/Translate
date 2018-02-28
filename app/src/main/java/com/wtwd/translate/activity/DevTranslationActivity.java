@@ -1,5 +1,6 @@
 package com.wtwd.translate.activity;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.bluetooth.BluetoothDevice;
 import android.content.Intent;
@@ -45,11 +46,17 @@ import com.wtwd.translate.utils.blue.SppBluetoothReceivedManager;
 import com.wtwd.translate.utils.blue.TranProtocalAnalysis;
 import com.wtwd.translate.utils.blue.TranProtocalReceivedAnalysis;
 import com.wtwd.translate.utils.micro.MicroRecogitionManager;
+import com.wtwd.translate.utils.micro.MicrosoftUtil;
 import com.wtwd.translate.view.BTOpenDialog;
 
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserFactory;
+
 import java.io.File;
+import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Array;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -132,13 +139,17 @@ public class DevTranslationActivity extends Activity implements AudioStateChange
 
     String nowLanguage;
     private ImageView itemview;
-
+    private String textResult="";//直接请求微软翻译返回的文字结果
+    private String mPlayPath = "";//直接请求微软语音合成返回的文件路径
+    private String mMircoResult = "";
     //private AnimationDrawable animationPlay;
 
     public enum FinalResponseStatus { NotReceived, OK, Timeout }
 
     private static final int   START_BLUE_RECORDER = 0x01;//开始蓝牙录音
-    //private static final int DEV_RECORDERING = 0x02;
+    private static final int DOWNLOAD_SUCCESS = 0x03;//下载视频成功
+    private static final int STOP_BLUE_RECORDER = 0x02;//停止录音
+    @SuppressLint("HandlerLeak")
     private Handler mHandler = new Handler(){
         @Override
         public void handleMessage(Message msg) {
@@ -154,6 +165,55 @@ public class DevTranslationActivity extends Activity implements AudioStateChange
               /*  case DEV_RECORDERING:
                     //isDevRecrodering = false;
                     break;*/
+                case DOWNLOAD_SUCCESS :
+                    if(!mPlayPath.endsWith(".mp3")){
+                        Log.e(TAG,"合成错误");
+                    }
+                    if (isPhoneRecrod == true) {
+                        // rightRecorderBean.setmFilePath(resultBean.getTranslateResult().getAudio());
+                        rightRecorderBean.setmFilePath(mPlayPath);
+                        mRecorderList.add(rightRecorderBean);
+                        DaoUtils.getDevrecorderBeanDaoManager().insertObject(rightRecorderBean);
+                        byte[] data = BluetoothSerialString.getTranslationResultByte(leftLanguage,rightLanguage,rightRecorderBean.getmRecorderTxt(),textResult,true);
+                        mTranProtocalAnalysis.writeToDeviceByte(data);
+                        //DaoUtils.getRecorderBeanDaoManager().insertObject(rightRecorderBean);
+                    } else if (isDevRecrod == true) {
+                        // leftRecorderBean.setmFilePath(resultBean.getTranslateResult().getAudio());
+                        leftRecorderBean.setmFilePath(mPlayPath);
+                        mRecorderList.add(leftRecorderBean);
+                        DaoUtils.getDevrecorderBeanDaoManager().insertObject(leftRecorderBean);
+
+                        // DaoUtils.getRecorderBeanDaoManager().insertObject(leftRecorderBean);
+                    }
+                    mDevTranListViewAdapter.notifyDataSetChanged();
+                    mListViewDevTran.setSelection(mRecorderList.size() - 1);
+
+                               /* new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        mAudioMediaPlayManager.startPlayingUsePhone(file.getAbsolutePath());
+                                    }
+                                }).start();*/
+                    //Log.e(TAG,mRecorderList.get(pos).getmFilePath());
+                    Log.e(TAG,mPlayPath);
+                    if(isDevRecrod == true){
+                        Log.e(TAG,"startPlayingUsePhone");
+                        mAudioMediaPlayManager.startPlayingUsePhone(mPlayPath);
+                    }else if(isPhoneRecrod == true){
+                        Log.e(TAG,"startPlayingUseBluetoothEar");
+                        mAudioMediaPlayManager.startPlayingUseBluetoothEar(mPlayPath);
+                    }
+                    Log.e(TAG,"播放完成");
+                    isPhoneRecrod = false;
+                    isDevRecrod = false;
+                    itemIsPlaying = true;
+                    isTransalte = false;
+                    break;
+                case STOP_BLUE_RECORDER:
+                    if(micClient != null){
+                        micClient.TTSStop();
+                    }
+                    break;
             }
         }
     };
@@ -217,44 +277,14 @@ public class DevTranslationActivity extends Activity implements AudioStateChange
             public void onDevicePressedStateListener(int type) {
                 Log.e(TAG,type+"");
                 Log.d(TAG,type+" onDevicePressedStateListener");
-                /*if(DevTranslateActivity.this.){
-                    Log.e(TAG,"界面未显示");
-                    return;
-                }*/
-               /* if(type == TranProtocalAnalysis.BUTTON_F2_PRESSED ){
-                    blueVoiceFile = Utils.getVoiceFilePath();
-                    leftRecorderBean.setmFilePath(blueVoiceFile);
-                    Log.e(TAG,"BUTTON_F2_PRESSED ");
-                    mAudioMediaPlayManager.startRecorderUseBluetoothEar(blueVoiceFile);
-                   // mMicroRecogitionManager.initSpeechRecognition(Constants.zh_CN);
-                }else if(type == TranProtocalAnalysis.BUTTON_F2_RELEASED){
-                    mAudioMediaPlayManager.stopRecorderUseBluetoothEar();
-                    Log.e(TAG,"BUTTON_F2_RELEASED ");
-                    // TODO: 2018/tran_voice1/23
-                    // tran_voice1.语音转文字;tran_voice2.文字发送服务器;tran_voice3.返回结果显示界面
-                    mMicroRecogitionManager.initFileRecognition(leftLanguage,blueVoiceFile);
-                }else if(type == TranProtocalAnalysis.BUTTON_F3_PRESSED){
-                    Log.e(TAG,"BUTTON_F3_PRESSED ");
-                    blueVoiceFile = Utils.getVoiceFilePath();
-                    leftRecorderBean.setmFilePath(blueVoiceFile);
-                    mAudioMediaPlayManager.startRecorderUseBluetoothEar(blueVoiceFile);
-                   // mMicroRecogitionManager.initSpeechRecognition(Constants.zh_CN);
-                }else if(type == TranProtocalAnalysis.BUTTON_F3_RELEASED){
-                    Log.e(TAG,"BUTTON_F3_RELEASED ");
-                    mAudioMediaPlayManager.stopRecorderUseBluetoothEar();
-                    // TODO: 2018/tran_voice1/23
-                    mMicroRecogitionManager.initFileRecognition(leftLanguage,blueVoiceFile);
-                }*/
-              //  blueVoiceFile = Utils.getVoiceFilePath();
-                //File file = new File(Environment.getExternalStorageDirectory().getAbsolutePath()+"/a.3gp");
-                //Log.e(TAG,file.getAbsolutePath());
+
                 if(isPhoneRecrod == true){
                     Toast.makeText(DevTranslationActivity.this,R.string.dev_isrecoder,Toast.LENGTH_SHORT).show();
                     return;
                 }
-                if(isDevRecrod == true){
+                if(isDevRecrod == true&&(type == TranProtocalAnalysis.BUTTON_F2_RELEASED || type == TranProtocalAnalysis.BUTTON_F3_RELEASED)){
                     Log.e(TAG,"isDevRecroder");
-                    Toast.makeText(DevTranslationActivity.this,R.string.dev_isrecoder,Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(DevTranslationActivity.this,R.string.dev_isrecoder,Toast.LENGTH_SHORT).show();
                     return ;
                 }
                 if(isTransalte == true){
@@ -288,6 +318,12 @@ public class DevTranslationActivity extends Activity implements AudioStateChange
                 }else if(type == TranProtocalAnalysis.BUTTON_F2_PRESSED){
                    // mAudioMediaPlayManager.stopRecorderUseBluetoothEar();
                     Log.e(TAG,"BUTTON_F2_RELEASED ");
+                    if(micClient != null){
+                        micClient.audioStop();
+                        micClient.TTSStop();
+                        micClient.endMicAndRecognition();
+                    }
+                    //mHandler.sendEmptyMessage(STOP_BLUE_RECORDER);
                     // TODO: 2018/tran_voice1/23
                     // tran_voice1.语音转文字;tran_voice2.文字发送服务器;tran_voice3.返回结果显示界面
                 }else if(type == TranProtocalAnalysis.BUTTON_F3_RELEASED){
@@ -306,6 +342,12 @@ public class DevTranslationActivity extends Activity implements AudioStateChange
                 }else if(type == TranProtocalAnalysis.BUTTON_F3_PRESSED){
                     Log.e(TAG,"BUTTON_F3_RELEASED ");
                   //  mAudioMediaPlayManager.stopRecorderUseBluetoothEar();
+                    if(micClient != null){
+                        micClient.audioStop();
+                        micClient.TTSStop();
+                        micClient.endMicAndRecognition();
+                    }
+                   // mHandler.sendEmptyMessage(STOP_BLUE_RECORDER);
                     // TODO: 2018/tran_voice1/23
 
                 }
@@ -726,9 +768,56 @@ public class DevTranslationActivity extends Activity implements AudioStateChange
             nowLanguage = mLanguage;
             this.micClient.setAuthenticationUri("");
         }
-
-
             this.micClient.startMicAndRecognition();
+
+    }
+
+    /**
+     * 微软初始化
+     * @param mLanguage
+     */
+    public void initLongSpeechRecognition(String mLanguage) {
+        Log.e(TAG,"进入 initLongSpeechRecognition 开始微软语音 "+mLanguage);
+        if(!nowLanguage.equals(mLanguage)&&this.micClient == null){
+            Log.e(TAG,"!nowLanguage.equals(mLanguage)&&this.micClient == null");
+            this.micClient = SpeechRecognitionServiceFactory.createMicrophoneClient(
+                    this,
+                    SpeechRecognitionMode.LongDictation,
+                    mLanguage,
+                    this,
+                    "91401e4bf24e4312bd5d50dd3a93628a");
+            nowLanguage = mLanguage;
+            this.micClient.setAuthenticationUri("");
+        }else if(!nowLanguage.equals(mLanguage)&&this.micClient !=null){
+            Log.e(TAG,"!nowLanguage.equals(mLanguage)&&this.micClient !=null");
+            try {
+                this.micClient.finalize();
+            } catch (Throwable throwable) {
+                throwable.printStackTrace();
+            }
+            this.micClient = null;
+            this.micClient = SpeechRecognitionServiceFactory.createMicrophoneClient(
+                    this,
+                    SpeechRecognitionMode.LongDictation,
+                    mLanguage,
+                    this,
+                    "91401e4bf24e4312bd5d50dd3a93628a");
+            nowLanguage = mLanguage;
+            this.micClient.setAuthenticationUri("");
+        }else if(nowLanguage.equals(mLanguage)&&this.micClient ==null){
+            Log.e(TAG,"nowLanguage.equals(mLanguage)&&this.micClient ==null");
+            this.micClient = SpeechRecognitionServiceFactory.createMicrophoneClient(
+                    this,
+                    SpeechRecognitionMode.LongDictation,
+                    mLanguage,
+                    this,
+                    "91401e4bf24e4312bd5d50dd3a93628a");
+            nowLanguage = mLanguage;
+            this.micClient.setAuthenticationUri("");
+        }
+
+
+        this.micClient.startMicAndRecognition();
 
     }
     /**************微软录音***************/
@@ -819,6 +908,92 @@ public class DevTranslationActivity extends Activity implements AudioStateChange
          Log.e(TAG,"onMicroStartRecoderUseBluetoothEar");
 
      }*/
+
+    /**
+     * 直接请求微软文字翻译
+     * @param data
+     * @param from
+     * @param to
+     */
+    private void requestMircoTran(String data ,String from,String to){
+        String url="";
+        try {
+            url = URLEncoder.encode(data,"UTF-8")+"&from="+from+"&to="+to;
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        Log.e(TAG,url);
+        OkGo.<String>get("https://api.microsofttranslator.com/v2/Http.svc/Translate?text="+url)
+                .headers("Ocp-Apim-Subscription-Key", MicrosoftUtil.TRANSLATE_SUBSCRIPTION_KEY)
+                .retryCount(0)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        Log.e(TAG,response.body().toString());
+                        try {
+                            XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
+                            XmlPullParser parser = factory.newPullParser();
+                            parser.setInput(new StringReader(response.body().toString()));
+                            int eventType = parser.getEventType();
+                            String name = "";
+                            String version = "";
+                            while (eventType != XmlPullParser.END_DOCUMENT) {
+                                String nodeName = parser.getName();
+                                switch (eventType) {
+                                    // 开始解析某个结点
+                                    case XmlPullParser.START_TAG: {
+                                        if ("string".equals(nodeName)) {
+                                            textResult = parser.nextText();
+                                            Log.e(TAG,"结果是"+textResult);
+                                        }
+                                        break;
+                                    }
+                                }
+                                eventType = parser.next();
+                            }
+
+                            if(isDevRecrod == true){
+                                leftRecorderBean.setmResultTxt(textResult);
+                            }else if(isPhoneRecrod == true){
+                                rightRecorderBean.setmResultTxt(textResult);
+
+
+                            }
+                            //完成翻译后下载音频
+                            requestMicroAudio(textResult);
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    @Override
+                    public void onError(Response<String> response) {
+                        super.onError(response);
+                        Log.e(TAG,"错误");
+                        Log.e(TAG,"请求失败");
+                        // img_tran_recro_bg.clearAnimation();
+                        isTransalte = false;
+                        isDevRecrod = false;
+                        isPhoneRecrod = false;
+                        Toast.makeText(DevTranslationActivity.this,R.string.tran_error,Toast.LENGTH_SHORT).show();
+                    }
+                });
+    }
+
+    /**
+     * 请求翻译返回结果后下载音频
+     * @param textResult
+     */
+    private synchronized void requestMicroAudio(final String textResult) {
+
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                mPlayPath = MicrosoftUtil.speak(textResult,rightLanguage);
+                mHandler.sendEmptyMessageDelayed(DOWNLOAD_SUCCESS,500);
+            }
+        }).start();
+    }
 
     /**
      * 请求翻译
@@ -1016,17 +1191,19 @@ public class DevTranslationActivity extends Activity implements AudioStateChange
         boolean isFinalDicationMessage = this.getMode() == SpeechRecognitionMode.LongDictation &&
                 (response.RecognitionStatus == RecognitionStatus.EndOfDictation ||
                         response.RecognitionStatus == RecognitionStatus.DictationEndSilenceTimeout);
+        Log.e(TAG,"isFinalDicationMessage "+isFinalDicationMessage);
         if (null != this.micClient  && ((this.getMode() == SpeechRecognitionMode.ShortPhrase) || isFinalDicationMessage)) {
             // we got the final result, so it we can end the mic reco.  No need to do this
             // for dataReco, since we already called endAudio() on it as soon as we were done
             // sending all the data.
+
             this.micClient.endMicAndRecognition();
         }
+        Log.e(TAG,response.Results.length+" response.Results.length");
         for (int i = 0; i < response.Results.length; i++) {
             Log.e(TAG,"[" + i + "]" + " Confidence=" + response.Results[i].Confidence +
                     " Text=\"" + response.Results[i].DisplayText + "\"");
         }
-
         if(response.Results.length <= 0){
             if(isDevRecrod == true) {
                 Log.e(TAG,"onFinalResponseResult:isDevRecrod");
@@ -1043,7 +1220,6 @@ public class DevTranslationActivity extends Activity implements AudioStateChange
             return;
         }
 
-
         if(isDevRecrod ==true){
             Log.e(TAG,"onFinalResponseResult:isDevRecrod");
             mAudioMediaPlayManager.stopRecorderUseBluetoothEar();
@@ -1055,18 +1231,19 @@ public class DevTranslationActivity extends Activity implements AudioStateChange
             leftRecorderBean.setmRecorderTxt(result);
             leftRecorderBean.setType(Constants.ITEM_LEFT);
             mAudioMediaPlayManager.stopRecorderUseBluetoothEar();
-            requestTran(result,leftLanguage,rightLanguage);
+            requestMircoTran(result,leftLanguage,rightLanguage);
         }else if(isPhoneRecrod == true){
             rightRecorderBean.setmRecorderTxt(result);
             rightRecorderBean.setType(Constants.ITEM_RIGHT);
             img_tran_recro_bg.clearAnimation();
-            requestTran(result,rightLanguage,leftLanguage);
+            requestMircoTran(result,rightLanguage,leftLanguage);
             //String str = BluetoothSerialString.getTranslationResultString(leftLanguage,rightLanguage,result,result,true);
             // mTranProtocalAnalysis.writeToDevice(str);
         }
 
 
         mVoiceImage.setClickable(true);
+
        // mHandler.sendEmptyMessage(DEV_RECORDERING);
         // return;
         //}

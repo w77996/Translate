@@ -240,6 +240,7 @@ public class MicrosoftUtil {
         	
         	// write the pcm data to the file
            // Random random = new Random(20);
+            Log.e(TAG,audioBuffer.length+" audioBuffer");
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.CHINA);
             String filename = dateFormat.format(new Date(System.currentTimeMillis()));
         	path = filename+ ".mp3";
